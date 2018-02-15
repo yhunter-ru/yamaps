@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{fill:#FFFFFF;}
+</style>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="128" y1="2" x2="128" y2="254">
+	<stop  offset="0" style="stop-color:#FFC83E"/>
+	<stop  offset="6.566174e-03" style="stop-color:#FFC83C"/>
+	<stop  offset="9.430165e-02" style="stop-color:#FEC725"/>
+	<stop  offset="0.1846" style="stop-color:#FEC713"/>
+	<stop  offset="0.2809" style="stop-color:#FDC70C"/>
+	<stop  offset="0.6685" style="stop-color:#F3903F"/>
+	<stop  offset="0.8876" style="stop-color:#ED683C"/>
+	<stop  offset="1" style="stop-color:#E93E3A"/>
+</linearGradient>
+<path class="st0" d="M224,254H32c-16.5,0-30-13.5-30-30V32C2,15.5,15.5,2,32,2h192c16.5,0,30,13.5,30,30v192
+	C254,240.5,240.5,254,224,254z"/>
+<g>
+	<g>
+		<path class="st1" d="M209.5,92.3h-20.5c-0.7,15.2-2.2,13.5-9.2,18.4h13.4l10.8,89.8H51l10.6-89.8H75c-6.3-3.9-9.3-5.4-8.8-18.4
+			H45.2L30.1,218.8H225L209.5,92.3z"/>
+	</g>
+	<g>
+		<path class="st1" d="M127.7,46.6c17.8,0,32.5,14.5,32.5,32.5c0,6.5,0,12.3-0.2,14.9c-0.2,0.2-0.6,0.6-1,1
+			c-5.5,5.3-14.9,14.5-31.3,41.7c-16.4-27.2-25.8-36.2-31.3-41.7c-0.4-0.4-0.6-0.6-1-1c-0.2-2.7-0.2-8.4-0.2-14.9
+			C95.1,61.2,109.7,46.6,127.7,46.6 M127.7,30.5C100.9,30.5,79,52.2,79,79c0,42.7,0,0,48.7,90.2c48.5-90.2,48.5-47.2,48.5-90.2
+			C176.1,52.2,154.4,30.5,127.7,30.5L127.7,30.5z"/>
+	</g>
+	<circle class="st1" cx="127.7" cy="79" r="19.2"/>
+	<rect x="52.4" y="165.3" class="st1" width="48.1" height="20.4"/>
+	<rect x="155.3" y="165.3" class="st1" width="50.1" height="20.4"/>
+	<rect x="48.9" y="125.6" class="st1" width="30.3" height="20.4"/>
+	<rect x="175.7" y="125.6" class="st1" width="30.3" height="20.4"/>
+</g>
+</svg>
