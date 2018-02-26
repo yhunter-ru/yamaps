@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      yhunter
- * Version:     0.2.1
+ * Version:     0.2.2
  *
  *
  * License:     GPL2
@@ -91,6 +91,8 @@ function yamap_func($atts, $content){
                     ';
 	}
 	
+	$placemarkscode=str_replace("&nbsp;", "", strip_tags($content));
+
     $yamap.='
 
 						<script type="text/javascript">
@@ -104,7 +106,7 @@ function yamap_func($atts, $content){
                                     controls: ['.$yamactrl.'] 
                                 });   
 
-							'.do_shortcode($content);
+							'.do_shortcode($placemarkscode);
 
 
 							
@@ -140,7 +142,6 @@ function yamap_plugin_scripts($plugin_array)
 
 // Plugin localisation
 
-add_filter('mce_external_languages', 'yamap_plugin_scripts_add_locale');
 add_filter("mce_external_plugins", "yamap_plugin_scripts");
 
 function register_buttons_editor($buttons)

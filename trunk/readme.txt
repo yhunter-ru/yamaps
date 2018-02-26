@@ -80,6 +80,9 @@ https://www.yhunter.ru/portfolio/dev/yamaps/
 
 == Changelog ==
 
+= 0.2.2 =
+* Fixed: Strip html tags inside shortcode
+
 = 0.2.1 =
 * Fixed: Plugin info
 
