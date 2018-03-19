@@ -5,12 +5,13 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      yhunter
- * Version:     0.2.2
+ * Version:     0.3.0
  *
  *
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: yamaps
+ * Domain Path: /languages/
  *
  */
 
@@ -73,7 +74,8 @@ function yamap_func($atts, $content){
 		'zoom' => '12',
 		'type' => 'map',
 		'height' => '20rem',
-		'controls' => ''
+		'controls' => '',
+		'scrollzoom' => '1',
 
 	), $atts );
 	global $yaplacemark_count;
@@ -115,6 +117,7 @@ function yamap_func($atts, $content){
 								$placearr.='add(placemark'.$i.')';
 							}
                             $yamap.='myMap'.$maps_count.'.geoObjects.'.$placearr.';';
+                            if ($atts["scrollzoom"]=="0") $yamap.="myMap".$maps_count.".behaviors.disable('scrollZoom');";
                             $yamap.='
 
                         }
@@ -131,16 +134,64 @@ add_shortcode( 'yamap', 'yamap_func' );
 add_shortcode( 'yacontrol', 'yacontrol_func' ); 
 
 
+function yamaps_plugin_load_plugin_textdomain() {
+    load_plugin_textdomain( 'yamaps', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'plugins_loaded', 'yamaps_plugin_load_plugin_textdomain' );
+
+
 // Add map button
 
 function yamap_plugin_scripts($plugin_array)
 {
-    //enqueue TinyMCE plugin script with its ID.
-    $plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js";
+    
+    // Plugin localization
+
+	wp_register_script('yamap_plugin', plugin_dir_url(__FILE__) . 'js/localization.js');
+	wp_enqueue_script('yamap_plugin');
+	
+	$lang_array	 = array('YaMap' => __('Map', 'yamaps'),
+							'AddMap' => __('Add map', 'yamaps'),
+							'MarkerTab' => __('Placemark', 'yamaps'),
+							'MapTab' => __('Map', 'yamaps'),
+							'MarkerIcon' => __('Icon', 'yamaps'),
+							'BlueOnly' => __('Blue only', 'yamaps'),
+							'MarkerUrl' => __('Link', 'yamaps'),
+							'MarkerUrlTip' => __('Placemark hyperlink url', 'yamaps'),
+							'MapHeight' => __('Map height', 'yamaps'),
+							'MarkerName' => __('Placemark name', 'yamaps'),
+							'MarkerNameTip' => __('Text for hint or icon content', 'yamaps'),
+							'MapControlsTip' => __('Use the links below', 'yamaps'),		
+							'MarkerCoord' => __('Сoordinates', 'yamaps'),
+							'MapControls' => __('Map controls', 'yamaps'),
+							'type' => __('Map type', 'yamaps'),
+							'zoom' => __('Zoom', 'yamaps'),
+							'ScrollZoom' => __('Wheel zoom', 'yamaps'),
+							'search' => __('Search', 'yamaps'),
+							'route' => __('Route', 'yamaps'),
+							'ruler' => __('Ruler', 'yamaps'),
+							'traffic' => __('Traffic', 'yamaps'),
+							'fullscreen' => __('Full screen', 'yamaps'),
+							'geolocation' => __('Geolocation', 'yamaps'),
+							'MarkerColor' => __('Marker color', 'yamaps'));
+
+
+
+	
+	wp_localize_script('yamap_plugin', 'yamap_object', $lang_array); 
+	
+
+	//enqueue TinyMCE plugin script with its ID.
+
+	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js";
+
     return $plugin_array;
+
 }
 
-// Plugin localisation
+
+
+
 
 add_filter("mce_external_plugins", "yamap_plugin_scripts");
 

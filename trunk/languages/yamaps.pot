@@ -1,0 +1,127 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: YaMaps for Wordpress\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-17 13:43+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: yamap.php:147
+msgid "Add map"
+msgstr ""
+
+#: yamap.php:151
+msgid "Blue only"
+msgstr ""
+
+#: yamap.php:167
+msgid "Full screen"
+msgstr ""
+
+#: yamap.php:168
+msgid "Geolocation"
+msgstr ""
+
+#: yamap.php:150
+msgid "Icon"
+msgstr ""
+
+#: yamap.php:152
+msgid "Link"
+msgstr ""
+
+#: yamap.php:146 yamap.php:149
+msgid "Map"
+msgstr ""
+
+#: yamap.php:159
+msgid "Map controls"
+msgstr ""
+
+#: yamap.php:154
+msgid "Map height"
+msgstr ""
+
+#: yamap.php:160
+msgid "Map type"
+msgstr ""
+
+#: yamap.php:169
+msgid "Marker color"
+msgstr ""
+
+#: yamap.php:148
+msgid "Placemark"
+msgstr ""
+
+#: yamap.php:153
+msgid "Placemark hyperlink url"
+msgstr ""
+
+#: yamap.php:155
+msgid "Placemark name"
+msgstr ""
+
+#: yamap.php:164
+msgid "Route"
+msgstr ""
+
+#: yamap.php:165
+msgid "Ruler"
+msgstr ""
+
+#: yamap.php:163
+msgid "Search"
+msgstr ""
+
+#: yamap.php:156
+msgid "Text for hint or icon content"
+msgstr ""
+
+#: yamap.php:166
+msgid "Traffic"
+msgstr ""
+
+#: yamap.php:157
+msgid "Use the links below"
+msgstr ""
+
+#: yamap.php:162
+msgid "Wheel zoom"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "www.yhunter.ru"
+msgstr ""
+
+#. URI of the plugin
+msgid "www.yhunter.ru/portfolio/dev/yamaps/"
+msgstr ""
+
+#. Name of the plugin
+msgid "YaMaps for Wordpress"
+msgstr ""
+
+#. Description of the plugin
+msgid "Yandex Map integration"
+msgstr ""
+
+#. Author of the plugin
+msgid "yhunter"
+msgstr ""
+
+#: yamap.php:161
+msgid "Zoom"
+msgstr ""
+
+#: yamap.php:158
+msgid "Сoordinates"
+msgstr ""

@@ -1,15 +1,15 @@
 ﻿=== YaMaps for WordPress Plugin ===
 Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
-Tags: coordinates, maps, yandex, geolocation, placemark, location
+Tags: yandex, яндекс, карты, coordinates, maps, placemark
 Requires at least: 4.2
-Tested up to: 4.9.3
+Tested up to: 4.9.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: yamaps
 
-The plugin allows you to add Yandex Maps to pages of your site using a WordPress visual editor.
+The plugin allows you to add Yandex Maps (Яндекс Карты) to pages of your site using a WordPress visual editor.
 
 == Description ==
 
@@ -30,6 +30,7 @@ YaMaps plugin is the simplest way to insert Yandex maps on your site.
 * yamap center - Map center coordinates
 * yamap height - Map height
 * yamap zoom - Map zoom (0 to 19)
+* yamap scrollzoom - Scrollwheel zoom lock (scrollzoom="0" for lock)
 * yamap type - Map type (yandex#map, yandex#satellite, yandex#hybrid)
 * yamap controls - Map controls separated by a semicolon (typeSelector;zoomControl;searchControl;routeEditor;trafficControl;fullscreenControl;geolocationControl)
 
@@ -53,11 +54,16 @@ YaMaps plugin is the simplest way to insert Yandex maps on your site.
 
 = Do I need a Yandex Map API key for using YaMaps? =
 
-No, I don't need it.
+No, You don't need it.
 
 = How to choose the type and zoom of the map? =
 
 Just set type and zoom of the map in the visual editor window. On the site it will be displayed identically.
+
+= How to insert a map into my template as PHP code? =
+
+Use the tag "do_shortcode" with your map shortcode insde. Example:
+<?php echo do_shortcode('[yamap center="55.7532,37.6225" height="15rem" zoom="12" type="yandex#map" controls="typeSelector;zoomControl"][yaplacemark coord="55.7532,37.6225" icon="islands#blueRailwayIcon" color="#ff751f" name="Placemark"][/yamap]'); ?>
 
 = How to set an icon that is not in the drop-down list? =
 
@@ -79,6 +85,15 @@ https://www.yhunter.ru/portfolio/dev/yamaps/
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.3.0 =
+* Fixed: The way of localization of the plugin is changed. According to the WordPress documentation.
+
+= 0.2.4 =
+* New: Added scrollwheel zoom lock
+
+= 0.2.3 =
+* Fixed: Adding url tag from a visual editor
 
 = 0.2.2 =
 * Fixed: Strip html tags inside shortcode

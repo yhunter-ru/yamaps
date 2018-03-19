@@ -64,14 +64,14 @@ var coords, mapzoom, centermap, maptype, markicon;
 
             //add new button    
             ed.addButton("yamap", {
-                title : "YaMap",
+                title : yamap_object.YaMap,
                 //cmd : "yamap_command",
                 type: 'menubutton',
                 plugins: 'colorpicker',
                 image : url+ "/img/placeholder.svg",
                 menu: [
                 {
-                    text: 'AddMap',
+                    text: yamap_object.AddMap,
                     value: 'mapadd',
                     onclick: function() {
                         ed.execCommand("yamap_command");
@@ -104,7 +104,7 @@ var coords, mapzoom, centermap, maptype, markicon;
                                 hintContent: "name",
                               
                             }, {
-                                preset: "islands#blueCircleIcon",
+                                preset: "islands#blueDotIcon",
                                 draggable: true
                             });  
 
@@ -198,7 +198,7 @@ var coords, mapzoom, centermap, maptype, markicon;
 
                     ed.windowManager.open( {
                         
-                        title: 'AddMap',
+                        title: yamap_object.AddMap,
                         width : 700,
                         height : 560,  
 
@@ -218,7 +218,7 @@ var coords, mapzoom, centermap, maptype, markicon;
                         items: [
                                 {
                                     type: 'panel',
-                                    title: 'MarkerTab',
+                                    title: yamap_object.MarkerTab,
                                     items: [
                                         {
                                            type: 'form',
@@ -228,9 +228,9 @@ var coords, mapzoom, centermap, maptype, markicon;
                                                  {
                                                             type: 'textbox',
                                                             name: 'name',
-                                                            label: 'MarkerName',
+                                                            label: yamap_object.MarkerName,
                                                             id: "markername",
-                                                            tooltip: "MarkerNameTip",
+                                                            tooltip: yamap_object.MarkerNameTip,
                                                             
                                                             
 
@@ -239,7 +239,7 @@ var coords, mapzoom, centermap, maptype, markicon;
                                                  {
                                                             type: 'textbox',
                                                             name: 'coord',
-                                                            label: 'MarkerCoord',
+                                                            label: yamap_object.MarkerCoord,
                                                             id: 'markercoord',
 
                                                 },
@@ -249,8 +249,8 @@ var coords, mapzoom, centermap, maptype, markicon;
                                                 {
                                                             type   : 'combobox',
                                                             name   : 'markertype',
-                                                            label: 'MarkerIcon',
-                                                            value: "islands#blueCircleIcon",
+                                                            label: yamap_object.MarkerIcon,
+                                                            value: "islands#blueDotIcon",
                                                             id: "markericon",
                                                             onselect: function() {
                                                                 
@@ -261,7 +261,7 @@ var coords, mapzoom, centermap, maptype, markicon;
                                                             values : [
                                                                 { text: 'islands#blueDotIcon', value: 'islands#blueDotIcon' },
                                                                 { text: 'islands#blueIcon', value: 'islands#blueIcon' },
-                                                                { text: 'islands#blueStretchyIcon ('+tinymce.util.I18n.translate("BlueOnly")+')', value: 'islands#blueStretchyIcon' },
+                                                                { text: 'islands#blueStretchyIcon ('+yamap_object.BlueOnly+')', value: 'islands#blueStretchyIcon' },
                                                                 { text: 'islands#blueCircleDotIcon', value: 'islands#blueCircleDotIcon' },
                                                                 { text: 'islands#blueCircleIcon', value: 'islands#blueCircleIcon' }
                                                             ],
@@ -270,7 +270,7 @@ var coords, mapzoom, centermap, maptype, markicon;
                                                         {
                                                             type   : 'colorbox',  // colorpicker plugin MUST be included for this to work
                                                             name   : 'color',
-                                                            label  : 'MarkerColor',
+                                                            label  : yamap_object.MarkerColor,
                                                             value : '#1e98ff',
                                                             id: 'colorbox',
                                                             onaction: createColorPickAction(),
@@ -280,9 +280,9 @@ var coords, mapzoom, centermap, maptype, markicon;
                                                  {
                                                     type: 'textbox',
                                                     name: 'url',
-                                                    label: 'MarkerUrl',
+                                                    label: yamap_object.MarkerUrl,
                                                     id: 'markerurl',
-                                                    tooltip: "MarkerUrlTip",
+                                                    tooltip: yamap_object.MarkerUrlTip,
 
                                                 },
                                                 {
@@ -302,7 +302,7 @@ var coords, mapzoom, centermap, maptype, markicon;
                                 },
                                 {
                                     type: 'panel',
-                                    title: 'MapTab',
+                                    title: yamap_object.MapTab,
                                     items: [
                                         {
                                             type: 'form',
@@ -312,7 +312,7 @@ var coords, mapzoom, centermap, maptype, markicon;
                                                 {
                                                     type: 'textbox',
                                                     name: 'mapheight',
-                                                    label: 'MapHeight',
+                                                    label: yamap_object.MapHeight,
                                                     id: 'mapheight',
                                                     value: '15rem',                                 
                                                     maxLength: '10',
@@ -322,16 +322,24 @@ var coords, mapzoom, centermap, maptype, markicon;
                                                 {
                                                 type: 'textbox',
                                                 name: 'controls',
-                                                label: 'MapControls',
+                                                label: yamap_object.MapControls,
                                                 id: 'mapcontrols',
-                                                tooltip: "MapControlsTip",
+                                                tooltip: yamap_object.MapControlsTip,
                                                 },
                                                 {
                                                 type   : 'container',
                                                 name   : 'addcontrol',                        
                                                 minWidth : 598,   
-                                                html   : '<div id="addcontrol" style="text-align: right;"><a data-control="typeSelector">'+tinymce.util.I18n.translate("type")+'</a>, <a data-control="zoomControl">'+tinymce.util.I18n.translate("zoom")+'</a>, <a data-control="searchControl">'+tinymce.util.I18n.translate("search")+'</a>, <a data-control="routeEditor">'+tinymce.util.I18n.translate("route")+'</a>, <a data-control="rulerControl">'+tinymce.util.I18n.translate("ruler")+'</a>, <a data-control="trafficControl">'+tinymce.util.I18n.translate("traffic")+'</a>, <a data-control="fullscreenControl">'+tinymce.util.I18n.translate("fullscreen")+'</a>, <a data-control="geolocationControl">'+tinymce.util.I18n.translate("geolocation")+'</a></div>'
-                                                }
+                                                html   : '<div id="addcontrol" style="text-align: right;"><a data-control="typeSelector">'+yamap_object.type+'</a>, <a data-control="zoomControl">'+yamap_object.zoom+'</a>, <a data-control="searchControl">'+yamap_object.search+'</a>, <a data-control="routeEditor">'+yamap_object.route+'</a>, <a data-control="rulerControl">'+yamap_object.ruler+'</a>, <a data-control="trafficControl">'+yamap_object.traffic+'</a>, <a data-control="fullscreenControl">'+yamap_object.fullscreen+'</a>, <a data-control="geolocationControl">'+yamap_object.geolocation+'</a></div>'
+                                                },
+                                                {
+                                                type: 'checkbox',
+                                                checked: true,
+                                                name: 'scrollZoom',
+                                                label: yamap_object.ScrollZoom,
+                                                id: 'scrollzoom',
+
+                                                },
                                                 ]
                                         },
 
@@ -354,8 +362,15 @@ var coords, mapzoom, centermap, maptype, markicon;
 
                         ],
                         onsubmit: function( e ) {
+                             if(e.data.scrollZoom === false) {
+                                scrollzoom=' scrollzoom="0"';
+                                
+                             } 
+                             else {
+                                scrollzoom='';
+                             } 
 
-                            ed.insertContent( '&#91;yamap center="' + centermap + '" height="' + e.data.mapheight + '" zoom="' + mapzoom + '" type="' + maptype + '" controls="' + e.data.controls + '"&#93;&#91;yaplacemark coord="' + e.data.coord + '" icon="'+ markicon +'" color="' + e.data.color + '" name="' + e.data.name + '"&#93;&#91;/yamap&#93;');
+                            ed.insertContent( '&#91;yamap center="' + centermap + '" height="' + e.data.mapheight + '" zoom="' + mapzoom + '"' + scrollzoom + ' type="' + maptype + '" controls="' + e.data.controls + '"&#93;&#91;yaplacemark coord="' + e.data.coord + '" icon="'+ markicon +'" color="' + e.data.color + '" url="' + e.data.url + '" name="' + e.data.name + '"&#93;&#91;/yamap&#93;');
                         }
 
 
@@ -380,5 +395,9 @@ var coords, mapzoom, centermap, maptype, markicon;
     });
     
     tinymce.PluginManager.add("yamap_plugin", tinymce.plugins.yamap_plugin);
+
+	
+
+	
     
 })();
