@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      yhunter
- * Version:     0.3.0
+ * Version:     0.3.1
  *
  *
  * License:     GPL2
@@ -69,6 +69,7 @@ function yaplacemark_func($atts) {
 }
 
 function yamap_func($atts, $content){
+	$placearr = '';
 	$atts = shortcode_atts( array(
 		'center' => '55.7532,37.6225',
 		'zoom' => '12',

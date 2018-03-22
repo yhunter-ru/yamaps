@@ -62,8 +62,7 @@ Just set type and zoom of the map in the visual editor window. On the site it wi
 
 = How to insert a map into my template as PHP code? =
 
-Use the tag "do_shortcode" with your map shortcode insde. Example:
-<?php echo do_shortcode('[yamap center="55.7532,37.6225" height="15rem" zoom="12" type="yandex#map" controls="typeSelector;zoomControl"][yaplacemark coord="55.7532,37.6225" icon="islands#blueRailwayIcon" color="#ff751f" name="Placemark"][/yamap]'); ?>
+Use the tag "do_shortcode" with your map shortcode insde.
 
 = How to set an icon that is not in the drop-down list? =
 
@@ -76,6 +75,9 @@ This is the limitation of Yandex.Map API. You can select a stretchy icon of the 
 = Russian description =
 https://www.yhunter.ru/portfolio/dev/yamaps/
 
+= GitHub Progect =
+https://github.com/yhunter-ru/yamaps
+
  == Screenshots == 
 
 1. Visual shortcode dialog window.
@@ -85,6 +87,9 @@ https://www.yhunter.ru/portfolio/dev/yamaps/
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.3.1 =
+* Fixed: Bugfix.
 
 = 0.3.0 =
 * Fixed: The way of localization of the plugin is changed. According to the WordPress documentation.
