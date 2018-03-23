@@ -75,7 +75,7 @@ This is the limitation of Yandex.Map API. You can select a stretchy icon of the 
 = Russian description =
 https://www.yhunter.ru/portfolio/dev/yamaps/
 
-= GitHub Progect =
+= GitHub Project =
 https://github.com/yhunter-ru/yamaps
 
  == Screenshots == 
