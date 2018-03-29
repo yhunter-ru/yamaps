@@ -93,6 +93,9 @@ function yamap_func($atts, $content){
 		$yamap='<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>
                     ';
 	}
+	else {
+		$yamap='';
+	}
 	
 	$placemarkscode=str_replace("&nbsp;", "", strip_tags($content));
 
