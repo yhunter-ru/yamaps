@@ -62,7 +62,7 @@ Just set type and zoom of the map in the visual editor window. On the site it wi
 
 = How to insert a map into my template as PHP code? =
 
-Use the tag "do_shortcode" with your map shortcode insde.
+Use the tag "echo do_shortcode('')" with your map shortcode insde.
 
 = How to set an icon that is not in the drop-down list? =
 
@@ -87,6 +87,9 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.3.2 =
+* Fixed: Bugfix.
 
 = 0.3.1 =
 * Fixed: Bugfix.
