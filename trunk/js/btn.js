@@ -114,16 +114,11 @@ var coords, mapzoom, centermap, maptype, markicon;
 
                         //Отслеживаем событие перемещения метки
                         placemark.events.add("dragend", function (e) {            
-                        coords = this.geometry.getCoordinates();
-
-                        savecoordinats();
+                            coords = this.geometry.getCoordinates(); 
+                            savecoordinats();
                         }, placemark);
 
-                        //Отслеживаем событие щелчка по карте
-                        myMap.events.add('click', function (e) {        
-                        coords = e.get('coordPosition');                        
-                        savecoordinats();
-                        }); 
+
 
                         
                         //Отслеживаем событие поиска и перемещаем метку в центр
