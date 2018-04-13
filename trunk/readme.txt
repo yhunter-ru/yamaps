@@ -88,6 +88,9 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.3.4 =
+* New: Added map support in WooСommerce product description.
+
 = 0.3.3 =
 * Fixed: Bugfix. 
 

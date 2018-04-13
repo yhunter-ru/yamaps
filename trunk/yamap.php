@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      yhunter
- * Version:     0.3.3
+ * Version:     0.3.4
  *
  *
  * License:     GPL2
@@ -16,6 +16,16 @@
  */
 
 $maps_count=0;
+
+// Test for the first time content and single map (WooCommerce and other custom posts)
+$count_content=0;
+
+add_filter( 'the_content', 'tutsplus_the_content' ); 
+function tutsplus_the_content( $content ) {
+	global $count_content;
+	$count_content++;
+    return $content;
+}
 
 
 function yaplacemark_func($atts) {
@@ -82,6 +92,7 @@ function yamap_func($atts, $content){
 	global $yaplacemark_count;
 	global $yacontrol_count;
 	global $maps_count;
+	global $count_content;
 	$yaplacemark_count=0;
 	$yacontrol_count=0;
 
@@ -89,7 +100,7 @@ function yamap_func($atts, $content){
 
 	if (trim($yamactrl)<>"") $yamactrl='"'.$yamactrl.'"';
 
-	if ($maps_count==0) {
+	if ($maps_count==0) { // Test for first time content and single map
 		$yamap='<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>
                     ';
 	}
@@ -129,13 +140,17 @@ function yamap_func($atts, $content){
                     <div class="mist" id="yamap'.$maps_count.'"  style="position: relative; min-height: '.$atts["height"].'; margin-bottom: 1rem;"></div>
     ';
 
-    $maps_count++;
+    if ($count_content>=1) $maps_count++;
     return $yamap; 
 }
 
 add_shortcode( 'yaplacemark', 'yaplacemark_func' );  
 add_shortcode( 'yamap', 'yamap_func' ); 
 add_shortcode( 'yacontrol', 'yacontrol_func' ); 
+
+
+
+
 
 
 function yamaps_plugin_load_plugin_textdomain() {
