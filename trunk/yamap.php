@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      yhunter
- * Version:     0.3.4
+ * Version:     0.4.0
  *
  *
  * License:     GPL2
@@ -43,14 +43,22 @@ function yaplacemark_func($atts) {
 	$yaicon=trim($atts["icon"]);
 
 
-	if (($yaicon==="islands#blueStretchyIcon")or($yaicon==="islands#blueIcon")or($yaicon==="islands#blueCircleIcon")) {
+	if (strstr($yaicon, "Stretchy")<>FALSE) {
 		$yahint="";
 		$yacontent=$atts["name"];
-	}
+		}
 	else {
-		$yahint=$atts["name"];
-		$yacontent="";
+			if (($yaicon==="islands#blueIcon")or($yaicon==="islands#blueCircleIcon")) {
+				$yahint=$atts["name"];
+				$yacontent=mb_substr($yahint, 0, 1);
+			}
+			else {
+				$yahint=$atts["name"];
+				$yacontent="";
+			}
 	}
+	
+	
 
 	$yaplacemark='
 		placemark'.$yaplacemark_count.' = new ymaps.Placemark(['.$atts["coord"].'], {
@@ -128,10 +136,10 @@ function yamap_func($atts, $content){
 
 							
 							for ($i = 1; $i <= $yaplacemark_count; $i++) {
-								if ($i>1) $placearr.='.';
-								$placearr.='add(placemark'.$i.')';
+								//if ($i>1) $placearr.='.';
+								$placearr.='.add(placemark'.$i.')';
 							}
-                            $yamap.='myMap'.$maps_count.'.geoObjects.'.$placearr.';';
+                            $yamap.='myMap'.$maps_count.'.geoObjects'.$placearr.';';
                             if ($atts["scrollzoom"]=="0") $yamap.="myMap".$maps_count.".behaviors.disable('scrollZoom');";
                             $yamap.='
 
@@ -182,7 +190,9 @@ function yamap_plugin_scripts($plugin_array)
 							'MarkerNameTip' => __('Text for hint or icon content', 'yamaps'),
 							'MapControlsTip' => __('Use the links below', 'yamaps'),		
 							'MarkerCoord' => __('Сoordinates', 'yamaps'),
+							'NoCoord' => __('Click on the map to set the mark', 'yamaps'),
 							'MapControls' => __('Map controls', 'yamaps'),
+							'MarkerDelete' => __('Delete', 'yamaps'),
 							'type' => __('Map type', 'yamaps'),
 							'zoom' => __('Zoom', 'yamaps'),
 							'ScrollZoom' => __('Wheel zoom', 'yamaps'),
@@ -207,7 +217,6 @@ function yamap_plugin_scripts($plugin_array)
     return $plugin_array;
 
 }
-
 
 
 

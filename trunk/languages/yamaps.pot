@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaMaps for Wordpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-17 13:43+0000\n"
+"POT-Creation-Date: 2018-07-12 08:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,96 +14,104 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: yamap.php:147
-msgid "Add map"
-msgstr ""
-
-#: yamap.php:151
-msgid "Blue only"
-msgstr ""
-
-#: yamap.php:167
-msgid "Full screen"
-msgstr ""
-
-#: yamap.php:168
-msgid "Geolocation"
-msgstr ""
-
-#: yamap.php:150
-msgid "Icon"
-msgstr ""
-
-#: yamap.php:152
-msgid "Link"
-msgstr ""
-
-#: yamap.php:146 yamap.php:149
+#: yamap.php:180 yamap.php:183
 msgid "Map"
 msgstr ""
 
-#: yamap.php:159
-msgid "Map controls"
+#: yamap.php:181
+msgid "Add map"
 msgstr ""
 
-#: yamap.php:154
-msgid "Map height"
-msgstr ""
-
-#: yamap.php:160
-msgid "Map type"
-msgstr ""
-
-#: yamap.php:169
-msgid "Marker color"
-msgstr ""
-
-#: yamap.php:148
+#: yamap.php:182
 msgid "Placemark"
 msgstr ""
 
-#: yamap.php:153
+#: yamap.php:184
+msgid "Icon"
+msgstr ""
+
+#: yamap.php:185
+msgid "Blue only"
+msgstr ""
+
+#: yamap.php:186
+msgid "Link"
+msgstr ""
+
+#: yamap.php:187
 msgid "Placemark hyperlink url"
 msgstr ""
 
-#: yamap.php:155
+#: yamap.php:188
+msgid "Map height"
+msgstr ""
+
+#: yamap.php:189
 msgid "Placemark name"
 msgstr ""
 
-#: yamap.php:164
-msgid "Route"
-msgstr ""
-
-#: yamap.php:165
-msgid "Ruler"
-msgstr ""
-
-#: yamap.php:163
-msgid "Search"
-msgstr ""
-
-#: yamap.php:156
+#: yamap.php:190
 msgid "Text for hint or icon content"
 msgstr ""
 
-#: yamap.php:166
-msgid "Traffic"
-msgstr ""
-
-#: yamap.php:157
+#: yamap.php:191
 msgid "Use the links below"
 msgstr ""
 
-#: yamap.php:162
+#: yamap.php:192
+msgid "Сoordinates"
+msgstr ""
+
+#: yamap.php:193
+msgid "Click on the map to set the mark"
+msgstr ""
+
+#: yamap.php:194
+msgid "Map controls"
+msgstr ""
+
+#: yamap.php:195
+msgid "Delete"
+msgstr ""
+
+#: yamap.php:196
+msgid "Map type"
+msgstr ""
+
+#: yamap.php:197
+msgid "Zoom"
+msgstr ""
+
+#: yamap.php:198
 msgid "Wheel zoom"
 msgstr ""
 
-#. Author URI of the plugin
-msgid "www.yhunter.ru"
+#: yamap.php:199
+msgid "Search"
 msgstr ""
 
-#. URI of the plugin
-msgid "www.yhunter.ru/portfolio/dev/yamaps/"
+#: yamap.php:200
+msgid "Route"
+msgstr ""
+
+#: yamap.php:201
+msgid "Ruler"
+msgstr ""
+
+#: yamap.php:202
+msgid "Traffic"
+msgstr ""
+
+#: yamap.php:203
+msgid "Full screen"
+msgstr ""
+
+#: yamap.php:204
+msgid "Geolocation"
+msgstr ""
+
+#: yamap.php:205
+msgid "Marker color"
 msgstr ""
 
 #. Name of the plugin
@@ -114,14 +122,14 @@ msgstr ""
 msgid "Yandex Map integration"
 msgstr ""
 
+#. URI of the plugin
+msgid "www.yhunter.ru/portfolio/dev/yamaps/"
+msgstr ""
+
 #. Author of the plugin
 msgid "yhunter"
 msgstr ""
 
-#: yamap.php:161
-msgid "Zoom"
-msgstr ""
-
-#: yamap.php:158
-msgid "Сoordinates"
+#. Author URI of the plugin
+msgid "www.yhunter.ru"
 msgstr ""

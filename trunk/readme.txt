@@ -3,7 +3,7 @@ Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
 Tags: yandex, яндекс, карты, coordinates, maps, placemark
 Requires at least: 4.2
-Tested up to: 4.9.5
+Tested up to: 4.9.7
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -87,6 +87,10 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.4.0 =
+* New: Adding multiple placemarks in the visual editor
+* Change: "routeEditor" map control replaced with "routeButtonControl" for a better experience. 
 
 = 0.3.4 =
 * New: Added map support in WooСommerce product description.
