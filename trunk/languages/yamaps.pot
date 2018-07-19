@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaMaps for Wordpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-12 08:55+0000\n"
+"POT-Creation-Date: 2018-07-18 11:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,104 +14,145 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: yamap.php:180 yamap.php:183
+#: yamap.php:204 yamap.php:207
 msgid "Map"
 msgstr ""
 
-#: yamap.php:181
+#: yamap.php:205
 msgid "Add map"
 msgstr ""
 
-#: yamap.php:182
+#: yamap.php:206
 msgid "Placemark"
 msgstr ""
 
-#: yamap.php:184
+#: yamap.php:208
 msgid "Icon"
 msgstr ""
 
-#: yamap.php:185
+#: yamap.php:209
 msgid "Blue only"
 msgstr ""
 
-#: yamap.php:186
+#: yamap.php:210
 msgid "Link"
 msgstr ""
 
-#: yamap.php:187
-msgid "Placemark hyperlink url"
+#: yamap.php:211
+msgid "Placemark hyperlink url or post ID"
 msgstr ""
 
-#: yamap.php:188
+#: yamap.php:212
 msgid "Map height"
 msgstr ""
 
-#: yamap.php:189
+#: yamap.php:213
 msgid "Placemark name"
 msgstr ""
 
-#: yamap.php:190
+#: yamap.php:214
 msgid "Text for hint or icon content"
 msgstr ""
 
-#: yamap.php:191
+#: yamap.php:215
 msgid "Use the links below"
 msgstr ""
 
-#: yamap.php:192
+#: yamap.php:216
 msgid "Сoordinates"
 msgstr ""
 
-#: yamap.php:193
+#: yamap.php:217
 msgid "Click on the map to set the mark"
 msgstr ""
 
-#: yamap.php:194
+#: yamap.php:218
 msgid "Map controls"
 msgstr ""
 
-#: yamap.php:195
+#: yamap.php:219
 msgid "Delete"
 msgstr ""
 
-#: yamap.php:196
+#: yamap.php:220
 msgid "Map type"
 msgstr ""
 
-#: yamap.php:197
+#: yamap.php:221
 msgid "Zoom"
 msgstr ""
 
-#: yamap.php:198
+#: yamap.php:222
 msgid "Wheel zoom"
 msgstr ""
 
-#: yamap.php:199
+#: yamap.php:223
 msgid "Search"
 msgstr ""
 
-#: yamap.php:200
+#: yamap.php:224
 msgid "Route"
 msgstr ""
 
-#: yamap.php:201
+#: yamap.php:225
 msgid "Ruler"
 msgstr ""
 
-#: yamap.php:202
+#: yamap.php:226
 msgid "Traffic"
 msgstr ""
 
-#: yamap.php:203
+#: yamap.php:227
 msgid "Full screen"
 msgstr ""
 
-#: yamap.php:204
+#: yamap.php:228
 msgid "Geolocation"
 msgstr ""
 
-#: yamap.php:205
+#: yamap.php:229
 msgid "Marker color"
+msgstr ""
+
+#: yamap.php:230
+msgid "Put in ID"
+msgstr ""
+
+#: yamap.php:231
+msgid ""
+"Do not create a block in the content. Use the existing block of the WP theme "
+"with the specified ID"
+msgstr ""
+
+#: yamap.php:232
+msgid "Extra"
+msgstr ""
+
+#: yamap.php:233
+msgid ""
+"<div style=\"position: relative; display: block; width: 100%; white-space: "
+"normal !important;\"><h2 style=\"color: #444;font-size: 18px;font-weight: "
+"600;line-height: 36px;\">Want other icon types?</h2>Additional types of "
+"icons can be found by the link in the <a href=\"https://tech.yandex."
+"com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ \" "
+"style=\"white-space: normal\">Yandex.Map documentation</a>.</div><div "
+"style=\"position: relative; display: block; width: 100%; white-space: normal "
+"!important;\"><h2 style=\"color: #444;font-size: 18px;font-weight: 600;line-"
+"height: 36px;\">Do you like YaMaps plugin?</h2>You can support its "
+"development by donate (<a href=\"https://money.yandex.ru/to/41001278340150\" "
+"style=\"white-space: normal\">Yandex</a>, <a href=\"https://www.paypal."
+"me/yhunter\" style=\"white-space: normal\">PayPal</a>) or just leave a "
+"positive feedback in the <a href=\"https://wordpress."
+"org/support/plugin/yamaps/reviews/\" style=\"white-space: normal\">plugin "
+"repository</a>. It's very motivating!</div><div style=\"position: relative; "
+"display: block; width: 100%; white-space: normal !important;\"><h2 "
+"style=\"color: #444;font-size: 18px;font-weight: 600;line-height: 36px;\">"
+"Any questions?</h2>Ask in the comments <a href=\"https://www.yhunter."
+"ru/portfolio/dev/yamaps/\" style=\"white-space: normal\">on the plug-in's "
+"page</a>, <a href=\"https://wordpress.org/support/plugin/yamaps\" "
+"style=\"white-space: normal\">WP support forum</a> or <a href=\"https:"
+"//github.com/yhunter-ru/yamaps/issues\" style=\"white-space: normal\">on "
+"GitHub</a>.</div>"
 msgstr ""
 
 #. Name of the plugin

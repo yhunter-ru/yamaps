@@ -1,4 +1,4 @@
-var script = document.createElement('script');
+ var script = document.createElement('script');
     script.src = "https://api-maps.yandex.ru/2.1/?lang="+tinymce.util.I18n.getCode();    
     script.setAttribute('type', 'text/javascript');
     document.getElementsByTagName('head')[0].appendChild(script);
@@ -69,7 +69,14 @@ var script = document.createElement('script');
             ym[mapselector].wheelzoom='scrollzoom="0"';
 
         }
-
+        
+        if ($("#mapcontainer").val()!==undefined) {
+        	if ($("#mapcontainer").val()!=="") {
+	            ym[mapselector].container='container="'+$("#mapcontainer").val()+'"';
+	            console.log($("#mapcontainer").val());
+        	}
+        }
+        
         ym[mapselector].zoom=mapzoom;
         ym[mapselector].center=[coordaprox(mapcenter)];
         ym[mapselector].maptype=maptype;       
@@ -178,12 +185,15 @@ var script = document.createElement('script');
         //url argument holds the absolute url of our plugin directory
         init : function(ed, url) {
 
+
+
             //add new button    
             ed.addButton("yamap", {
                 title : yamap_object.YaMap,
                 //cmd : "yamap_command",
                 type: 'menubutton',
                 plugins: 'colorpicker',
+
                 image : url+ "/img/placeholder.svg",
                 menu: [
                 {
@@ -423,7 +433,6 @@ var script = document.createElement('script');
                         width : 700,
                         height : 560, 
 
-
                         body: [
                          {
                         type   : 'container',
@@ -554,7 +563,7 @@ var script = document.createElement('script');
                                                 id     : 'ctrlhelper',                        
                                                 minWidth : 598,   
                                                 html   : '<div id="addcontrol" style="text-align: right;"><a data-control="typeSelector">'+yamap_object.type+'</a>, <a data-control="zoomControl">'+yamap_object.zoom+'</a>, <a data-control="searchControl">'+yamap_object.search+'</a>, <a data-control="routeButtonControl">'+yamap_object.route+'</a>, <a data-control="rulerControl">'+yamap_object.ruler+'</a>, <a data-control="trafficControl">'+yamap_object.traffic+'</a>, <a data-control="fullscreenControl">'+yamap_object.fullscreen+'</a>, <a data-control="geolocationControl">'+yamap_object.geolocation+'</a></div>'
-                                                },
+                                                },                                                
                                                 {
                                                     type: 'checkbox',
                                                     checked: true,
@@ -564,6 +573,43 @@ var script = document.createElement('script');
                                                     onaction: mapdatechange(),
 
                                                 },
+                                                {
+                                                    type: 'textbox',
+                                                    name: 'mapcontainer',
+                                                    label: yamap_object.MapContainerID,
+                                                    id: 'mapcontainer',
+                                                    value: '', 
+                                                    tooltip: yamap_object.MapContainerIDTip,
+                                                    onaction: mapdatechange(),
+                                                },
+                                                ]
+                                        },
+
+
+                                     
+
+
+                                    ]
+
+                                },
+                                {
+                                    type: 'panel',
+                                    title: yamap_object.Extra,
+                                    items: [
+                                        {
+                                            type: 'form',
+                                            name: 'form2',
+                                            minWidth : 598,
+
+                                            items: [
+                                                {
+                                                type   : 'container',
+                                                name   : 'addcontrol',
+                                                                       
+                                                minWidth : 598,   
+                                                html   : yamap_object.ExtraHTML,
+                                            },
+                                                
                                                 ]
                                         },
 
@@ -584,13 +630,7 @@ var script = document.createElement('script');
                             markchange();
                             var dialogArguments = ed.windowManager.getParams();
 
-                             if(e.data.scrollZoom === false) {
-                                scrollzoom=' scrollzoom="0"';
-                                
-                             } 
-                             else {
-                                scrollzoom='';
-                             } 
+                             
 
                             contentplacemarks = ''; 
                             yamapnumber='map1'; 
@@ -599,7 +639,7 @@ var script = document.createElement('script');
 
                             } 
                             
-                            ed.insertContent( '&#91;yamap center="' + ym[yamapnumber].center + '" height="' + ym[yamapnumber].height + '" zoom="' + ym[yamapnumber].zoom + '" ' + ym[yamapnumber].wheelzoom + ' type="' + ym[yamapnumber].maptype + '" controls="' + ym[yamapnumber].ctrl + '"&#93; '+contentplacemarks+' &#91;/yamap&#93;');
+                            ed.insertContent( '&#91;yamap center="' + ym[yamapnumber].center + '" height="' + ym[yamapnumber].height + '" zoom="' + ym[yamapnumber].zoom + '" ' + ym[yamapnumber].wheelzoom + ym[yamapnumber].container + ' type="' + ym[yamapnumber].maptype + '" controls="' + ym[yamapnumber].ctrl + '"&#93; '+contentplacemarks+' &#91;/yamap&#93;');
                         }
                     });
                 mapdatechange();

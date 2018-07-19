@@ -33,11 +33,13 @@ YaMaps plugin is the simplest way to insert Yandex maps on your site.
 * yamap scrollzoom - Scrollwheel zoom lock (scrollzoom="0" for lock)
 * yamap type - Map type (yandex#map, yandex#satellite, yandex#hybrid)
 * yamap controls - Map controls separated by a semicolon (typeSelector;zoomControl;searchControl;routeEditor;trafficControl;fullscreenControl;geolocationControl)
+* yamap container - ID of the existing block in the WP template. The map will be placed in the block with this ID. The new block in the content will not be created.
 
 * yaplacemark coord - Placemark coordinates
 * yaplacemark icon - Placemark icon
 * yaplacemark color - Marker color
 * yaplacemark name - Placemark hint or content
+* yaplacemark url - Linked URL or post with ID will be opened by click on the placemark
 
 * You can insert multiple placemark codes inside the maps's shortcode.
 
@@ -87,6 +89,11 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.4.1 =
+* New: "Extra" Panel tab added
+* New: Instead of the URL, you can put a post ID.
+* New: You can place the map in an existing block in the WordPress template. If filled, the map block in the content will not be created.
 
 = 0.4.0 =
 * New: Adding multiple placemarks in the visual editor
