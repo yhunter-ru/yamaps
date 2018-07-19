@@ -350,8 +350,6 @@
                                     type: "yandex#map",
                                     controls: ["zoomControl", "searchControl", "typeSelector"] 
                                 }); 
-                        
-                        //createplacemark(myMap[mapcount]);
 
                         //Отслеживаем событие щелчка по карте
                         myMap[mapcount].events.add('click', function (e) { 
@@ -359,12 +357,12 @@
                         }); 
 
 
-                        //Отслеживаем событие поиска и перемещаем метку в центр
-                        var searchControl = myMap[mapcount].controls.get('searchControl');
-                        searchControl.events.add("resultselect", function (e) {
+                        //Отслеживаем событие поиска и ставим метку в центр
+                        var searchControl = myMap[mapcount].controls.get('searchControl');                        
+                        searchControl.events.add("resultshow", function (e) {
                             coords = searchControl.getResultsArray()[0].geometry.getCoordinates();
                             searchControl.hideResult();
-                            createplacemark(myMap[mapcount], coords);                     
+                            createplacemark(myMap[mapcount], coords); 
                         });
 
 
