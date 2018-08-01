@@ -4,8 +4,8 @@
  * Description: Yandex Map integration
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
- * Author:      yhunter
- * Version:     0.4.1
+ * Author:      Yuri Baranov
+ * Version:     0.5.0
  *
  *
  * License:     GPL2
@@ -68,7 +68,7 @@ function yaplacemark_func($atts) {
 
                               
                             }, {
-                            	preset: "'.$atts["icon"].'", //https://tech.yandex.ru/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/
+                            	preset: "'.$atts["icon"].'", 
                             	iconColor: "'.$atts["color"].'"
                             });  
 	';
@@ -144,7 +144,7 @@ function yamap_func($atts, $content){
     $yamap.='
 
 						<script type="text/javascript">
-                        ymaps.ready(init);
+                        ymaps.ready(init); 
                  
                         function init () {
                             var myMap'.$maps_count.' = new ymaps.Map("'.$mapcontainter.'", {
@@ -159,7 +159,6 @@ function yamap_func($atts, $content){
 
 							
 							for ($i = 1; $i <= $yaplacemark_count; $i++) {
-								//if ($i>1) $placearr.='.';
 								$placearr.='.add(placemark'.$i.')';
 							}
                             $yamap.='myMap'.$maps_count.'.geoObjects'.$placearr.';';
@@ -203,6 +202,8 @@ function yamap_plugin_scripts($plugin_array)
 	
 	$lang_array	 = array('YaMap' => __('Map', 'yamaps'),
 							'AddMap' => __('Add map', 'yamaps'),
+							'EditMap' => __('Edit map', 'yamaps'),
+							'PluginTitle' => __('YaMaps plugin: Yandex.Map', 'yamaps'),
 							'MarkerTab' => __('Placemark', 'yamaps'),
 							'MapTab' => __('Map', 'yamaps'),
 							'MarkerIcon' => __('Icon', 'yamaps'),
@@ -214,7 +215,7 @@ function yamap_plugin_scripts($plugin_array)
 							'MarkerNameTip' => __('Text for hint or icon content', 'yamaps'),
 							'MapControlsTip' => __('Use the links below', 'yamaps'),		
 							'MarkerCoord' => __('Сoordinates', 'yamaps'),
-							'NoCoord' => __('Click on the map to set the mark', 'yamaps'),
+							'NoCoord' => __('Click on the map to choose or create the mark', 'yamaps'),
 							'MapControls' => __('Map controls', 'yamaps'),
 							'MarkerDelete' => __('Delete', 'yamaps'),
 							'type' => __('Map type', 'yamaps'),
@@ -238,7 +239,9 @@ function yamap_plugin_scripts($plugin_array)
 
 	
 	wp_localize_script('yamap_plugin', 'yamap_object', $lang_array); 
-	
+
+	//Подключаем шаблон правки шорткода
+	include_once dirname(__FILE__).'/templates/tmpl-editor-yamap.html';
 
 	//enqueue TinyMCE plugin script with its ID.
 
@@ -266,16 +269,25 @@ add_filter("mce_buttons", "register_buttons_editor");
 add_action('admin_head', 'yamaps_custom_fonts');
 
 function yamaps_custom_fonts() {
-  echo '<style>
-    .mce-container ymaps {
-    	//Исправляем проблему со съехавшим шрифтом в Stretchy метке на карте в редакторе
-    	font-family: "Source Sans Pro",HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif !important;
-    	font-size: 13px !important;
-    }
-  </style>';
+	//Исправляем проблему со съехавшим шрифтом в Stretchy метке на карте в редакторе		
+	  echo '<style>
+	    .mce-container ymaps {
+	    	
+	    	font-family: "Source Sans Pro",HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif !important;
+	    	font-size: 11px !important;
+	    }
+	  </style>';
 }
 
+//Подключаем внешние стили
 
+function yamap_mce_css( $mce_css ) {
+  if ( !empty( $mce_css ) )
+    $mce_css .= ',';
+    $mce_css .= plugins_url( 'style.content.css', __FILE__ );
+    return $mce_css;
+  }
+add_filter( 'mce_css', 'yamap_mce_css' );
 
 
 ?>

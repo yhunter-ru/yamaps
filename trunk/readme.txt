@@ -90,6 +90,12 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.5.0 =
+* New: Visual editing of existing maps.
+* New: Nice looking shortcodes template in the TinyMCE editor with edit button.
+* Code refactoring.
+* Fixed: Bugfix. 
+
 = 0.4.1 =
 * New: "Extra" Panel tab added
 * New: Instead of the URL, you can put a post ID.
