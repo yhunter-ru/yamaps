@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.0
+ * Version:     0.5.1
  *
  *
  * License:     GPL2
@@ -197,7 +197,7 @@ function yamap_plugin_scripts($plugin_array)
     
     // Plugin localization
 
-	wp_register_script('yamap_plugin', plugin_dir_url(__FILE__) . 'js/localization.js');
+	wp_register_script('yamap_plugin', plugin_dir_url(__FILE__) . 'js/shortcode_parser.js');
 	wp_enqueue_script('yamap_plugin');
 	
 	$lang_array	 = array('YaMap' => __('Map', 'yamaps'),
@@ -288,6 +288,13 @@ function yamap_mce_css( $mce_css ) {
     return $mce_css;
   }
 add_filter( 'mce_css', 'yamap_mce_css' );
+
+//Поддключаем стили для нового редактора Gutenberg
+function yamaps_gutenberg_styles() {
+	// Load the theme styles within Gutenberg.
+	 wp_enqueue_style( 'yamaps-gutenberg', plugins_url( 'style.content.css', __FILE__ ));
+}
+add_action( 'enqueue_block_editor_assets', 'yamaps_gutenberg_styles' );
 
 
 ?>

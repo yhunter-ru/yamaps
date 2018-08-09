@@ -1,9 +1,9 @@
 ﻿=== YaMaps for WordPress Plugin ===
 Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
-Tags: yandex, яндекс, карты, coordinates, maps, placemark
+Tags: yandex, яндекс, карты, карта, maps, placemark
 Requires at least: 4.2
-Tested up to: 4.9.7
+Tested up to: 4.9.8
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,12 +13,12 @@ The plugin allows you to add Yandex Maps (Яндекс Карты) to pages of y
 
 == Description ==
 
-YaMaps plugin is the simplest way to insert Yandex maps on your site. 
+YaMaps plugin is the simplest way to insert Yandex maps on your site. The plugin has a user-friendly interface. You can visually put placemarks on your Yandex map, move them with your mouse, change icons and much more.
 
 = Plugin Highlights: =
 
 * You can add maps to pages without coding.
-* Or you can manually edit the shortcodes in the editor.
+* Or you can visually edit the shortcodes in the editor.
 * You can add any number of maps to one page.
 * You can add multiple markers to one card.
 * You can add markers with hyperlinks.
@@ -62,6 +62,10 @@ No, You don't need it.
 
 Just set type and zoom of the map in the visual editor window. On the site it will be displayed identically.
 
+= How to use the plugin with new Gutenberg editor?  =
+
+You can add a block with a classic editor and add a map with it. Later, native support can be added if most users start to use Gutenberg.
+
 = How to insert a map into my template as PHP code? =
 
 Use the tag "echo do_shortcode('')" with your map shortcode insde.
@@ -89,6 +93,9 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.5.1 =
+* New: Adding styles for classic editor block in Gutenberg editor.
 
 = 0.5.0 =
 * New: Visual editing of existing maps.
