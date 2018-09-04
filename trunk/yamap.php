@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.1
+ * Version:     0.5.2
  *
  *
  * License:     GPL2

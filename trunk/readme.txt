@@ -94,6 +94,9 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.5.2 =
+* Fixed: Bugfix. 
+
 = 0.5.1 =
 * New: Adding styles for classic editor block in Gutenberg editor.
 
