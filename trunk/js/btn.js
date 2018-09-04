@@ -63,9 +63,9 @@ function markcoordchange() {
 
 //Активируем выключенное поле
 function enablesinglefield(field) {
-    	$(field).attr('disabled',false);
-    	$(field).removeClass('mce-disabled');
-    	$(field+'-l').removeClass('mce-disabled');
+        $(field).attr('disabled',false);
+        $(field).removeClass('mce-disabled');
+        $(field+'-l').removeClass('mce-disabled');
 }
 
 //Деактивируем поле
@@ -83,7 +83,7 @@ function enablefields(fieldact=true) {
         else {
             disablesinglefield('#markercoord'); 
         }
-    	   	
+            
 } 
 
 //Изменяем данные карты в массиве после изменения полей
@@ -99,7 +99,7 @@ function mapdatechange() {
         if(document.getElementById('mapcontainer')) {
             if ($("#mapcontainer").val()!="undefined") {
 
-    	            ym.map0.container=$("#mapcontainer").val();
+                    ym.map0.container=$("#mapcontainer").val();
 
             }
         }
@@ -116,20 +116,20 @@ function mapSave() {
 function markchange() {
 
         if (activeplace!=='') {
-    	
-	        ym[mapselector].places[activeplace].name=$("#markername").val();
-	        ym[mapselector].places[activeplace].coord=$("#markercoord").val();
-	        ym[mapselector].places[activeplace].color=$("#colorbox #colorbox-inp").val();
-	        ym[mapselector].places[activeplace].icon=$("#markericon #markericon-inp").val();
-	        
-	        ym[mapselector].places[activeplace].url=$("#markerurl").val();
+        
+            ym[mapselector].places[activeplace].name=$("#markername").val().replace(/["]/g, '&quot;');
+            ym[mapselector].places[activeplace].coord=$("#markercoord").val();
+            ym[mapselector].places[activeplace].color=$("#colorbox #colorbox-inp").val();
+            ym[mapselector].places[activeplace].icon=$("#markericon #markericon-inp").val();
+            
+            ym[mapselector].places[activeplace].url=$("#markerurl").val();
 
         }
 }
 
 //Изменяем данные полей ввода по данным массива    
 function markerfields() {
-        $("#markername").val(ym[mapselector].places[activeplace].name);
+        $("#markername").val(ym[mapselector].places[activeplace].name.replace(/(&quot;)/g, '"'));
         $("#markercoord").val(coordaprox(ym[mapselector].places[activeplace].coord));
         $("#markericon #markericon-inp").val(ym[mapselector].places[activeplace].icon);
         $("#colorbox #colorbox-inp").val(ym[mapselector].places[activeplace].color);
@@ -167,7 +167,7 @@ function iconname(place) {       //change icon name
                 yahint=markername;
 
                 if ((yahint!="")&&(yahint!=undefined)) {
-                	yacontent=yahint[0];
+                    yacontent=yahint[0];
                 }
                 
             }
@@ -194,8 +194,8 @@ function iconname(place) {       //change icon name
     function markercolor (pcolor) {
         //Если метки нет, цвета не прописываем
         if (activeplace!=='') {
-	        placemark[activeplace.replace('placemark', '')].options.set('iconColor', pcolor);
-	        ym[mapselector].places[activeplace].color=$("#colorbox #colorbox-inp").val();
+            placemark[activeplace.replace('placemark', '')].options.set('iconColor', pcolor);
+            ym[mapselector].places[activeplace].color=$("#colorbox #colorbox-inp").val();
         }                            
     }
 
@@ -259,8 +259,8 @@ function iconname(place) {       //change icon name
                     $(document).ready(function() {
                         ymaps.ready(init);
                         if (!editMapAction) {
-                        	
-                        	ym={map0: {center: [55.7532,37.6225], height: '15rem', zoom: '16', maptype: 'yandex#map', ctrl: '', scrollzoom: '', container: '', places: {}}};
+                            
+                            ym={map0: {center: [55.7532,37.6225], height: '15rem', zoom: '16', maptype: 'yandex#map', ctrl: '', scrollzoom: '', container: '', places: {}}};
                         }
 
                     });
@@ -277,15 +277,15 @@ function iconname(place) {       //change icon name
 
                         if (!ym.map0.places.hasOwnProperty('placemark'+markcount))  {  
                             newmark=true;
-                        	ym.map0['places']['placemark'+markcount] = {name: '', coord: defcoord, icon: 'islands#blueDotIcon', color: $("#colorbox #colorbox-inp").val(), url: ''}; //: {name: 'placemark1', coord: coords, type: 'islands#blueDotIcon', color: '#ff0000', url: 'url1'};
-	                        if (activeplace==='') { //Если создается первая метка, берем значения из полей формы
-	                        	activeplace = 'placemark'+markcount; 
-	                        	markchange();
-	                        	ym.map0['places']['placemark'+markcount].coord = defcoord;
+                            ym.map0['places']['placemark'+markcount] = {name: '', coord: defcoord, icon: 'islands#blueDotIcon', color: $("#colorbox #colorbox-inp").val(), url: ''}; //: {name: 'placemark1', coord: coords, type: 'islands#blueDotIcon', color: '#ff0000', url: 'url1'};
+                            if (activeplace==='') { //Если создается первая метка, берем значения из полей формы
+                                activeplace = 'placemark'+markcount; 
+                                markchange();
+                                ym.map0['places']['placemark'+markcount].coord = defcoord;
 
-	                        }
-	                        activeplace = 'placemark'+markcount; 
-                        	markerfields();
+                            }
+                            activeplace = 'placemark'+markcount; 
+                            markerfields();
                         }
 
                         
@@ -315,7 +315,7 @@ function iconname(place) {       //change icon name
                         //Отслеживаем событие перемещения метки
                         placemark[markcount].events.add("dragend", function (e) {   
                             var trg = e.get('target');         
-                        	coords = this.geometry.getCoordinates();
+                            coords = this.geometry.getCoordinates();
                             ym.map0['places'][trg.properties.get('id')].coord = coords;
                             activeplace='';
                             inactive(); 
@@ -325,12 +325,12 @@ function iconname(place) {       //change icon name
                         placemark[markcount].events.add("dragstart", function (e) {            
                             var trg = e.get('target'); 
                             activeplace=trg.properties.get('id');
-                        	map.geoObjects.each(function (geoObject) {
-							    if (geoObject.properties.get('id') == 'closesvg') {
-							    	map.geoObjects.remove(geoObject);									
-							    }
+                            map.geoObjects.each(function (geoObject) {
+                                if (geoObject.properties.get('id') == 'closesvg') {
+                                    map.geoObjects.remove(geoObject);                                   
+                                }
 
-							});
+                            });
 
                         }, placemark[markcount]);
 
@@ -346,11 +346,11 @@ function iconname(place) {       //change icon name
                             
                             //Удаляем метку-закрытия для всех меток
                             map.geoObjects.each(function (geoObject) {
-							    if (geoObject.properties.get('id') == 'closesvg') {
-							    	map.geoObjects.remove(geoObject);									
-							    }
+                                if (geoObject.properties.get('id') == 'closesvg') {
+                                    map.geoObjects.remove(geoObject);                                   
+                                }
                                 activeplace='';
-							});
+                            });
 
                             //Добавляем метку-кнопку закрытия родительской метки
                             var closePlacemark = new ymaps.Placemark(
@@ -427,7 +427,7 @@ function iconname(place) {       //change icon name
                         function loadPlacemarks(map) {
 
                             for(var key in ym.map0['places']) {
-                            	activeplace=key;
+                                activeplace=key;
                                 createplacemark(myMap[mapcount],coordaprox(ym[map].places[key].coord));                               
                                 
                             }
@@ -465,7 +465,7 @@ function iconname(place) {       //change icon name
                             
                         }
                           if (event.get('newCenter') != event.get('oldCenter')) {
-                          	mapcenter = event.get('newCenter');
+                            mapcenter = event.get('newCenter');
                             mapSave();      
                         }
                         
