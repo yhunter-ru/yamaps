@@ -15,6 +15,16 @@ function checkWheelScroll() {
     return checker;
 }
 
+//Задаем дефолтный скроллзум из настроек
+function optionWheelScroll() {
+	var checker="0";
+	console.log(yamap_defaults['wheelzoom_map_option']);
+	if (yamap_defaults['wheelzoom_map_option']==='on')	{
+		checker="";
+	}
+	return checker;
+}
+
 //Определяем заголовок окна для создания или редактирования
 function checkTitle() {
     if (editMapAction) {
@@ -31,7 +41,7 @@ parseShortcodes();
 
 
 //Дефолтные данные
-var coords=[], mapzoom=12, mapcenter=[55.7532,37.6225], mapzoom='12', maptype='yandex#map', markicon, markcount=0, mapcount=1;
+var coords=[], mapcenter=yamap_defaults['center_map_option'], mapzoom=yamap_defaults['zoom_map_option'], maptype=yamap_defaults['type_map_option'], markicon, markcount=0, mapcount=1;
 
 //Изменение поля типа иконки    
 function iconselectchange() {      // change icon type    
@@ -129,7 +139,9 @@ function markchange() {
 
 //Изменяем данные полей ввода по данным массива    
 function markerfields() {
-        $("#markername").val(ym[mapselector].places[activeplace].name.replace(/(&quot;)/g, '"'));
+		if (typeof ym[mapselector].places[activeplace].name !== 'undefined') {
+        	$("#markername").val(ym[mapselector].places[activeplace].name.replace(/(&quot;)/g, '"'));
+        }
         $("#markercoord").val(coordaprox(ym[mapselector].places[activeplace].coord));
         $("#markericon #markericon-inp").val(ym[mapselector].places[activeplace].icon);
         $("#colorbox #colorbox-inp").val(ym[mapselector].places[activeplace].color);
@@ -260,9 +272,8 @@ function iconname(place) {       //change icon name
                         ymaps.ready(init);
                         if (!editMapAction) {
                             
-                            ym={map0: {center: [55.7532,37.6225], height: '15rem', zoom: '16', maptype: 'yandex#map', ctrl: '', scrollzoom: '', container: '', places: {}}};
-                        }
-
+                            ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], ctrl: yamap_defaults['controls_map_option'], scrollzoom: optionWheelScroll(), container: '', places: {}}};
+                        }                        
                     });
                     
                     //Удаляем метку с карты
@@ -277,7 +288,7 @@ function iconname(place) {       //change icon name
 
                         if (!ym.map0.places.hasOwnProperty('placemark'+markcount))  {  
                             newmark=true;
-                            ym.map0['places']['placemark'+markcount] = {name: '', coord: defcoord, icon: 'islands#blueDotIcon', color: $("#colorbox #colorbox-inp").val(), url: ''}; //: {name: 'placemark1', coord: coords, type: 'islands#blueDotIcon', color: '#ff0000', url: 'url1'};
+                            ym.map0['places']['placemark'+markcount] = {name: '', coord: defcoord, icon: yamap_defaults['type_icon_option'], color: $("#colorbox #colorbox-inp").val(), url: ''}; //: {name: 'placemark1', coord: coords, type: 'islands#blueDotIcon', color: '#ff0000', url: 'url1'};
                             if (activeplace==='') { //Если создается первая метка, берем значения из полей формы
                                 activeplace = 'placemark'+markcount; 
                                 markchange();
@@ -409,8 +420,8 @@ function iconname(place) {       //change icon name
                             coords=ym.map0.center[0];
                             myMap[mapcount] = new ymaps.Map("yamap", {
                                     center: ym.map0.center[0],
-                                    zoom: mapzoom,
-                                    type: ym.map0.type,
+                                    zoom: yamap_defaults['zoom_map_option'],
+                                    type: yamap_defaults['type_map_option'],
                                     controls: ["zoomControl", "searchControl", "typeSelector"] 
                             }); 
 
@@ -473,6 +484,7 @@ function iconname(place) {       //change icon name
 
                         maptype = myMap[mapcount].getType();                        
 
+                        //Отслеживаем изменение типа карты
                         myMap[mapcount].events.add('typechange', function (event) {
                             maptype = myMap[mapcount].getType();
                             mapSave();
@@ -544,7 +556,7 @@ function iconname(place) {       //change icon name
                         id : 'yamapcontainer',
                         label  : '',
                         
-                        html   : '<div id="yamap"  style="position: relative; min-height: 15rem; margin-bottom: 1rem; "></div>'
+                        html   : '<div id="yamap"  style="position: relative; min-height: 15rem; margin-bottom: 1rem; overflow: hidden"></div>'
                         },
                         {
                         layout: 'flow',
@@ -583,7 +595,7 @@ function iconname(place) {       //change icon name
                                                             type   : 'combobox',
                                                             name   : 'markertype',
                                                             label: yamap_object.MarkerIcon,
-                                                            value: "islands#blueDotIcon",
+                                                            value: yamap_defaults['type_icon_option'],
                                                             id: "markericon",
                                                             
                                                             onselect: function() {
@@ -605,7 +617,7 @@ function iconname(place) {       //change icon name
                                                             type   : 'colorbox',  // colorpicker plugin MUST be included for this to work
                                                             name   : 'color',
                                                             label  : yamap_object.MarkerColor,
-                                                            value : '#1e98ff',
+                                                            value : yamap_defaults['color_icon_option'],
                                                             id: 'colorbox',
                                                             onaction: createColorPickAction(),
                                                             
@@ -648,7 +660,7 @@ function iconname(place) {       //change icon name
                                                     name: 'mapheight',
                                                     label: yamap_object.MapHeight,
                                                     id: 'mapheight',
-                                                    value: ym.map0.height,                                 
+                                                    value: yamap_defaults['height_map_option'],                                 
                                                     maxLength: '10',
                                                     tooltip: 'rem, em, px, %',
                                                     onaction: mapdatechange(),
@@ -659,7 +671,7 @@ function iconname(place) {       //change icon name
                                                     name: 'controls',
                                                     label: yamap_object.MapControls,
                                                     id: 'mapcontrols',
-                                                    value: ym.map0.controls,   
+                                                    value: yamap_defaults['controls_map_option'],   
                                                     tooltip: yamap_object.MapControlsTip,
                                                     onaction: mapdatechange(),
                                                 },

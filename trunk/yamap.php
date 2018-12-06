@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.2
+ * Version:     0.5.3
  *
  *
  * License:     GPL2
@@ -19,6 +19,26 @@ $maps_count=0;
 
 // Test for the first time content and single map (WooCommerce and other custom posts)
 $count_content=0;
+
+$yamaps_defaults = array(
+	'center_map_option'			=> '55.7473,37.6247',
+	'zoom_map_option'			=> '12',
+	'type_map_option'			=> 'yandex#map',
+	'height_map_option'			=> '17rem',
+	'controls_map_option'		=> '',
+	'wheelzoom_map_option'		=> 'on',
+	'type_icon_option'			=> 'islands#dotIcon',
+	'color_icon_option'			=> '#1e98ff'
+);	
+
+//Страница настроек
+
+$option_name = 'yamaps_options';
+if(get_option($option_name)){
+    $yamaps_defaults=get_option( $option_name);
+}
+
+
 
 add_filter( 'the_content', 'tutsplus_the_content' ); 
 function tutsplus_the_content( $content ) {
@@ -240,6 +260,9 @@ function yamap_plugin_scripts($plugin_array)
 	
 	wp_localize_script('yamap_plugin', 'yamap_object', $lang_array); 
 
+	global $yamaps_defaults;
+	wp_localize_script('yamap_plugin', 'yamap_defaults', $yamaps_defaults); 
+
 	//Подключаем шаблон правки шорткода
 	include_once dirname(__FILE__).'/templates/tmpl-editor-yamap.html';
 
@@ -297,4 +320,7 @@ function yamaps_gutenberg_styles() {
 add_action( 'enqueue_block_editor_assets', 'yamaps_gutenberg_styles' );
 
 
-?>
+include( plugin_dir_path( __FILE__ ) . 'options.php'); 
+
+
+
