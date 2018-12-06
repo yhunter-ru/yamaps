@@ -94,6 +94,10 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.5.3 =
+* New: Plugin default options page.
+* Fixed: Bugfix.
+
 = 0.5.2 =
 * Fixed: Bugfix. 
 
