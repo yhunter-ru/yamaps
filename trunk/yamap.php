@@ -187,12 +187,12 @@ function yamap_func($atts, $content){
 
     if($yamaps_defaults['authorlink_map_option']<>'on'){
     	
-    $authorlink='<style>.yamapauthor {position: relative; height: 0; overflow: visible; width: 100%; text-align: center; font-family: Arial; font-size: 12px;  top: -42px;} .yamapauthor a {display: inline-block; -webkit-box-align: center; padding: 2.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; height: 24px; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);} .yamapauthor a img {width: 17px; height: 17px; diaply: block;}</style><div class="yamapauthor" style=""><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style=""><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" /></a></div>';
+    $authorlink='<style>.yamapauthor {position: relative; height: 0;  margin-bottom: 1rem !important; overflow: visible; width: 100%; text-align: center; top: -32px;} .yamapauthor a {display: inline-block; -webkit-box-align: center; padding: 3.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);} .yamapauthor a img {width: 17px; height: 17px; display: block;}</style><div class="yamapauthor" style=""><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style=""><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" /></a></div>';
     }
     else {
     	$authorlink="";
     }
-    if ($atts["container"]=="") $yamap.='<div id="'.$mapcontainter.'"  style="position: relative; min-height: '.$atts["height"].'; margin-bottom: 1rem;"></div>'.$authorlink;
+    if ($atts["container"]=="") $yamap.='<div id="'.$mapcontainter.'"  style="position: relative; min-height: '.$atts["height"].'; margin-bottom: 0 !important;"></div>'.$authorlink;
 
     if ($count_content>=1) $maps_count++;
     return $yamap; 
