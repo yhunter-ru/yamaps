@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.3
+ * Version:     0.5.4
  *
  *
  * License:     GPL2
@@ -24,21 +24,20 @@ $yamaps_defaults = array(
 	'center_map_option'			=> '55.7473,37.6247',
 	'zoom_map_option'			=> '12',
 	'type_map_option'			=> 'yandex#map',
-	'height_map_option'			=> '17rem',
+	'height_map_option'			=> '22rem',
 	'controls_map_option'		=> '',
 	'wheelzoom_map_option'		=> 'on',
 	'type_icon_option'			=> 'islands#dotIcon',
-	'color_icon_option'			=> '#1e98ff'
+	'color_icon_option'			=> '#1e98ff',
+	'authorlink_map_option'		=> 'on',
 );	
 
-//Страница настроек
+//Загрузка настроек
 
 $option_name = 'yamaps_options';
 if(get_option($option_name)){
-    $yamaps_defaults=get_option( $option_name);
+    $yamaps_defaults=get_option($option_name);
 }
-
-
 
 add_filter( 'the_content', 'tutsplus_the_content' ); 
 function tutsplus_the_content( $content ) {
@@ -121,19 +120,17 @@ function yaplacemark_func($atts) {
 function yamap_func($atts, $content){
 	$placearr = '';
 	$atts = shortcode_atts( array(
-		'center' => '55.7532,37.6225',
-		'zoom' => '12',
+		'center' => $yamaps_defaults['center_map_option'],
+		'zoom' => $yamaps_defaults['zoom_map_option'],
 		'type' => 'map',
-		'height' => '20rem',
-		'controls' => '',
+		'height' => $yamaps_defaults['height_map_option'],
+		'controls' => $yamaps_defaults['controls_map_option'],
 		'scrollzoom' => '1',
 		'container' => '',
 
 	), $atts );
-	global $yaplacemark_count;
-	global $yacontrol_count;
-	global $maps_count;
-	global $count_content;
+	
+	global $yaplacemark_count, $yamaps_defaults, $yacontrol_count, $maps_count, $count_content;
 	$yaplacemark_count=0;
 	$yacontrol_count=0;
 
@@ -162,7 +159,6 @@ function yamap_func($atts, $content){
 	
 
     $yamap.='
-
 						<script type="text/javascript">
                         ymaps.ready(init); 
                  
@@ -172,11 +168,9 @@ function yamap_func($atts, $content){
                                     zoom: '.$atts["zoom"].',
                                     type: "'.$atts["type"].'",
                                     controls: ['.$yamactrl.'] 
-                                });   
+                                }); 
 
-							'.do_shortcode($placemarkscode);
-
-
+							'.do_shortcode($placemarkscode);							
 							
 							for ($i = 1; $i <= $yaplacemark_count; $i++) {
 								$placearr.='.add(placemark'.$i.')';
@@ -189,7 +183,16 @@ function yamap_func($atts, $content){
                     </script>
                     
     ';
-    if ($atts["container"]=="") $yamap.='<div id="'.$mapcontainter.'"  style="position: relative; min-height: '.$atts["height"].'; margin-bottom: 1rem;"></div>';
+    $authorLinkTitle=__( 'YaMaps plugin for Wordpress', 'yamaps' );
+
+    if($yamaps_defaults['authorlink_map_option']<>'on'){
+    	
+    $authorlink='<style>.yamapauthor {position: relative; height: 0; overflow: visible; width: 100%; text-align: center; font-family: Arial; font-size: 12px;  top: -42px;} .yamapauthor a {display: inline-block; -webkit-box-align: center; padding: 2.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; height: 24px; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);} .yamapauthor a img {width: 17px; height: 17px; diaply: block;}</style><div class="yamapauthor" style=""><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style=""><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" /></a></div>';
+    }
+    else {
+    	$authorlink="";
+    }
+    if ($atts["container"]=="") $yamap.='<div id="'.$mapcontainter.'"  style="position: relative; min-height: '.$atts["height"].'; margin-bottom: 1rem;"></div>'.$authorlink;
 
     if ($count_content>=1) $maps_count++;
     return $yamap; 

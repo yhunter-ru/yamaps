@@ -16,10 +16,13 @@ add_action('admin_menu', 'yamaps_options');
  */ 
 function yamaps_option_page(){
 	global $yamaps_page, $yamaps_defaults;
-	echo $lang_array;
+	$option_name = 'yamaps_options';
+	echo 'Link: '.get_option($option_name)['authorlink_map_option'];
+
 	?><div class="wrap">
+
 		<h2><?php echo __( 'YaMaps default options', 'yamaps' ); ?></h2>
-		<form method="post" enctype="multipart/form-data" action="options.php">
+		<form method="post" id="YaMapsOptions" enctype="multipart/form-data" action="options.php">
 		<?php echo'<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>'; ?>
 			<script type="text/javascript">
 						//Округляем координаты до 4 знаков после запятой
@@ -80,6 +83,18 @@ function yamaps_option_page(){
                         	searchControl.events.add("resultshow", function (e) {
                             	searchControl.hideResult();
                         	});
+                        	//Функция добавления элементов управления картой в поле настроек
+                        	var controlElems = document.querySelectorAll('#addcontrol a');
+                        	for (var i = 0; i < controlElems.length; i++) {
+                        		controlElems[i].addEventListener('click', function() {                        		
+		                        if (document.getElementById('controls_map_option').value.trim()!="") {
+		                               document.getElementById('controls_map_option').value = document.getElementById('controls_map_option').value + ';'; 
+		                        }
+		                        document.getElementById('controls_map_option').value = document.getElementById('controls_map_option').value + this.getAttribute("data-control");
+	                        });
+								
+							}
+
                         }
                         
             </script>
@@ -149,17 +164,25 @@ function yamaps_option_settings() {
 	$yamaps_field_params = array(
 		'type'      => 'textarea',
 		'id'        => 'controls_map_option',
-		'desc'      => 'typeSelector;zoomControl;searchControl;routeButtonControl;rulerControl;trafficControl;fullscreenControl;geolocationControl'
+		'desc'      => '<div id="addcontrol" style="text-align: left;"><a data-control="typeSelector">'.__( 'Map type', 'yamaps' ).'</a>, <a data-control="zoomControl">'.__( 'Zoom', 'yamaps' ).'</a>, <a data-control="searchControl">'.__( 'Search', 'yamaps' ).'</a>, <a data-control="routeButtonControl">'.__( 'Route', 'yamaps' ).'</a>, <a data-control="rulerControl">'.__( 'Ruler', 'yamaps' ).'</a>, <a data-control="trafficControl">'.__( 'Traffic', 'yamaps' ).'</a>, <a data-control="fullscreenControl">'.__( 'Full screen', 'yamaps' ).'</a>, <a data-control="geolocationControl">'.__( 'Geolocation', 'yamaps' ).'</a></div>'
 	);
 	add_settings_field( 'controls_map_option', __( 'Map controls', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
-	// Чекбокс мастаба колесом
+	// Чекбокс масштаба колесом
 	$yamaps_field_params = array(
 		'type'      => 'checkbox',
 		'id'        => 'wheelzoom_map_option',
 		'desc'      => __( 'The map can be scaled with mouse scroll', 'yamaps' )
 	);
 	add_settings_field( 'wheelzoom_map_option', __( 'Wheel zoom', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
+
+	// Чекбокс ссылки на автора
+	$yamaps_field_params = array(
+		'type'      => 'checkbox',
+		'id'        => 'authorlink_map_option',
+		'desc'      => __( 'Disable link to plugin page', 'yamaps' )
+	);
+	add_settings_field( 'authorlink_map_option', __( 'Author link', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
  
 	// Область настроек метки
  
@@ -203,7 +226,7 @@ function yamaps_option_display_settings($args) {
 
 	$o = get_option( $option_name );
 
-	if ($id==='center_map_option') {
+	if ($id==='center_map_option') { // удалиит
 
 	}
 

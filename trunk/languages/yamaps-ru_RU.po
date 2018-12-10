@@ -1,21 +1,18 @@
-# Translation of Plugins - YaMaps for WordPress Plugin - Development (trunk) in Russian
-# This file is distributed under the same license as the Plugins - YaMaps for WordPress Plugin - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-12-06 06:08+0000\n"
+"Project-Id-Version: YaMaps for Wordpress\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-05 17:46+0000\n"
+"PO-Revision-Date: 2018-12-05 17:47+0000\n"
+"Last-Translator: tester <pmt.hunter@gmail.com>\n"
+"Language-Team: Русский\n"
+"Language: ru_RU\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
+"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Loco https://localise.biz/\n"
-"Language: ru-RU\n"
-"Project-Id-Version: Plugins - YaMaps for WordPress Plugin - Development "
-"(trunk)\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-05 18:21+0000\n"
-"Last-Translator: tester <pmt.hunter@gmail.com>\n"
-"Language-Team: Русский\n"
 "X-Loco-Version: 2.2.0; wp-4.9.8"
 
 #: yamap.php:223 yamap.php:228
@@ -38,7 +35,7 @@ msgstr "Плагин YaMaps: Яндекс.Карта"
 msgid "Placemark"
 msgstr "Метка"
 
-#: yamap.php:229 options.php:170
+#: yamap.php:229
 msgid "Icon"
 msgstr "Иконка"
 
@@ -52,9 +49,9 @@ msgstr "Ссылка"
 
 #: yamap.php:232
 msgid "Placemark hyperlink url or post ID"
-msgstr "Адрес URL или ID записи для перехода по клику "
+msgstr "Адрес URL или ID записи для перехода по клику"
 
-#: yamap.php:233 options.php:140
+#: yamap.php:233
 msgid "Map height"
 msgstr "Высота карты"
 
@@ -78,7 +75,7 @@ msgstr "Координаты метки"
 msgid "Click on the map to choose or create the mark"
 msgstr "Кликните на карте для выбора или создания метки"
 
-#: yamap.php:239 options.php:150
+#: yamap.php:239
 msgid "Map controls"
 msgstr "Элементы управления"
 
@@ -86,7 +83,7 @@ msgstr "Элементы управления"
 msgid "Delete"
 msgstr "Удалить"
 
-#: yamap.php:241 options.php:131
+#: yamap.php:241
 msgid "Map type"
 msgstr "Тип карты"
 
@@ -94,7 +91,7 @@ msgstr "Тип карты"
 msgid "Zoom"
 msgstr "Кнопки масштаба"
 
-#: yamap.php:243 options.php:158
+#: yamap.php:243
 msgid "Wheel zoom"
 msgstr "Масштаб колесом"
 
@@ -122,7 +119,7 @@ msgstr "Полный экран"
 msgid "Geolocation"
 msgstr "Геолокация"
 
-#: yamap.php:250 options.php:178
+#: yamap.php:250
 msgid "Marker color"
 msgstr "Цвет метки"
 
@@ -135,8 +132,8 @@ msgid ""
 "Do not create a block in the content. Use the existing block of the WP theme "
 "with the specified ID"
 msgstr ""
-"Не создавать блок в содержимом. Использовать существующий блок в теме WP с "
-"указанным ID."
+"Не создавать блок в содержимом. Использовать существующий блок в шаблоне WP "
+"с указанным ID"
 
 #: yamap.php:253
 msgid "Extra"
@@ -192,67 +189,26 @@ msgstr ""
 "//github.com/yhunter-ru/yamaps/issues\" style=\"white-space: normal\">"
 "GitHub</a>.</div>"
 
-#: options.php:21
-msgid "YaMaps default options"
+#: yamap.php:255
+msgid "YaMaps options header text"
 msgstr "Настройки плагина YaMaps по умолчанию"
 
-#: options.php:104
-msgid "Map options"
-msgstr "Настройки карты"
-
-#: options.php:110
-msgid "Drag the map to set its default coordinates"
-msgstr "Перемещайте карту сверху для выбора точки отображения по умолчанию"
-
-#: options.php:113
-msgid "Map center"
-msgstr "Центр карты"
-
-#: options.php:119
-msgid "Zoom the map to set its default scale"
-msgstr "Мастабируйте карту сверху для выбора значения"
-
-#: options.php:122
-msgid "Map zoom"
-msgstr "Масштаб карты"
-
-#: options.php:128
-msgid "Choose default map type: yandex#map, yandex#satellite, yandex#hybrid"
-msgstr ""
-"Изменяйте тип отображения карты: yandex#map, yandex#satellite, yandex#hybrid"
-
-#: options.php:156
-msgid "The map can be scaled with mouse scroll"
-msgstr "Карту можно будет масштабировать колесом мыши"
-
-#: options.php:162
-msgid "Marker options"
-msgstr "Настройки метки"
-
-#: options.php:168
-msgid "Other icon types"
-msgstr "Другие типы меток"
-
-#: options.php:176
-msgid "For example:"
-msgstr "Например:"
-
-#. Plugin Name of the plugin/theme
+#. Name of the plugin
 msgid "YaMaps for Wordpress"
 msgstr "YaMaps - плагин Яндекс.Карт для WordPress"
 
-#. Description of the plugin/theme
+#. Description of the plugin
 msgid "Yandex Map integration"
 msgstr "Интеграция Яндекс.Карт"
 
-#. Plugin URI of the plugin/theme
+#. URI of the plugin
 msgid "www.yhunter.ru/portfolio/dev/yamaps/"
 msgstr "www.yhunter.ru/portfolio/dev/yamaps/"
 
-#. Author of the plugin/theme
+#. Author of the plugin
 msgid "Yuri Baranov"
-msgstr "Юрий Баранов"
+msgstr ""
 
-#. Author URI of the plugin/theme
+#. Author URI of the plugin
 msgid "www.yhunter.ru"
 msgstr "www.yhunter.ru"

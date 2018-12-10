@@ -94,6 +94,11 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.5.4 =
+* New: Links-helpers for adding controls on the settings page.
+* New: Link to plugin page (It can be disabled in the plugin settings).
+* Fixed: Bugfix.
+
 = 0.5.3 =
 * New: Plugin default options page.
 * Fixed: Bugfix.
