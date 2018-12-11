@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaMaps for Wordpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-05 18:21+0000\n"
+"POT-Creation-Date: 2018-12-10 08:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,129 +14,133 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: yamap.php:223 yamap.php:228
+#: yamap.php:186
+msgid "YaMaps plugin for Wordpress"
+msgstr ""
+
+#: yamap.php:226 yamap.php:231
 msgid "Map"
 msgstr ""
 
-#: yamap.php:224
+#: yamap.php:227
 msgid "Add map"
 msgstr ""
 
-#: yamap.php:225
+#: yamap.php:228
 msgid "Edit map"
 msgstr ""
 
-#: yamap.php:226
+#: yamap.php:229
 msgid "YaMaps plugin: Yandex.Map"
 msgstr ""
 
-#: yamap.php:227
+#: yamap.php:230
 msgid "Placemark"
 msgstr ""
 
-#: yamap.php:229 options.php:170
+#: yamap.php:232 options.php:197
 msgid "Icon"
 msgstr ""
 
-#: yamap.php:230
+#: yamap.php:233
 msgid "Blue only"
 msgstr ""
 
-#: yamap.php:231
+#: yamap.php:234
 msgid "Link"
 msgstr ""
 
-#: yamap.php:232
+#: yamap.php:235
 msgid "Placemark hyperlink url or post ID"
 msgstr ""
 
-#: yamap.php:233 options.php:140
+#: yamap.php:236 options.php:160
 msgid "Map height"
 msgstr ""
 
-#: yamap.php:234
+#: yamap.php:237
 msgid "Placemark name"
 msgstr ""
 
-#: yamap.php:235
+#: yamap.php:238
 msgid "Text for hint or icon content"
 msgstr ""
 
-#: yamap.php:236
+#: yamap.php:239
 msgid "Use the links below"
 msgstr ""
 
-#: yamap.php:237
+#: yamap.php:240
 msgid "Сoordinates"
 msgstr ""
 
-#: yamap.php:238
+#: yamap.php:241
 msgid "Click on the map to choose or create the mark"
 msgstr ""
 
-#: yamap.php:239 options.php:150
+#: yamap.php:242 options.php:169
 msgid "Map controls"
 msgstr ""
 
-#: yamap.php:240
+#: yamap.php:243
 msgid "Delete"
 msgstr ""
 
-#: yamap.php:241 options.php:131
+#: yamap.php:244 options.php:151 options.php:167
 msgid "Map type"
 msgstr ""
 
-#: yamap.php:242
+#: yamap.php:245 options.php:167
 msgid "Zoom"
 msgstr ""
 
-#: yamap.php:243 options.php:158
+#: yamap.php:246 options.php:177
 msgid "Wheel zoom"
 msgstr ""
 
-#: yamap.php:244
+#: yamap.php:247 options.php:167
 msgid "Search"
 msgstr ""
 
-#: yamap.php:245
+#: yamap.php:248 options.php:167
 msgid "Route"
 msgstr ""
 
-#: yamap.php:246
+#: yamap.php:249 options.php:167
 msgid "Ruler"
 msgstr ""
 
-#: yamap.php:247
+#: yamap.php:250 options.php:167
 msgid "Traffic"
 msgstr ""
 
-#: yamap.php:248
+#: yamap.php:251 options.php:167
 msgid "Full screen"
 msgstr ""
 
-#: yamap.php:249
+#: yamap.php:252 options.php:167
 msgid "Geolocation"
 msgstr ""
 
-#: yamap.php:250 options.php:178
+#: yamap.php:253 options.php:205
 msgid "Marker color"
 msgstr ""
 
-#: yamap.php:251
+#: yamap.php:254
 msgid "Put in ID"
 msgstr ""
 
-#: yamap.php:252
+#: yamap.php:255
 msgid ""
 "Do not create a block in the content. Use the existing block of the WP theme "
 "with the specified ID"
 msgstr ""
 
-#: yamap.php:253
+#: yamap.php:256
 msgid "Extra"
 msgstr ""
 
-#: yamap.php:254
+#: yamap.php:257
 msgid ""
 "<div style=\"position: relative; display: block; width: 100%; white-space: "
 "normal !important;\"><h2 style=\"color: #444;font-size: 18px;font-weight: "
@@ -163,47 +167,55 @@ msgid ""
 "GitHub</a>.</div>"
 msgstr ""
 
-#: options.php:21
+#: options.php:24
 msgid "YaMaps default options"
 msgstr ""
 
-#: options.php:104
+#: options.php:124
 msgid "Map options"
 msgstr ""
 
-#: options.php:110
+#: options.php:130
 msgid "Drag the map to set its default coordinates"
 msgstr ""
 
-#: options.php:113
+#: options.php:133
 msgid "Map center"
 msgstr ""
 
-#: options.php:119
+#: options.php:139
 msgid "Zoom the map to set its default scale"
 msgstr ""
 
-#: options.php:122
+#: options.php:142
 msgid "Map zoom"
 msgstr ""
 
-#: options.php:128
+#: options.php:148
 msgid "Choose default map type: yandex#map, yandex#satellite, yandex#hybrid"
 msgstr ""
 
-#: options.php:156
+#: options.php:175
 msgid "The map can be scaled with mouse scroll"
 msgstr ""
 
-#: options.php:162
+#: options.php:183
+msgid "Disable link to plugin page"
+msgstr ""
+
+#: options.php:185
+msgid "Author link"
+msgstr ""
+
+#: options.php:189
 msgid "Marker options"
 msgstr ""
 
-#: options.php:168
+#: options.php:195
 msgid "Other icon types"
 msgstr ""
 
-#: options.php:176
+#: options.php:203
 msgid "For example:"
 msgstr ""
 

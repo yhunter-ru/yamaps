@@ -16,8 +16,6 @@ add_action('admin_menu', 'yamaps_options');
  */ 
 function yamaps_option_page(){
 	global $yamaps_page, $yamaps_defaults;
-	$option_name = 'yamaps_options';
-	echo 'Link: '.get_option($option_name)['authorlink_map_option'];
 
 	?><div class="wrap">
 

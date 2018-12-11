@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.4
+ * Version:     0.5.5
  *
  *
  * License:     GPL2
@@ -25,7 +25,7 @@ $yamaps_defaults = array(
 	'zoom_map_option'			=> '12',
 	'type_map_option'			=> 'yandex#map',
 	'height_map_option'			=> '22rem',
-	'controls_map_option'		=> '',
+	'controls_map_option'		=> '111',
 	'wheelzoom_map_option'		=> 'on',
 	'type_icon_option'			=> 'islands#dotIcon',
 	'color_icon_option'			=> '#1e98ff',

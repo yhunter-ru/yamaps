@@ -18,7 +18,6 @@ function checkWheelScroll() {
 //Задаем дефолтный скроллзум из настроек
 function optionWheelScroll() {
 	var checker="0";
-	console.log(yamap_defaults['wheelzoom_map_option']);
 	if (yamap_defaults['wheelzoom_map_option']==='on')	{
 		checker="";
 	}
@@ -28,20 +27,19 @@ function optionWheelScroll() {
 //Определяем заголовок окна для создания или редактирования
 function checkTitle() {
     if (editMapAction) {
-return yamap_object.EditMap;
+        return yamap_object.EditMap;
     }
     else {
         return yamap_object.AddMap;
     }
 }
 
+//Дефолтные данные
+var coords=[], mapcenter=yamap_defaults['center_map_option'], mapzoom=yamap_defaults['zoom_map_option'], maptype=yamap_defaults['type_map_option'], markicon, markcount=0, mapcount=1;
 
 
 parseShortcodes();
 
-
-//Дефолтные данные
-var coords=[], mapcenter=yamap_defaults['center_map_option'], mapzoom=yamap_defaults['zoom_map_option'], maptype=yamap_defaults['type_map_option'], markicon, markcount=0, mapcount=1;
 
 //Изменение поля типа иконки    
 function iconselectchange() {      // change icon type    
@@ -98,8 +96,15 @@ function enablefields(fieldact=true) {
 
 //Изменяем данные карты в массиве после изменения полей
 function mapdatechange() {
-        ym[mapselector].height=$("#mapheight").val();
-        ym[mapselector].ctrl=$("#mapcontrols").val();
+        if(document.getElementById('mapcontrols')) {
+            if ($("#mapcontrols").val().trim().substr(-1)===';') $("#mapcontrols").val($("#mapcontrols").val().trim().slice(0, -1));          
+            ym[mapselector].controls=$("#mapcontrols").val();
+        } 
+
+        if(document.getElementById('mapheight')) {
+            ym[mapselector].height=$("#mapheight").val();
+        }   
+
         if(document.getElementById('scrollzoom')) {
             if ($("#scrollzoom").attr('aria-checked')==='false') {
                 ym[mapselector].scrollzoom='0';
@@ -272,8 +277,11 @@ function iconname(place) {       //change icon name
                         ymaps.ready(init);
                         if (!editMapAction) {
                             
-                            ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], ctrl: yamap_defaults['controls_map_option'], scrollzoom: optionWheelScroll(), container: '', places: {}}};
-                        }                        
+                            ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionWheelScroll(), container: '', places: {}}};
+
+                        }  
+                        
+
                     });
                     
                     //Удаляем метку с карты
@@ -420,15 +428,15 @@ function iconname(place) {       //change icon name
                             coords=ym.map0.center[0];
                             myMap[mapcount] = new ymaps.Map("yamap", {
                                     center: ym.map0.center[0],
-                                    zoom: yamap_defaults['zoom_map_option'],
-                                    type: yamap_defaults['type_map_option'],
+                                    zoom: ym.map0.zoom,
+                                    type: ym.map0.maptype,
                                     controls: ["zoomControl", "searchControl", "typeSelector"] 
                             }); 
 
                         //Заполняем данные формы из массива при редактировании
                         function loadMap() {
                             if (ym.map0.height!=="undefined") $('#mapheight').val(ym.map0.height);
-                            if (ym.map0.ctrl!=="undefined") $('#mapcontrols').val(ym.map0.ctrl);
+                            if (ym.map0.controls!=="undefined") $('#mapcontrols').val(ym.map0.controls);
 
                         }
 
@@ -660,7 +668,7 @@ function iconname(place) {       //change icon name
                                                     name: 'mapheight',
                                                     label: yamap_object.MapHeight,
                                                     id: 'mapheight',
-                                                    value: yamap_defaults['height_map_option'],                                 
+                                                    value: ym[mapselector].height, //yamap_defaults['height_map_option'],                                 
                                                     maxLength: '10',
                                                     tooltip: 'rem, em, px, %',
                                                     onaction: mapdatechange(),
@@ -671,7 +679,7 @@ function iconname(place) {       //change icon name
                                                     name: 'controls',
                                                     label: yamap_object.MapControls,
                                                     id: 'mapcontrols',
-                                                    value: yamap_defaults['controls_map_option'],   
+                                                    value: ym[mapselector].controls, //yamap_defaults['controls_map_option'],   
                                                     tooltip: yamap_object.MapControlsTip,
                                                     onaction: mapdatechange(),
                                                 },
@@ -771,6 +779,7 @@ function iconname(place) {       //change icon name
                             attrs : {
                                 center: ym[yamapnumber].center,
                                 height: ym[yamapnumber].height,
+                                controls: ym[yamapnumber].controls, //?
                                 zoom: ym[yamapnumber].zoom,
                                 type: ym[yamapnumber].maptype,
                               
@@ -782,7 +791,7 @@ function iconname(place) {       //change icon name
                             };
                             if (ym[mapselector].container!=="") mapArgs.attrs.container=ym[mapselector].container;
                             if (ym[mapselector].scrollzoom==="0") mapArgs.attrs.scrollzoom=ym[mapselector].scrollzoom;
-                            if (ym[mapselector].ctrl!=="") mapArgs.attrs.controls=ym[yamapnumber].ctrl;
+                            if (ym[mapselector].controls!=="") mapArgs.attrs.controls=ym[yamapnumber].controls;
 
                             ed.insertContent( wp.shortcode.string( mapArgs ) );
 
