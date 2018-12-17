@@ -118,6 +118,8 @@ function yaplacemark_func($atts) {
 }
 
 function yamap_func($atts, $content){
+	global $yaplacemark_count, $yamaps_defaults, $yacontrol_count, $maps_count, $count_content;
+	
 	$placearr = '';
 	$atts = shortcode_atts( array(
 		'center' => $yamaps_defaults['center_map_option'],
@@ -130,7 +132,6 @@ function yamap_func($atts, $content){
 
 	), $atts );
 	
-	global $yaplacemark_count, $yamaps_defaults, $yacontrol_count, $maps_count, $count_content;
 	$yaplacemark_count=0;
 	$yacontrol_count=0;
 
