@@ -25,6 +25,8 @@ YaMaps plugin is the simplest way to insert Yandex maps on your site. The plugin
 * You can select the icon and it's color of the marker in the colorpicker.
 * You can select type of map (Map, Satellite, Hybrid), map zoom, map controls in the visual editor.
 
+https://www.youtube.com/watch?v=m7YncsBrL5g
+
 = Shortcodes Structure =
 
 * yamap center - Map center coordinates
@@ -93,6 +95,9 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.5.6 =
+* Fixed: Bugfix.
 
 = 0.5.5 =
 * Fixed: Bugfix.
