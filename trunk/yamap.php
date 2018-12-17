@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.6
+ * Version:     0.5.7
  *
  *
  * License:     GPL2
@@ -25,7 +25,7 @@ $yamaps_defaults = array(
 	'zoom_map_option'			=> '12',
 	'type_map_option'			=> 'yandex#map',
 	'height_map_option'			=> '22rem',
-	'controls_map_option'		=> '111',
+	'controls_map_option'		=> '',
 	'wheelzoom_map_option'		=> 'on',
 	'type_icon_option'			=> 'islands#dotIcon',
 	'color_icon_option'			=> '#1e98ff',
@@ -37,6 +37,15 @@ $yamaps_defaults = array(
 $option_name = 'yamaps_options';
 if(get_option($option_name)){
     $yamaps_defaults=get_option($option_name);
+    //исправляем ошибку с дефолтными настройками 0.5.7
+    $fixpos = strripos($yamaps_defaults['controls_map_option'], '111');
+    if (is_int($fixpos)) {
+    	$fixpattern=['111;','111'];
+    	$yamaps_defaults['controls_map_option']=str_replace($fixpattern, '', $yamaps_defaults['controls_map_option']);
+    	echo $yamaps_defaults['controls_map_option'];
+    	update_option($option_name, $yamaps_defaults); 
+    }
+    //конец правки. Будет удалено в следующих версиях.
 }
 
 add_filter( 'the_content', 'tutsplus_the_content' ); 
