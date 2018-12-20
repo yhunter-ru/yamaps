@@ -96,6 +96,9 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.5.7 =
+* Fixed: Incorrect "111" control in the settings blocked the rendering of elements on new maps.
+
 = 0.5.6 =
 * Fixed: Bugfix.
 
