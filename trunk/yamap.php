@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.7
+ * Version:     0.5.8
  *
  *
  * License:     GPL2
@@ -31,6 +31,8 @@ $yamaps_defaults = array(
 	'color_icon_option'			=> '#1e98ff',
 	'authorlink_map_option'		=> 'on',
 );	
+
+$yamaps_defaults_bak=$yamaps_defaults;
 
 //Загрузка настроек
 
@@ -276,9 +278,6 @@ function yamap_plugin_scripts($plugin_array)
 	global $yamaps_defaults;
 	wp_localize_script('yamap_plugin', 'yamap_defaults', $yamaps_defaults); 
 
-	//Подключаем шаблон правки шорткода
-	include_once dirname(__FILE__).'/templates/tmpl-editor-yamap.html';
-
 	//enqueue TinyMCE plugin script with its ID.
 
 	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js";
@@ -314,6 +313,15 @@ function yamaps_custom_fonts() {
 	    }
 	  </style>';
 }
+
+
+//Подключаем шаблон шорткода
+function yamaps_shortcode_tmpl() {
+	//Подключаем шаблон правки шорткода
+	include_once dirname(__FILE__).'/templates/tmpl-editor-yamap.html';
+}
+
+add_action('admin_head', 'yamaps_shortcode_tmpl');
 
 //Подключаем внешние стили
 

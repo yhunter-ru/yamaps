@@ -96,6 +96,10 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.5.8 =
+* New: Restore defaults button on the settings page.
+* Fixed: Bugfix.
+
 = 0.5.7 =
 * Fixed: Incorrect "111" control in the settings blocked the rendering of elements on new maps.
 

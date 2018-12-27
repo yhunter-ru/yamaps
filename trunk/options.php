@@ -1,6 +1,11 @@
 <?php
 $yamaps_page = 'yamaps-options.php'; // это часть URL страницы, рекомендую использовать строковое значение, т.к. в данном случае не будет зависимости от того, в какой файл вы всё это вставите
  
+if ( isset( $_POST['reset_options'] ) && $_POST['reset_options'] === 'true' ) {
+    global $yamaps_defaults_bak, $yamaps_defaults;
+    $yamaps_defaults=$yamaps_defaults_bak;
+    update_option($option_name, $yamaps_defaults);
+}
 
 /*
  * Функция, добавляющая страницу в пункт меню Настройки
@@ -103,9 +108,16 @@ function yamaps_option_page(){
 			do_settings_sections($yamaps_page);
 			?>
 			<p class="submit">  
-				<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />  
+				<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
 			</p>
+
 		</form>
+		<h2>Reset options</h2>
+
+	    <form action="<?php echo admin_url( 'options-general.php?page=yamaps-options.php' ); ?>" method="post">
+	      <input type="submit" class="button" value="Restore defaults" style="float:left;" />
+	      <input type="hidden" name="reset_options" value="true" />
+	    </form>
 	</div><?php
 }
  
