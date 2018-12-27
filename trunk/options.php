@@ -112,10 +112,10 @@ function yamaps_option_page(){
 			</p>
 
 		</form>
-		<h2>Reset options</h2>
+		<h2><?php _e('Reset options') ?></h2>
 
 	    <form action="<?php echo admin_url( 'options-general.php?page=yamaps-options.php' ); ?>" method="post">
-	      <input type="submit" class="button" value="Restore defaults" style="float:left;" />
+	      <input type="submit" class="button" value="<?php _e('Restore defaults') ?>" style="float:left;" />
 	      <input type="hidden" name="reset_options" value="true" />
 	    </form>
 	</div><?php
