@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.8
+ * Version:     0.5.9
  *
  *
  * License:     GPL2
@@ -42,7 +42,7 @@ if(get_option($option_name)){
     //исправляем ошибку с дефолтными настройками 0.5.7
     $fixpos = strripos($yamaps_defaults['controls_map_option'], '111');
     if (is_int($fixpos)) {
-    	$fixpattern=['111;','111'];
+    	$fixpattern=array('111;','111');
     	$yamaps_defaults['controls_map_option']=str_replace($fixpattern, '', $yamaps_defaults['controls_map_option']);
     	echo $yamaps_defaults['controls_map_option'];
     	update_option($option_name, $yamaps_defaults); 
@@ -50,14 +50,15 @@ if(get_option($option_name)){
     //конец правки. Будет удалено в следующих версиях.
 }
 
-add_filter( 'the_content', 'tutsplus_the_content' ); 
-function tutsplus_the_content( $content ) {
+//Добавляем счетчик полей с контентом (для постов с проихвольными полями)
+add_filter( 'the_content', 'yamaps_the_content' ); 
+function yamaps_the_content( $content ) {
 	global $count_content;
 	$count_content++;
     return $content;
 }
 
-
+//Функция добавления метки на карту
 function yaplacemark_func($atts) {
 	$atts = shortcode_atts( array(
 		'coord' => '',
@@ -97,12 +98,25 @@ function yaplacemark_func($atts) {
 
 
                               
-                            }, {
-                            	preset: "'.$atts["icon"].'", 
-                            	iconColor: "'.$atts["color"].'"
+                            }, {';
+    //Проверяем, является ли поле иконки url-адресом. Если да, то ставим в качестве иконки кастомное изображение.
+    $iconurl = strripos($atts["icon"], 'http');
+    if (is_int($iconurl)) {
+    	$yaplacemark.='                        
+                            	iconLayout: "default#image",
+        						iconImageHref: "'.$atts["icon"].'"
                             });  
-	';
+		';
 
+    }
+    else {
+    	$yaplacemark.='                        
+                            	preset: "'.$atts["icon"].'", 
+                            	iconColor: "'.$atts["color"].'",
+                            });  
+		';
+    }
+    
 	$atts["url"]=trim($atts["url"]);
 	if (($atts["url"]<>"")and($atts["url"]<>"0")) {
 		$marklink=$atts["url"];
@@ -128,6 +142,7 @@ function yaplacemark_func($atts) {
 
 }
 
+//Функция вывода карты
 function yamap_func($atts, $content){
 	global $yaplacemark_count, $yamaps_defaults, $yacontrol_count, $maps_count, $count_content;
 	
@@ -214,19 +229,14 @@ add_shortcode( 'yaplacemark', 'yaplacemark_func' );
 add_shortcode( 'yamap', 'yamap_func' ); 
 add_shortcode( 'yacontrol', 'yacontrol_func' ); 
 
-
-
-
-
-
+//Функция подключения текстового домена для локализации
 function yamaps_plugin_load_plugin_textdomain() {
     load_plugin_textdomain( 'yamaps', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'yamaps_plugin_load_plugin_textdomain' );
 
 
-// Add map button
-
+// Функция подключения скриптов и массив для локализации
 function yamap_plugin_scripts($plugin_array)
 {
     
@@ -291,6 +301,7 @@ function yamap_plugin_scripts($plugin_array)
 
 add_filter("mce_external_plugins", "yamap_plugin_scripts");
 
+//Функция регистрации кнопок в редакторе
 function register_buttons_editor($buttons)
 {
     //register buttons with their id.
@@ -303,8 +314,8 @@ add_filter("mce_buttons", "register_buttons_editor");
 
 add_action('admin_head', 'yamaps_custom_fonts');
 
-function yamaps_custom_fonts() {
-	//Исправляем проблему со съехавшим шрифтом в Stretchy метке на карте в редакторе		
+//Исправляем проблему со съехавшим шрифтом в Stretchy метке на карте в редакторе
+function yamaps_custom_fonts() {			
 	  echo '<style>
 	    .mce-container ymaps {
 	    	
@@ -324,7 +335,6 @@ function yamaps_shortcode_tmpl() {
 add_action('admin_head', 'yamaps_shortcode_tmpl');
 
 //Подключаем внешние стили
-
 function yamap_mce_css( $mce_css ) {
   if ( !empty( $mce_css ) )
     $mce_css .= ',';
@@ -333,7 +343,7 @@ function yamap_mce_css( $mce_css ) {
   }
 add_filter( 'mce_css', 'yamap_mce_css' );
 
-//Поддключаем стили для нового редактора Gutenberg
+//Подключаем стили для нового редактора Gutenberg
 function yamaps_gutenberg_styles() {
 	// Load the theme styles within Gutenberg.
 	 wp_enqueue_style( 'yamaps-gutenberg', plugins_url( 'style.content.css', __FILE__ ));

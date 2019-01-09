@@ -198,7 +198,17 @@ function iconname(place) {       //change icon name
         if (place!=='') {
             placemark[place.replace('placemark', '')].properties.set('hintContent', yahint);
             placemark[place.replace('placemark', '')].properties.set('iconContent', yacontent);
-            placemark[place.replace('placemark', '')].options.set('preset', markicon);
+            //Проверяем, является ли поле иконки url-адресом. Если да, то ставим в качестве иконки кастомное изображение.
+            if (markicon.indexOf("http")===-1) {
+                placemark[place.replace('placemark', '')].options.unset('iconLayout', 'default#image');
+                placemark[place.replace('placemark', '')].options.unset('iconImageHref', markicon);
+                placemark[place.replace('placemark', '')].options.set('preset', markicon);
+            }
+            else {            
+                placemark[place.replace('placemark', '')].options.unset('preset', markicon);
+                placemark[place.replace('placemark', '')].options.set('iconLayout', 'default#image');
+                placemark[place.replace('placemark', '')].options.set('iconImageHref', markicon);
+            }
         }
 }
 

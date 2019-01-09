@@ -3,7 +3,7 @@ Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
 Tags: yandex, яндекс, карты, карта, maps, placemark
 Requires at least: 4.2
-Tested up to: 5.0
+Tested up to: 5.0.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -38,7 +38,7 @@ https://www.youtube.com/watch?v=m7YncsBrL5g
 * yamap container - ID of the existing block in the WP template. The map will be placed in the block with this ID. The new block in the content will not be created.
 
 * yaplacemark coord - Placemark coordinates
-* yaplacemark icon - Placemark icon
+* yaplacemark icon - Placemark icon type or custom icon url
 * yaplacemark color - Marker color
 * yaplacemark name - Placemark hint or content
 * yaplacemark url - Linked URL or post with ID will be opened by click on the placemark
@@ -95,6 +95,10 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.5.9 =
+* New: You can use your own icons. Place the link to the file in the icon field (url must contain "http").
+* Fixed: Bugfix.
 
 = 0.5.8 =
 * New: Restore defaults button on the settings page.
