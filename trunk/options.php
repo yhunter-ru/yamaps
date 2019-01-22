@@ -59,10 +59,29 @@ function yamaps_option_page(){
 
                               
                             }, {
-                            	preset: '<?php echo $yamaps_defaults["type_icon_option"]; ?>', 
-                            	iconColor: '<?php echo $yamaps_defaults["color_icon_option"]; ?>'
+                            	<?php 
+                            		//Проверяем, является ли поле иконки url-адресом. Если да, то ставим в качестве иконки кастомное изображение.
+								    $iconurl = strripos($yamaps_defaults["type_icon_option"], 'http');
+								    if (is_int($iconurl)) {
+								    	echo '                        
+								                            	iconLayout: "default#image",
+								        						iconImageHref: "'.$yamaps_defaults["type_icon_option"].'"
+								                              
+										';
+
+								    }
+								    else {
+								    	echo '                        
+								                            	preset: "'.$yamaps_defaults["type_icon_option"].'", 
+								                            	iconColor: "'.$yamaps_defaults["color_icon_option"].'",
+								                             
+										';
+								    }
+
+                            	?>
+
                             });  
-	myMap0.geoObjects.add(placemark1);
+							myMap0.geoObjects.add(placemark1);
 
 							//Событие перемещения карты
 							myMap0.events.add('boundschange', function (event) {
