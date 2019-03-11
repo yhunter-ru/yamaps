@@ -1,4 +1,4 @@
-var script = document.createElement('script');
+;var script = document.createElement('script');
 script.src = "https://api-maps.yandex.ru/2.1/?lang="+tinymce.util.I18n.getCode();    
 script.setAttribute('type', 'text/javascript');
 document.getElementsByTagName('head')[0].appendChild(script);
@@ -7,18 +7,18 @@ var mapselector = 'map0', activeplace="", ym={}, editMapAction=false, editorCont
 var placemark = [];
 
 //Определяем отключен ли скролл колесом на редактируемой карте
-function checkWheelScroll() {
+function checkParam(param) {
     var checker=true;
-    if (ym.map0.scrollzoom==="0") { 
+    if (ym.map0[param]==="0") { 
         checker=false;
     }
     return checker;
 }
 
-//Задаем дефолтный скроллзум из настроек
-function optionWheelScroll() {
+//Задаем дефолтные параметры из настроек
+function optionCheck(param) {
 	var checker="0";
-	if (yamap_defaults['wheelzoom_map_option']==='on')	{
+	if (yamap_defaults[param]==='on')	{
 		checker="";
 	}
 	return checker;
@@ -37,8 +37,9 @@ function checkTitle() {
 //Дефолтные данные
 var coords=[], mapcenter=yamap_defaults['center_map_option'], mapzoom=yamap_defaults['zoom_map_option'], maptype=yamap_defaults['type_map_option'], markicon, markcount=0, mapcount=1;
 
-
-parseShortcodes();
+(function($) {
+    parseShortcodes();
+})(jQuery);
 
 
 //Изменение поля типа иконки    
@@ -94,8 +95,20 @@ function enablefields(fieldact=true) {
             
 } 
 
+//Проверяем значение чекбокса
+function checkcheckbox(param) {
+    if ($("#"+param).attr('aria-checked')!="undefined") {
+        if ($("#"+param).attr('aria-checked')=='true') {
+                    ym[mapselector][param]='1';
+
+                }
+                else ym[mapselector][param]='0';
+    }           
+}
+
 //Изменяем данные карты в массиве после изменения полей
 function mapdatechange() {
+        
         if(document.getElementById('mapcontrols')) {
             if ($("#mapcontrols").val().trim().substr(-1)===';') $("#mapcontrols").val($("#mapcontrols").val().trim().slice(0, -1));          
             ym[mapselector].controls=$("#mapcontrols").val();
@@ -103,14 +116,11 @@ function mapdatechange() {
 
         if(document.getElementById('mapheight')) {
             ym[mapselector].height=$("#mapheight").val();
-        }   
+        } 
 
-        if(document.getElementById('scrollzoom')) {
-            if ($("#scrollzoom").attr('aria-checked')==='false') {
-                ym[mapselector].scrollzoom='0';
-            }
-            else ym[mapselector].scrollzoom='1';
-        }    
+        setTimeout(checkcheckbox, 200, 'scrollzoom');
+        setTimeout(checkcheckbox, 200, 'mobiledrag');
+          
         if(document.getElementById('mapcontainer')) {
             if ($("#mapcontainer").val()!="undefined") {
 
@@ -118,6 +128,7 @@ function mapdatechange() {
 
             }
         }
+        
 }
 
 //Изменяем данные карты в массиве после изменения карты в редакторе
@@ -287,7 +298,7 @@ function iconname(place) {       //change icon name
                         ymaps.ready(init);
                         if (!editMapAction) {
                             
-                            ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionWheelScroll(), container: '', places: {}}};
+                            ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionCheck('wheelzoom_map_option'), mobiledrag: optionCheck('mobiledrag_map_option'), container: '', places: {}}};
 
                         }  
                         
@@ -514,7 +525,7 @@ function iconname(place) {       //change icon name
                         $("#mapheight, #mapcontrols").change(function() {
                             mapdatechange();
                         });
-                        $("#scrollzoom, #addcontrol a").click(function() {
+                        $("#scrollzoom, #mobiledrag, #addcontrol a").click(function() {
                             mapdatechange();
                         });
 
@@ -702,10 +713,19 @@ function iconname(place) {       //change icon name
                                                 },                                                
                                                 {
                                                     type: 'checkbox',
-                                                    checked: checkWheelScroll(),
+                                                    checked: checkParam('scrollzoom'),
                                                     name: 'scrollZoom',
                                                     label: yamap_object.ScrollZoom,
                                                     id: 'scrollzoom',
+                                                    onaction: mapdatechange(),
+
+                                                },                                                
+                                                {
+                                                    type: 'checkbox',
+                                                    checked: checkParam('mobiledrag'),
+                                                    name: 'mobileDrag',
+                                                    label: yamap_object.MobileDrag,
+                                                    id: 'mobiledrag',
                                                     onaction: mapdatechange(),
 
                                                 },
@@ -789,7 +809,7 @@ function iconname(place) {       //change icon name
                             attrs : {
                                 center: ym[yamapnumber].center,
                                 height: ym[yamapnumber].height,
-                                controls: ym[yamapnumber].controls, //?
+                                controls: ym[yamapnumber].controls, 
                                 zoom: ym[yamapnumber].zoom,
                                 type: ym[yamapnumber].maptype,
                               
@@ -801,8 +821,8 @@ function iconname(place) {       //change icon name
                             };
                             if (ym[mapselector].container!=="") mapArgs.attrs.container=ym[mapselector].container;
                             if (ym[mapselector].scrollzoom==="0") mapArgs.attrs.scrollzoom=ym[mapselector].scrollzoom;
+                            if (ym[mapselector].mobiledrag==="0") mapArgs.attrs.mobiledrag=ym[mapselector].mobiledrag;
                             if (ym[mapselector].controls!=="") mapArgs.attrs.controls=ym[yamapnumber].controls;
-
                             ed.insertContent( wp.shortcode.string( mapArgs ) );
 
                              
@@ -838,3 +858,4 @@ function iconname(place) {       //change icon name
 
     
 })();
+

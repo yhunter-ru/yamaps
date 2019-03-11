@@ -3,7 +3,7 @@ Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
 Tags: yandex, яндекс, карты, карта, maps, placemark
 Requires at least: 4.2
-Tested up to: 5.0.3
+Tested up to: 5.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,6 +33,7 @@ https://www.youtube.com/watch?v=m7YncsBrL5g
 * yamap height - Map height
 * yamap zoom - Map zoom (0 to 19)
 * yamap scrollzoom - Scrollwheel zoom lock (scrollzoom="0" for lock)
+* yamap mobiledrag - Map dragging can be disabled for mobile devices (mobiledrag="0" for lock)
 * yamap type - Map type (yandex#map, yandex#satellite, yandex#hybrid)
 * yamap controls - Map controls separated by a semicolon (typeSelector;zoomControl;searchControl;routeEditor;trafficControl;fullscreenControl;geolocationControl)
 * yamap container - ID of the existing block in the WP template. The map will be placed in the block with this ID. The new block in the content will not be created.
@@ -95,6 +96,10 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.5.11 =
+* New: Map dragging can be disabled for mobile devices. 
+* Fixed: Bugfix.
 
 = 0.5.10 =
 * Fixed: Bugfix.

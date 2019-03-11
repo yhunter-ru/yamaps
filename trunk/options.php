@@ -122,6 +122,9 @@ function yamaps_option_page(){
             </script>
                     
     		<div id="yamap"  style="position: relative; min-height: 15rem; margin-bottom: 1rem;"></div><br />
+    		<div class="thanks" style="border: 4px #ffdb4d solid; background: #fff ; padding: 0 1rem 2rem 1rem;">
+    			<?php echo __( '<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other icon types?</h2>Additional types of icons can be found by the link in the <a href="https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ " style="white-space: normal">Yandex.Map documentation</a>.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Do you like YaMaps plugin?</h2>You can support its development by donate (<a href="https://money.yandex.ru/to/41001278340150" style="white-space: normal">Yandex</a>, <a href="https://www.paypal.me/yhunter" style="white-space: normal">PayPal</a>) or just leave a positive feedback in the <a href="https://wordpress.org/support/plugin/yamaps/reviews/" style="white-space: normal">plugin repository</a>. It\'s very motivating!</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Any questions?</h2>Ask in the comments <a href="https://www.yhunter.ru/portfolio/dev/yamaps/" style="white-space: normal">on the plug-in\'s page</a>, <a href="https://wordpress.org/support/plugin/yamaps" style="white-space: normal">WP support forum</a> or <a href="https://github.com/yhunter-ru/yamaps/issues" style="white-space: normal">on GitHub</a>.</div>', 'yamaps' ); ?>
+    		</div>
 			<?php 
 			settings_fields('yamaps_options'); // Идентификатор настроек плагина
 			do_settings_sections($yamaps_page);
@@ -130,11 +133,10 @@ function yamaps_option_page(){
 				<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
 			</p>
 
-		</form>
-		<h2><?php _e('Reset options') ?></h2>
+		<h2><?php echo __( 'Reset options', 'yamaps' );?></h2>
 
 	    <form action="<?php echo admin_url( 'options-general.php?page=yamaps-options.php' ); ?>" method="post">
-	      <input type="submit" class="button" value="<?php _e('Restore defaults') ?>" style="float:left;" />
+	      <input type="submit" class="button" value="<?php echo __( 'Restore defaults', 'yamaps' );?>" style="float:left;" />
 	      <input type="hidden" name="reset_options" value="true" />
 	    </form>
 	</div><?php
@@ -204,6 +206,14 @@ function yamaps_option_settings() {
 		'desc'      => __( 'The map can be scaled with mouse scroll', 'yamaps' )
 	);
 	add_settings_field( 'wheelzoom_map_option', __( 'Wheel zoom', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
+
+	// Чекбокс мобильного перетаскивания
+	$yamaps_field_params = array(
+		'type'      => 'checkbox',
+		'id'        => 'mobiledrag_map_option',
+		'desc'      => __( 'The map can be dragged on mobile', 'yamaps' )
+	);
+	add_settings_field( 'mobiledrag_map_option', __( 'Mobile drag', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
 	// Чекбокс ссылки на автора
 	$yamaps_field_params = array(

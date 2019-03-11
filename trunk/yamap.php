@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.10
+ * Version:     0.5.11
  *
  *
  * License:     GPL2
@@ -27,6 +27,7 @@ $yamaps_defaults = array(
 	'height_map_option'			=> '22rem',
 	'controls_map_option'		=> '',
 	'wheelzoom_map_option'		=> 'on',
+	'mobiledrag_map_option'		=> 'on',
 	'type_icon_option'			=> 'islands#dotIcon',
 	'color_icon_option'			=> '#1e98ff',
 	'authorlink_map_option'		=> 'on',
@@ -154,6 +155,7 @@ function yamap_func($atts, $content){
 		'height' => $yamaps_defaults['height_map_option'],
 		'controls' => $yamaps_defaults['controls_map_option'],
 		'scrollzoom' => '1',
+		'mobiledrag' => '1',
 		'container' => '',
 
 	), $atts );
@@ -204,6 +206,13 @@ function yamap_func($atts, $content){
 							}
                             $yamap.='myMap'.$maps_count.'.geoObjects'.$placearr.';';
                             if ($atts["scrollzoom"]=="0") $yamap.="myMap".$maps_count.".behaviors.disable('scrollZoom');";
+                            //Если у карты mobiledrag=0, отключаем прокрутку карты для следующих платформ
+                            if ($atts["mobiledrag"]=="0") {
+                            	$yamap.="
+                            	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+                            		myMap".$maps_count.".behaviors.disable('drag');	
+								}";
+                            }
                             $yamap.='
 
                         }
@@ -266,6 +275,7 @@ function yamap_plugin_scripts($plugin_array)
 							'type' => __('Map type', 'yamaps'),
 							'zoom' => __('Zoom', 'yamaps'),
 							'ScrollZoom' => __('Wheel zoom', 'yamaps'),
+							'MobileDrag' => __('Mobile drag', 'yamaps'),
 							'search' => __('Search', 'yamaps'),
 							'route' => __('Route', 'yamaps'),
 							'ruler' => __('Ruler', 'yamaps'),

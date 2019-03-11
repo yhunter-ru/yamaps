@@ -64,7 +64,7 @@ function parseShortcodes(){
             ym['map0']={};
             ym['map0'].places={};
             for(var key in values) {
-                ym['map0'][key]=values[key];
+                ym['map0'][key]=values[key];                
                 delete ym['map0'].innercontent;
                 findPlaceMarks(values.innercontent);                            
                                 
