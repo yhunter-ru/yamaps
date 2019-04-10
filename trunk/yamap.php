@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.11
+ * Version:     0.6
  *
  *
  * License:     GPL2
@@ -31,6 +31,7 @@ $yamaps_defaults = array(
 	'type_icon_option'			=> 'islands#dotIcon',
 	'color_icon_option'			=> '#1e98ff',
 	'authorlink_map_option'		=> 'on',
+	'reset_maps_option'			=> 'off',
 );	
 
 $yamaps_defaults_bak=$yamaps_defaults;
@@ -51,7 +52,7 @@ if(get_option($option_name)){
     //конец правки. Будет удалено в следующих версиях.
 }
 
-//Добавляем счетчик полей с контентом (для постов с проихвольными полями)
+//Добавляем счетчик полей с контентом (для постов с произвольными полями)
 add_filter( 'the_content', 'yamaps_the_content' ); 
 function yamaps_the_content( $content ) {
 	global $count_content;
@@ -68,7 +69,7 @@ function yaplacemark_func($atts) {
 		'url' => '',
 		'icon' => 'islands#dotIcon',
 	), $atts );
-	global $yaplacemark_count;
+	global $yaplacemark_count, $maps_count;
 	$yaplacemark_count++;
 	$yahint="";
 	$yacontent="";
@@ -91,9 +92,9 @@ function yaplacemark_func($atts) {
 	}
 	
 	
-
 	$yaplacemark='
-		placemark'.$yaplacemark_count.' = new ymaps.Placemark(['.$atts["coord"].'], {
+		ym.myMap'.$maps_count.'.places.placemark'.$yaplacemark_count.' = {icon: "'.$atts["icon"].'", name: "'.$atts["name"].'", color: "'.$atts["color"].'", coord: "'.$atts["coord"].'", url: "'.$atts["url"].'",};
+		myMap'.$maps_count.'placemark'.$yaplacemark_count.' = new ymaps.Placemark(['.$atts["coord"].'], {
                                 hintContent: "'.$yahint.'",
                                 iconContent: "'.$yacontent.'",
 
@@ -124,23 +125,17 @@ function yaplacemark_func($atts) {
 		settype($marklink, "integer");
 		if ($marklink<>0) {
 			$marklink=get_the_permalink($atts["url"]);
+			$yaplacemark.='ym.myMap'.$maps_count.'.places["placemark'.$yaplacemark_count.'"].url="'.$marklink.'"';
 		}
 		else {
 			$marklink=$atts["url"];
 		}
+		$yaplacemark.=' 
+				YMlisteners.myMap'.$maps_count.'['.$yaplacemark_count.'] = myMap'.$maps_count.'placemark'.$yaplacemark_count.'.events.group().add("click", function(e) {yamapsonclick("'.$marklink.'")});
 
-
-			$yaplacemark.=' 
-				placemark'.$yaplacemark_count.'.events.add("click", function () {
-	                location.href="'.$marklink.'";
-	            });
-			';
-
+		';
 	}
-	
-
 	return $yaplacemark;
-
 }
 
 //Функция вывода карты
@@ -167,9 +162,12 @@ function yamap_func($atts, $content){
 
 	if (trim($yamactrl)<>"") $yamactrl='"'.$yamactrl.'"';
 
-	if ($maps_count==0) { // Test for first time content and single map
-		$yamap='<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>
-                    ';
+	if ($maps_count==0) { // First time content and single map
+		$yamap='<!-- YaMaps — Yandex Maps for WordPress plugin  https://www.yhunter.ru/portfolio/dev/yamaps/ -->
+		<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>
+		<script>
+			var ym = {}, YMlisteners = {};
+		</script>';
 	}
 	else {
 		$yamap='';
@@ -190,9 +188,16 @@ function yamap_func($atts, $content){
     $yamap.='
 						<script type="text/javascript">
                         ymaps.ready(init); 
-                 
+                 		var myMap'.$maps_count.';
+						YMlisteners.myMap'.$maps_count.' = {};
+						ym.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["$yamactrl"].'", places: {}};
+
+                 		var yamapsonclick = function (url) {
+							location.href=url;
+                 		}
+
                         function init () {
-                            var myMap'.$maps_count.' = new ymaps.Map("'.$mapcontainter.'", {
+                            myMap'.$maps_count.' = new ymaps.Map("'.$mapcontainter.'", {
                                     center: ['.$atts["center"].'],
                                     zoom: '.$atts["zoom"].',
                                     type: "'.$atts["type"].'",
@@ -202,7 +207,7 @@ function yamap_func($atts, $content){
 							'.do_shortcode($placemarkscode);							
 							
 							for ($i = 1; $i <= $yaplacemark_count; $i++) {
-								$placearr.='.add(placemark'.$i.')';
+								$placearr.='.add(myMap'.$maps_count.'placemark'.$i.')';
 							}
                             $yamap.='myMap'.$maps_count.'.geoObjects'.$placearr.';';
                             if ($atts["scrollzoom"]=="0") $yamap.="myMap".$maps_count.".behaviors.disable('scrollZoom');";
@@ -327,8 +332,7 @@ add_action('admin_head', 'yamaps_custom_fonts');
 //Исправляем проблему со съехавшим шрифтом в Stretchy метке на карте в редакторе
 function yamaps_custom_fonts() {			
 	  echo '<style>
-	    .mce-container ymaps {
-	    	
+	    .mce-container ymaps {	    	
 	    	font-family: "Source Sans Pro",HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif !important;
 	    	font-size: 11px !important;
 	    }
@@ -362,6 +366,3 @@ add_action( 'enqueue_block_editor_assets', 'yamaps_gutenberg_styles' );
 
 
 include( plugin_dir_path( __FILE__ ) . 'options.php'); 
-
-
-

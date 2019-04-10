@@ -1,10 +1,14 @@
 <?php
-$yamaps_page = 'yamaps-options.php'; // это часть URL страницы, рекомендую использовать строковое значение, т.к. в данном случае не будет зависимости от того, в какой файл вы всё это вставите
- 
-if ( isset( $_POST['reset_options'] ) && $_POST['reset_options'] === 'true' ) {
-    global $yamaps_defaults_bak, $yamaps_defaults;
-    $yamaps_defaults=$yamaps_defaults_bak;
-    update_option($option_name, $yamaps_defaults);
+$yamaps_page = 'yamaps-options.php'; 
+
+global $yamaps_page, $yamaps_defaults, $yamaps_defaults_bak;
+$option_name = 'yamaps_options';
+if(get_option($option_name)){
+	$yamaps_defaults=get_option($option_name);
+	if ($yamaps_defaults['reset_maps_option']==="on") {
+		update_option( $option_name, $yamaps_defaults_bak);
+		$yamaps_defaults=$yamaps_defaults_bak;
+	}
 }
 
 /*
@@ -23,7 +27,6 @@ function yamaps_option_page(){
 	global $yamaps_page, $yamaps_defaults;
 
 	?><div class="wrap">
-
 		<h2><?php echo __( 'YaMaps default options', 'yamaps' ); ?></h2>
 		<form method="post" id="YaMapsOptions" enctype="multipart/form-data" action="options.php">
 		<?php echo'<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>'; ?>
@@ -133,12 +136,7 @@ function yamaps_option_page(){
 				<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
 			</p>
 
-		<h2><?php echo __( 'Reset options', 'yamaps' );?></h2>
-
-	    <form action="<?php echo admin_url( 'options-general.php?page=yamaps-options.php' ); ?>" method="post">
-	      <input type="submit" class="button" value="<?php echo __( 'Restore defaults', 'yamaps' );?>" style="float:left;" />
-	      <input type="hidden" name="reset_options" value="true" />
-	    </form>
+		
 	</div><?php
 }
  
@@ -242,6 +240,18 @@ function yamaps_option_settings() {
 		'desc'      => __( 'For example:', 'yamaps' ).' #ff3333'
 	);
 	add_settings_field( 'color_icon_option', __( 'Marker color', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'icon_section', $yamaps_field_params );
+
+	// Область сброса настроек
+ 
+	add_settings_section( 'reset_section', __( 'Reset options', 'yamaps' ), '', $yamaps_page );
+
+	// Чекбокс сброса настроек
+	$yamaps_field_params = array(
+		'type'      => 'checkbox',
+		'id'        => 'reset_maps_option',
+		'desc'      => __( 'Restore defaults', 'yamaps' )
+	);
+	add_settings_field( 'reset_maps_option', __( 'Reset options', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'reset_section', $yamaps_field_params );
  
 }
 add_action( 'admin_init', 'yamaps_option_settings' );
@@ -312,20 +322,5 @@ function yamaps_option_display_settings($args) {
 			echo "</fieldset>";  
 		break; 
 	}
-}
- 
-/*
- * Функция проверки правильности вводимых полей
- */
-function yamaps_validate_settings($input) {
-	foreach($input as $k => $v) {
-		$valid_input[$k] = trim($v); 
-		/* Вы можете включить в эту функцию различные проверки значений, например
-		if(! задаем условие ) { // если не выполняется
-			$valid_input[$k] = ''; // тогда присваиваем значению пустую строку
-		}
-		*/
-	}
-	return $valid_input;
 }
 ?>

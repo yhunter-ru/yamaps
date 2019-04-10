@@ -97,6 +97,12 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6 =
+
+* New: Interaction possibility with the map from other plugins and themes. The possibility of expanding the functionality of the plugin. Contact the author if you need additional features on your website.
+* Code refactoring.
+* Fixed: Bugfix.
+
 = 0.5.11 =
 * New: Map dragging can be disabled for mobile devices. 
 * Fixed: Bugfix.

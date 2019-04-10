@@ -175,7 +175,7 @@ function inactive() {
 
 //Изменяем имя или хинт иконки в зависимости от ее типа
 function iconname(place) {       //change icon name
-
+		yacontent="";
         if (activeplace!=='') { 
             place=activeplace;
         }
