@@ -270,7 +270,7 @@ function yamaps_option_display_settings($args) {
 	//delete_option($option_name); //удаление настроек для тестов
  	
 	if(!get_option( $option_name)){
-    	update_option( $option_name, $yamaps_defaults);
+    	update_option( $option_name, $yamaps_defaults_bak);
 	}
 
 	//Нужно перебрать настройки и поставить дефолт в отсутствующие.
@@ -284,11 +284,11 @@ function yamaps_option_display_settings($args) {
 	foreach ($yamaps_defaults_bak as $key => $value) {
 		if (!isset($o[$key])) {
 			if (($value=='off')or($value=='on')) {
-				$o[$key]=$yamaps_defaults_bak[$key];
+				$o[$key]=$yamaps_defaults[$key];
 			}
-		}		
+		}
+
 	}
-	
 	switch ( $type ) {  
 		case 'text':  
 			$o[$id] = esc_attr( stripslashes($o[$id]) );
@@ -325,4 +325,5 @@ function yamaps_option_display_settings($args) {
 		break; 
 	}
 }
+
 ?>
