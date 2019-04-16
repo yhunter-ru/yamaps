@@ -5,9 +5,11 @@ global $yamaps_page, $yamaps_defaults, $yamaps_defaults_bak;
 $option_name = 'yamaps_options';
 if(get_option($option_name)){
 	$yamaps_defaults=get_option($option_name);
-	if ($yamaps_defaults['reset_maps_option']==="on") {
-		update_option( $option_name, $yamaps_defaults_bak);
-		$yamaps_defaults=$yamaps_defaults_bak;
+	if (isset($yamaps_defaults['reset_maps_option'])) {
+		if ($yamaps_defaults['reset_maps_option']==="on") {
+			update_option( $option_name, $yamaps_defaults_bak);
+			$yamaps_defaults=$yamaps_defaults_bak;
+		}
 	}
 }
 
@@ -261,7 +263,7 @@ add_action( 'admin_init', 'yamaps_option_settings' );
  * Здесь задаётся HTML и PHP, выводящий поля
  */
 function yamaps_option_display_settings($args) {
-	global $yamaps_defaults;
+	global $yamaps_defaults, $yamaps_defaults_bak;
 	extract( $args );
  
 	$option_name = 'yamaps_options';
@@ -279,10 +281,10 @@ function yamaps_option_display_settings($args) {
 
 	}
 
-	foreach ($yamaps_defaults as $key => $value) {
+	foreach ($yamaps_defaults_bak as $key => $value) {
 		if (!isset($o[$key])) {
 			if (($value=='off')or($value=='on')) {
-				$o[$key]=$yamaps_defaults[$key];
+				$o[$key]=$yamaps_defaults_bak[$key];
 			}
 		}		
 	}

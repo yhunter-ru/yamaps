@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6
+ * Version:     0.6.1
  *
  *
  * License:     GPL2
@@ -190,7 +190,7 @@ function yamap_func($atts, $content){
                         ymaps.ready(init); 
                  		var myMap'.$maps_count.';
 						YMlisteners.myMap'.$maps_count.' = {};
-						ym.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["$yamactrl"].'", places: {}};
+						ym.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["controls"].'", places: {}};
 
                  		var yamapsonclick = function (url) {
 							location.href=url;
