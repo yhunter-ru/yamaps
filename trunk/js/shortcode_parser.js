@@ -29,12 +29,14 @@ function parseShortcodes(){
     wp.mce.yamap = {
         shortcode_data: {},
         template: media.template( 'editor-yamap' ),
-        getContent: function() {
+        getContent: function() { 
             var options = this.shortcode.attrs.named;
             options.text = this.text;
             options.plugin = yamap_object.PluginTitle;
             options.innercontent = this.shortcode.content;
-            return this.template(options);
+            if (typeof ElementorConfig === 'undefined') { //код внутри функции блокирует вставку шорткода в Elementor. Нужно разобраться.
+                return this.template(options);
+            }
         },
         View: { // before WP 4.2:
             template: media.template( 'editor-yamap' ), 

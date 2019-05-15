@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.2
+ * Version:     0.6.3
  *
  *
  * License:     GPL2
@@ -93,7 +93,7 @@ function yaplacemark_func($atts) {
 	
 	
 	$yaplacemark='
-		ym.myMap'.$maps_count.'.places.placemark'.$yaplacemark_count.' = {icon: "'.$atts["icon"].'", name: "'.$atts["name"].'", color: "'.$atts["color"].'", coord: "'.$atts["coord"].'", url: "'.$atts["url"].'",};
+		YaMapsWP.myMap'.$maps_count.'.places.placemark'.$yaplacemark_count.' = {icon: "'.$atts["icon"].'", name: "'.$atts["name"].'", color: "'.$atts["color"].'", coord: "'.$atts["coord"].'", url: "'.$atts["url"].'",};
 		myMap'.$maps_count.'placemark'.$yaplacemark_count.' = new ymaps.Placemark(['.$atts["coord"].'], {
                                 hintContent: "'.$yahint.'",
                                 iconContent: "'.$yacontent.'",
@@ -125,7 +125,7 @@ function yaplacemark_func($atts) {
 		settype($marklink, "integer");
 		if ($marklink<>0) {
 			$marklink=get_the_permalink($atts["url"]);
-			$yaplacemark.='ym.myMap'.$maps_count.'.places["placemark'.$yaplacemark_count.'"].url="'.$marklink.'"';
+			$yaplacemark.='YaMapsWP.myMap'.$maps_count.'.places["placemark'.$yaplacemark_count.'"].url="'.$marklink.'"';
 		}
 		else {
 			$marklink=$atts["url"];
@@ -166,7 +166,7 @@ function yamap_func($atts, $content){
 		$yamap='<!-- YaMaps — Yandex Maps for WordPress plugin  https://www.yhunter.ru/portfolio/dev/yamaps/ -->
 		<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>
 		<script>
-			var ym = {}, YMlisteners = {};
+			var YaMapsWP = {}, YMlisteners = {};
 		</script>';
 	}
 	else {
@@ -190,7 +190,7 @@ function yamap_func($atts, $content){
                         ymaps.ready(init); 
                  		var myMap'.$maps_count.';
 						YMlisteners.myMap'.$maps_count.' = {};
-						ym.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["controls"].'", places: {}};
+						YaMapsWP.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["controls"].'", places: {}};
 
                  		var yamapsonclick = function (url) {
 							location.href=url;
@@ -314,7 +314,7 @@ function yamap_plugin_scripts($plugin_array)
 
 
 
-add_filter("mce_external_plugins", "yamap_plugin_scripts");
+add_filter("mce_external_plugins", "yamap_plugin_scripts", 999 );
 
 //Функция регистрации кнопок в редакторе
 function register_buttons_editor($buttons)
@@ -325,9 +325,9 @@ function register_buttons_editor($buttons)
 }
 
 
-add_filter("mce_buttons", "register_buttons_editor");
+add_filter("mce_buttons", "register_buttons_editor", 999 );
 
-add_action('admin_head', 'yamaps_custom_fonts');
+add_action('admin_head', 'yamaps_custom_fonts', 999 );
 
 //Исправляем проблему со съехавшим шрифтом в Stretchy метке на карте в редакторе
 function yamaps_custom_fonts() {			
