@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.3
+ * Version:     0.6.4
  *
  *
  * License:     GPL2
@@ -19,6 +19,7 @@ $maps_count=0;
 
 // Test for the first time content and single map (WooCommerce and other custom posts)
 $count_content=0;
+$yamap_load_api=true;
 
 $yamaps_defaults = array(
 	'center_map_option'			=> '55.7473,37.6247',
@@ -69,6 +70,7 @@ function yaplacemark_func($atts) {
 		'url' => '',
 		'icon' => 'islands#dotIcon',
 	), $atts );
+
 	global $yaplacemark_count, $maps_count;
 	$yaplacemark_count++;
 	$yahint="";
@@ -140,7 +142,7 @@ function yaplacemark_func($atts) {
 
 //Функция вывода карты
 function yamap_func($atts, $content){
-	global $yaplacemark_count, $yamaps_defaults, $yacontrol_count, $maps_count, $count_content;
+	global $yaplacemark_count, $yamaps_defaults, $yacontrol_count, $maps_count, $count_content, $yamap_load_api;
 	
 	$placearr = '';
 	$atts = shortcode_atts( array(
@@ -162,12 +164,13 @@ function yamap_func($atts, $content){
 
 	if (trim($yamactrl)<>"") $yamactrl='"'.$yamactrl.'"';
 
-	if ($maps_count==0) { // First time content and single map
+	if ($yamap_load_api) { // First time content and single map
 		$yamap='<!-- YaMaps — Yandex Maps for WordPress plugin  https://www.yhunter.ru/portfolio/dev/yamaps/ -->
 		<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>
 		<script>
 			var YaMapsWP = {}, YMlisteners = {};
 		</script>';
+		$yamap_load_api=false;
 	}
 	else {
 		$yamap='';

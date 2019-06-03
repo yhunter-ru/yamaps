@@ -97,6 +97,10 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6.4 =
+
+* Fixed: Bugfix. In rare cases, the problem of loading the API with custom fields.
+
 = 0.6.3 =
 
 * Fixed: Bugfix. Fixed conflict with Yandex.Metrica
