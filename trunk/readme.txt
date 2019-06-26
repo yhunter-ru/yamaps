@@ -97,6 +97,10 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6.5 =
+
+* Fixed: Bugfix. Improved compatibility with other plugins.
+
 = 0.6.4 =
 
 * Fixed: Bugfix. In rare cases, the problem of loading the API with custom fields.

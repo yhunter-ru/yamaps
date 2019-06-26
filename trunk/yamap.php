@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.4
+ * Version:     0.6.5
  *
  *
  * License:     GPL2
@@ -164,11 +164,13 @@ function yamap_func($atts, $content){
 
 	if (trim($yamactrl)<>"") $yamactrl='"'.$yamactrl.'"';
 
-	if ($yamap_load_api) { // First time content and single map
+	if (($yamap_load_api)or($maps_count==0)) { // First time content and single map
 		$yamap='<!-- YaMaps — Yandex Maps for WordPress plugin  https://www.yhunter.ru/portfolio/dev/yamaps/ -->
 		<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>
 		<script>
-			var YaMapsWP = {}, YMlisteners = {};
+			if (typeof(YaMapsWP) === "undefined") {
+				var YaMapsWP = {}, YMlisteners = {};
+			}			
 		</script>';
 		$yamap_load_api=false;
 	}
