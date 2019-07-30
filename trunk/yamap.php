@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.5
+ * Version:     0.6.6
  *
  *
  * License:     GPL2
@@ -207,7 +207,7 @@ function yamap_func($atts, $content){
                                     zoom: '.$atts["zoom"].',
                                     type: "'.$atts["type"].'",
                                     controls: ['.$yamactrl.'] 
-                                }); 
+                                }, {suppressMapOpenBlock: true}); 
 
 							'.do_shortcode($placemarkscode);							
 							
