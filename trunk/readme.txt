@@ -97,6 +97,10 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6.7 =
+
+* The button for opening a large yandex map can be switched in the plugin settings.
+
 = 0.6.6 =
 
 * The button for opening a large yandex map was removed.

@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.6
+ * Version:     0.6.7
  *
  *
  * License:     GPL2
@@ -32,6 +32,7 @@ $yamaps_defaults = array(
 	'type_icon_option'			=> 'islands#dotIcon',
 	'color_icon_option'			=> '#1e98ff',
 	'authorlink_map_option'		=> 'off',
+	'open_map_option'			=> 'off',
 	'reset_maps_option'			=> 'off',
 );	
 
@@ -142,7 +143,7 @@ function yaplacemark_func($atts) {
 
 //Функция вывода карты
 function yamap_func($atts, $content){
-	global $yaplacemark_count, $yamaps_defaults, $yacontrol_count, $maps_count, $count_content, $yamap_load_api;
+	global $yaplacemark_count, $yamaps_defaults, $yacontrol_count, $maps_count, $count_content, $yamap_load_api, $suppressMapOpenBlock;
 	
 	$placearr = '';
 	$atts = shortcode_atts( array(
@@ -187,8 +188,15 @@ function yamap_func($atts, $content){
 	}
 	else {
 		$mapcontainter='yamap'.$maps_count;
-	}
+	}	
 	
+	// Проверяем опцию включения кнопки большой карты
+	if ($yamaps_defaults['open_map_option']<>'on') {
+		$suppressMapOpenBlock='true'; 
+	}
+	else {
+		$suppressMapOpenBlock='false';
+	}
 
     $yamap.='
 						<script type="text/javascript">
@@ -206,8 +214,12 @@ function yamap_func($atts, $content){
                                     center: ['.$atts["center"].'],
                                     zoom: '.$atts["zoom"].',
                                     type: "'.$atts["type"].'",
-                                    controls: ['.$yamactrl.'] 
-                                }, {suppressMapOpenBlock: true}); 
+                                    controls: ['.$yamactrl.'] ,
+                                    
+                                },
+                                {
+                                	suppressMapOpenBlock: '.$suppressMapOpenBlock.'
+                                }); 
 
 							'.do_shortcode($placemarkscode);							
 							

@@ -452,6 +452,9 @@ function iconname(place) {       //change icon name
                                     zoom: ym.map0.zoom,
                                     type: ym.map0.maptype,
                                     controls: ["zoomControl", "searchControl", "typeSelector"] 
+                            },
+                            {
+                                suppressMapOpenBlock: true
                             }); 
 
                         //Заполняем данные формы из массива при редактировании

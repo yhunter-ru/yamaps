@@ -215,6 +215,14 @@ function yamaps_option_settings() {
 	);
 	add_settings_field( 'mobiledrag_map_option', __( 'Mobile drag', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
+	// Чекбокс открытия большой карты
+	$yamaps_field_params = array(
+		'type'      => 'checkbox',
+		'id'        => 'open_map_option',
+		'desc'      => __( 'Open big map/how to get button', 'yamaps' )
+	);
+	add_settings_field( 'open_map_option', __( 'Big map', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
+
 	// Чекбокс ссылки на автора
 	$yamaps_field_params = array(
 		'type'      => 'checkbox',
