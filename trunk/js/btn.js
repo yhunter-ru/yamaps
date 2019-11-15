@@ -1,5 +1,9 @@
 ;var script = document.createElement('script');
-script.src = "https://api-maps.yandex.ru/2.1/?lang="+tinymce.util.I18n.getCode();    
+var apikey = '';
+if (yamap_defaults['apikey_map_option']!='') {
+    apikey="&apikey="+yamap_defaults['apikey_map_option'];
+}
+script.src = "https://api-maps.yandex.ru/2.1/?lang="+tinymce.util.I18n.getCode()+apikey;    
 script.setAttribute('type', 'text/javascript');
 document.getElementsByTagName('head')[0].appendChild(script);
 
@@ -45,9 +49,9 @@ var coords=[], mapcenter=yamap_defaults['center_map_option'], mapzoom=yamap_defa
 //Изменение поля типа иконки    
 function iconselectchange() {      // change icon type    
         if (activeplace!=='') {
-            ym[mapselector].places[activeplace].icon=$("#markericon-inp").val();
+            ym[mapselector].places[activeplace].icon=jQuery("#markericon-inp").val();
             iconname();
-            ym[mapselector].places[activeplace].icon=$("#markericon-inp").val();
+            ym[mapselector].places[activeplace].icon=jQuery("#markericon-inp").val();
         }             
 }
 
@@ -67,21 +71,21 @@ function coordaprox(fullcoord) {
 
 //Изменяем поле с координатами метки
 function markcoordchange() {
-        $("#markercoord").val(coordaprox(ym[mapselector].places[activeplace].coord));
+        jQuery("#markercoord").val(coordaprox(ym[mapselector].places[activeplace].coord));
 }
 
 //Активируем выключенное поле
 function enablesinglefield(field) {
-        $(field).attr('disabled',false);
-        $(field).removeClass('mce-disabled');
-        $(field+'-l').removeClass('mce-disabled');
+        jQuery(field).attr('disabled',false);
+        jQuery(field).removeClass('mce-disabled');
+        jQuery(field+'-l').removeClass('mce-disabled');
 }
 
 //Деактивируем поле
 function disablesinglefield(field) {
-        $(field).attr('disabled',true);
-        $(field).addClass('mce-disabled');
-        $(field+'-l').addClass('mce-disabled');        
+        jQuery(field).attr('disabled',true);
+        jQuery(field).addClass('mce-disabled');
+        jQuery(field+'-l').addClass('mce-disabled');        
 }
 
 //Активируем выключенные поля после создания метки
@@ -97,8 +101,8 @@ function enablefields(fieldact=true) {
 
 //Проверяем значение чекбокса
 function checkcheckbox(param) {
-    if ($("#"+param).attr('aria-checked')!="undefined") {
-        if ($("#"+param).attr('aria-checked')=='true') {
+    if (jQuery("#"+param).attr('aria-checked')!="undefined") {
+        if (jQuery("#"+param).attr('aria-checked')=='true') {
                     ym[mapselector][param]='1';
 
                 }
@@ -110,21 +114,21 @@ function checkcheckbox(param) {
 function mapdatechange() {
         
         if(document.getElementById('mapcontrols')) {
-            if ($("#mapcontrols").val().trim().substr(-1)===';') $("#mapcontrols").val($("#mapcontrols").val().trim().slice(0, -1));          
-            ym[mapselector].controls=$("#mapcontrols").val();
+            if (jQuery("#mapcontrols").val().trim().substr(-1)===';') jQuery("#mapcontrols").val(jQuery("#mapcontrols").val().trim().slice(0, -1));          
+            ym[mapselector].controls=jQuery("#mapcontrols").val();
         } 
 
         if(document.getElementById('mapheight')) {
-            ym[mapselector].height=$("#mapheight").val();
+            ym[mapselector].height=jQuery("#mapheight").val();
         } 
 
         setTimeout(checkcheckbox, 200, 'scrollzoom');
         setTimeout(checkcheckbox, 200, 'mobiledrag');
           
         if(document.getElementById('mapcontainer')) {
-            if ($("#mapcontainer").val()!="undefined") {
+            if (jQuery("#mapcontainer").val()!="undefined") {
 
-                    ym.map0.container=$("#mapcontainer").val();
+                    ym.map0.container=jQuery("#mapcontainer").val();
 
             }
         }
@@ -143,12 +147,12 @@ function markchange() {
 
         if (activeplace!=='') {
         
-            ym[mapselector].places[activeplace].name=$("#markername").val().replace(/["]/g, '&quot;');
-            ym[mapselector].places[activeplace].coord=$("#markercoord").val();
-            ym[mapselector].places[activeplace].color=$("#colorbox #colorbox-inp").val();
-            ym[mapselector].places[activeplace].icon=$("#markericon #markericon-inp").val();
+            ym[mapselector].places[activeplace].name=jQuery("#markername").val().replace(/["]/g, '&quot;');
+            ym[mapselector].places[activeplace].coord=jQuery("#markercoord").val();
+            ym[mapselector].places[activeplace].color=jQuery("#colorbox #colorbox-inp").val();
+            ym[mapselector].places[activeplace].icon=jQuery("#markericon #markericon-inp").val();
             
-            ym[mapselector].places[activeplace].url=$("#markerurl").val();
+            ym[mapselector].places[activeplace].url=jQuery("#markerurl").val();
 
         }
 }
@@ -156,19 +160,19 @@ function markchange() {
 //Изменяем данные полей ввода по данным массива    
 function markerfields() {
 		if (typeof ym[mapselector].places[activeplace].name !== 'undefined') {
-        	$("#markername").val(ym[mapselector].places[activeplace].name.replace(/(&quot;)/g, '"'));
+        	jQuery("#markername").val(ym[mapselector].places[activeplace].name.replace(/(&quot;)/g, '"'));
         }
-        $("#markercoord").val(coordaprox(ym[mapselector].places[activeplace].coord));
-        $("#markericon #markericon-inp").val(ym[mapselector].places[activeplace].icon);
-        $("#colorbox #colorbox-inp").val(ym[mapselector].places[activeplace].color);
-        $("#colorbox #colorbox-open button i").css('background', ym[mapselector].places[activeplace].color);
-        $("#colorbox #colorbox-inp").trigger('change');
-        $("#markerurl").val(ym[mapselector].places[activeplace].url);
+        jQuery("#markercoord").val(coordaprox(ym[mapselector].places[activeplace].coord));
+        jQuery("#markericon #markericon-inp").val(ym[mapselector].places[activeplace].icon);
+        jQuery("#colorbox #colorbox-inp").val(ym[mapselector].places[activeplace].color);
+        jQuery("#colorbox #colorbox-open button i").css('background', ym[mapselector].places[activeplace].color);
+        jQuery("#colorbox #colorbox-inp").trigger('change');
+        jQuery("#markerurl").val(ym[mapselector].places[activeplace].url);
 }
 
 //Выключаем поле координат, когда не выбрана метка
 function inactive() {
-            $("#markercoord").val(yamap_object.NoCoord);
+            jQuery("#markercoord").val(yamap_object.NoCoord);
             enablefields(false);
 }
 
@@ -233,7 +237,7 @@ function iconname(place) {       //change icon name
         //Если метки нет, цвета не прописываем
         if (activeplace!=='') {
             placemark[activeplace.replace('placemark', '')].options.set('iconColor', pcolor);
-            ym[mapselector].places[activeplace].color=$("#colorbox #colorbox-inp").val();
+            ym[mapselector].places[activeplace].color=jQuery("#colorbox #colorbox-inp").val();
         }                            
     }
 
@@ -294,7 +298,7 @@ function iconname(place) {       //change icon name
                     
                     
                     //Инициализируем карту
-                    $(document).ready(function() {
+                    jQuery(document).ready(function() {
                         ymaps.ready(init);
                         if (!editMapAction) {
                             
@@ -317,7 +321,7 @@ function iconname(place) {       //change icon name
 
                         if (!ym.map0.places.hasOwnProperty('placemark'+markcount))  {  
                             newmark=true;
-                            ym.map0['places']['placemark'+markcount] = {name: '', coord: defcoord, icon: yamap_defaults['type_icon_option'], color: $("#colorbox #colorbox-inp").val(), url: ''}; //: {name: 'placemark1', coord: coords, type: 'islands#blueDotIcon', color: '#ff0000', url: 'url1'};
+                            ym.map0['places']['placemark'+markcount] = {name: '', coord: defcoord, icon: yamap_defaults['type_icon_option'], color: jQuery("#colorbox #colorbox-inp").val(), url: ''}; //: {name: 'placemark1', coord: coords, type: 'islands#blueDotIcon', color: '#ff0000', url: 'url1'};
                             if (activeplace==='') { //Если создается первая метка, берем значения из полей формы
                                 activeplace = 'placemark'+markcount; 
                                 markchange();
@@ -421,7 +425,7 @@ function iconname(place) {       //change icon name
                                 delete ym.map0['places'][trg.properties.get('id')]; // удаляем все свойства точки из массива
                                 if (Object.keys(ym.map0.places).length===0) {
                                     //Выключаем поле с координатами
-                                    $('#markercoord').val(yamap_object.NoCoord);
+                                    jQuery('#markercoord').val(yamap_object.NoCoord);
                                     enablefields(false);
                                 }
                             });
@@ -459,8 +463,8 @@ function iconname(place) {       //change icon name
 
                         //Заполняем данные формы из массива при редактировании
                         function loadMap() {
-                            if (ym.map0.height!=="undefined") $('#mapheight').val(ym.map0.height);
-                            if (ym.map0.controls!=="undefined") $('#mapcontrols').val(ym.map0.controls);
+                            if (ym.map0.height!=="undefined") jQuery('#mapheight').val(ym.map0.height);
+                            if (ym.map0.controls!=="undefined") jQuery('#mapcontrols').val(ym.map0.controls);
 
                         }
 
@@ -525,21 +529,21 @@ function iconname(place) {       //change icon name
                         iconselectchange();
 
 
-                        $("#mapheight, #mapcontrols").change(function() {
+                        jQuery("#mapheight, #mapcontrols").change(function() {
                             mapdatechange();
                         });
-                        $("#scrollzoom, #mobiledrag, #addcontrol a").click(function() {
+                        jQuery("#scrollzoom, #mobiledrag, #addcontrol a").click(function() {
                             mapdatechange();
                         });
 
                         //отслеживаем изменение полей иконки  
-                        $("#markername, #markercoord, #markericon-inp, #markerurl").change(function() {
+                        jQuery("#markername, #markercoord, #markericon-inp, #markerurl").change(function() {
                             markchange();
                         });   
 
 
                         //отслеживаем изменение имени иконки  
-                        $("#markername").change(function() {
+                        jQuery("#markername").change(function() {
                             if (activeplace!=="") {
                                 iconname();
                             }                            
@@ -547,16 +551,16 @@ function iconname(place) {       //change icon name
 
 
                         //отслеживаем изменение типа иконки
-                        $("#markericon-inp").change(function() {
+                        jQuery("#markericon-inp").change(function() {
                             iconselectchange();
                         });                  
                         
             
-                        $( "#addcontrol a" ).click(function() {
-                          if ($("#mapcontrols").val().trim()!="") {
-                               $("#mapcontrols").val($("#mapcontrols").val()+ ";"); 
+                        jQuery( "#addcontrol a" ).click(function() {
+                          if (jQuery("#mapcontrols").val().trim()!="") {
+                               jQuery("#mapcontrols").val(jQuery("#mapcontrols").val()+ ";"); 
                           }
-                          $("#mapcontrols").val($("#mapcontrols").val() + $(this).data("control"));
+                          jQuery("#mapcontrols").val(jQuery("#mapcontrols").val() + jQuery(this).data("control"));
                           mapdatechange();
                         });
 

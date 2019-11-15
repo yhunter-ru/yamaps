@@ -3,7 +3,7 @@ Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
 Tags: yandex, яндекс, карты, карта, maps, placemark, elementor
 Requires at least: 4.2
-Tested up to: 5.2
+Tested up to: 5.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,6 +14,10 @@ The plugin allows you to add Yandex Maps (Яндекс Карты) to pages of y
 == Description ==
 
 YaMaps plugin is the simplest way to insert Yandex maps on your site. The plugin has a user-friendly interface. You can visually put placemarks on your Yandex map, move them with your mouse, change icons and much more.
+
+For use with the new Gutenberg editor, you need add the classic editor block first!
+
+For the map search to work correctly and find routes, you may need to set an API key (JavaScript API и HTTP Geocoder) on the plugin settings page.
 
 = Plugin Highlights: =
 
@@ -39,7 +43,7 @@ https://www.youtube.com/watch?v=m7YncsBrL5g
 * yamap container - ID of the existing block in the WP template. The map will be placed in the block with this ID. The new block in the content will not be created.
 
 * yaplacemark coord - Placemark coordinates
-* yaplacemark icon - Placemark icon
+* yaplacemark icon - Placemark icon (Yandex.Map icon type or url of your own image)
 * yaplacemark color - Marker color
 * yaplacemark name - Placemark hint or content
 * yaplacemark url - Linked URL or post with ID will be opened by click on the placemark
@@ -59,7 +63,7 @@ https://www.youtube.com/watch?v=m7YncsBrL5g
 
 = Do I need a Yandex Map API key for using YaMaps? =
 
-No, You don't need it.
+No, You don't need it. But if you have problems with limits (including due to other sites on the same IP) you can get the key (https://developer.tech.yandex.ru/services/) and enter it in the plugin settings.
 
 = How to choose the type and zoom of the map? =
 
@@ -75,7 +79,7 @@ Use the tag "echo do_shortcode('')" with your map shortcode insde.
 
 = How to set an icon that is not in the drop-down list? =
 
-You can chose icon at https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ and set it manually to the "Icon" field. For example "islands#blueRailwayIcon".
+You can chose icon at https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ and set it manually to the "Icon" field. For example "islands#blueRailwayIcon". Also you can insert the URL of your file in the field. For example, PNG-image with transparency.
 
 = Why a can't change color of StretchyIcon? =
 
@@ -96,6 +100,23 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.6.11 =
+
+* Fixed: Bugfix for WP 5.3.
+
+= 0.6.10 =
+
+* Fixed: Bugfix.
+
+= 0.6.9 =
+
+* Fixed: Bugfix.
+
+= 0.6.8 =
+
+* New: In the settings page, you can set the Yandex Maps API key if there are problems with limits.
+* Fixed: Bugfix. Display maps in widgets and content same time could cause an error.
 
 = 0.6.7 =
 

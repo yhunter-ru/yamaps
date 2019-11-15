@@ -27,11 +27,13 @@ add_action('admin_menu', 'yamaps_options');
  */ 
 function yamaps_option_page(){
 	global $yamaps_page, $yamaps_defaults;
-
+	if (trim($yamaps_defaults['apikey_map_option'])<>"") {
+			$apikey='&apikey='.$yamaps_defaults['apikey_map_option'];
+	}
 	?><div class="wrap">
 		<h2><?php echo __( 'YaMaps default options', 'yamaps' ); ?></h2>
 		<form method="post" id="YaMapsOptions" enctype="multipart/form-data" action="options.php">
-		<?php echo'<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>'; ?>
+		<?php echo'<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey.'" type="text/javascript"></script>'; ?>
 			<script type="text/javascript">
 						//Округляем координаты до 4 знаков после запятой
 						function coordaprox(fullcoord) {
@@ -250,6 +252,19 @@ function yamaps_option_settings() {
 		'desc'      => __( 'For example:', 'yamaps' ).' #ff3333'
 	);
 	add_settings_field( 'color_icon_option', __( 'Marker color', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'icon_section', $yamaps_field_params );
+
+	// Область ключа API
+
+	add_settings_section( 'apikey_section', __( 'Yandex.Maps API key', 'yamaps' ), '', $yamaps_page );
+
+	// Поле ключа API
+	$yamaps_field_params = array(
+		'type'      => 'text', // тип
+		'id'        => 'apikey_map_option',
+		'desc'      => __( '<a href="https://developer.tech.yandex.com/services/">Get a key</a> if it necessary', 'yamaps' ), 
+		'label_for' => 'apikey_map_option'
+	);
+	add_settings_field( 'apikey_map_option', __( 'API key', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'apikey_section', $yamaps_field_params );
 
 	// Область сброса настроек
  

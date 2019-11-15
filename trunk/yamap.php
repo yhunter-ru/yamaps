@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.7
+ * Version:     0.6.11
  *
  *
  * License:     GPL2
@@ -33,6 +33,7 @@ $yamaps_defaults = array(
 	'color_icon_option'			=> '#1e98ff',
 	'authorlink_map_option'		=> 'off',
 	'open_map_option'			=> 'off',
+	'apikey_map_option'			=> '',
 	'reset_maps_option'			=> 'off',
 );	
 
@@ -55,7 +56,8 @@ if(get_option($option_name)){
 }
 
 //Добавляем счетчик полей с контентом (для постов с произвольными полями)
-add_filter( 'the_content', 'yamaps_the_content' ); 
+add_filter( 'the_content', 'yamaps_the_content'); 
+add_filter('widget_text', 'yamaps_the_content');
 function yamaps_the_content( $content ) {
 	global $count_content;
 	$count_content++;
@@ -165,9 +167,15 @@ function yamap_func($atts, $content){
 
 	if (trim($yamactrl)<>"") $yamactrl='"'.$yamactrl.'"';
 
-	if (($yamap_load_api)or($maps_count==0)) { // First time content and single map
+	if (($yamap_load_api)) { // First time content and single map
+		if (trim($yamaps_defaults['apikey_map_option'])<>"") {
+			$apikey='&apikey='.$yamaps_defaults['apikey_map_option'];
+		}
+		else {
+			$apikey = '';
+		}
 		$yamap='<!-- YaMaps — Yandex Maps for WordPress plugin  https://www.yhunter.ru/portfolio/dev/yamaps/ -->
-		<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>
+		<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey.'" type="text/javascript"></script>
 		<script>
 			if (typeof(YaMapsWP) === "undefined") {
 				var YaMapsWP = {}, YMlisteners = {};
@@ -245,7 +253,7 @@ function yamap_func($atts, $content){
 
     if($yamaps_defaults['authorlink_map_option']<>'on'){
     	
-    $authorlink='<style>.yamapauthor {position: relative; height: 0;  margin-bottom: 1rem !important; overflow: visible; width: 100%; text-align: center; top: -32px;} .yamapauthor a {display: inline-block; -webkit-box-align: center; padding: 3.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);} .yamapauthor a img {width: 17px; height: 17px; display: block;}</style><div class="yamapauthor" style=""><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style=""><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" /></a></div>';
+    $authorlink='<style>.yamapauthor {position: relative; height: 0;  margin-bottom: 1rem !important; overflow: visible; width: 100%; text-align: center; top: -32px;} .yamapauthor a {display: inline-block; -webkit-box-align: center; padding: 3.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);} .yamapauthor a img {width: 17px; height: 17px; margin: 0; display: block;}</style><div class="yamapauthor" style=""><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style=""><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" /></a></div>';
     }
     else {
     	$authorlink="";
@@ -273,7 +281,7 @@ function yamap_plugin_scripts($plugin_array)
     
     // Plugin localization
 
-	wp_register_script('yamap_plugin', plugin_dir_url(__FILE__) . 'js/shortcode_parser.js');
+	wp_register_script('yamap_plugin', plugin_dir_url(__FILE__) . 'js/shortcode_parser.js?v=0.2');
 	wp_enqueue_script('yamap_plugin');
 	
 	$lang_array	 = array('YaMap' => __('Map', 'yamaps'),
@@ -322,7 +330,7 @@ function yamap_plugin_scripts($plugin_array)
 
 	//enqueue TinyMCE plugin script with its ID.
 
-	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js";
+	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js?v=0.2";
 
     return $plugin_array;
 

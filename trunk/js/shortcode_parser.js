@@ -40,7 +40,7 @@ function parseShortcodes(){
         },
         View: { // before WP 4.2:
             template: media.template( 'editor-yamap' ), 
-            postID: $('#post_ID').val(),
+            postID: jQuery('#post_ID').val(),
             initialize: function( options ) {
                 this.shortcode = options.shortcode;
                 wp.mce.yamap.shortcode_data = this.shortcode;
