@@ -101,6 +101,10 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6.12 =
+
+* Fixed: Bugfix.
+
 = 0.6.11 =
 
 * Fixed: Bugfix for WP 5.3.

@@ -52,7 +52,6 @@ if(get_option($option_name)){
     if (is_int($fixpos)) {
     	$fixpattern=array('111;','111');
     	$yamaps_defaults_front['controls_map_option']=str_replace($fixpattern, '', $yamaps_defaults_front['controls_map_option']);
-    	echo $yamaps_defaults_front['controls_map_option'];
     	update_option($option_name, $yamaps_defaults_front); 
     }
     //конец правки. Будет удалено в следующих версиях.
