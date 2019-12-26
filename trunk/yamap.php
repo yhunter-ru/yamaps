@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.11
+ * Version:     0.6.12
  *
  *
  * License:     GPL2
@@ -15,13 +15,15 @@
  *
  */
 
+
+
 $maps_count=0;
 
 // Test for the first time content and single map (WooCommerce and other custom posts)
 $count_content=0;
 $yamap_load_api=true;
 
-$yamaps_defaults = array(
+$yamaps_defaults_front = array(
 	'center_map_option'			=> '55.7473,37.6247',
 	'zoom_map_option'			=> '12',
 	'type_map_option'			=> 'yandex#map',
@@ -37,22 +39,30 @@ $yamaps_defaults = array(
 	'reset_maps_option'			=> 'off',
 );	
 
-$yamaps_defaults_bak=$yamaps_defaults;
+$yamaps_defaults_front_bak=$yamaps_defaults_front;
+$yamaps_defaults=$yamaps_defaults_front;
 
 //Загрузка настроек
 
 $option_name = 'yamaps_options';
 if(get_option($option_name)){
-    $yamaps_defaults=get_option($option_name);
+    $yamaps_defaults_front=get_option($option_name);
     //исправляем ошибку с дефолтными настройками 0.5.7
-    $fixpos = strripos($yamaps_defaults['controls_map_option'], '111');
+    $fixpos = strripos($yamaps_defaults_front['controls_map_option'], '111');
     if (is_int($fixpos)) {
     	$fixpattern=array('111;','111');
-    	$yamaps_defaults['controls_map_option']=str_replace($fixpattern, '', $yamaps_defaults['controls_map_option']);
-    	echo $yamaps_defaults['controls_map_option'];
-    	update_option($option_name, $yamaps_defaults); 
+    	$yamaps_defaults_front['controls_map_option']=str_replace($fixpattern, '', $yamaps_defaults_front['controls_map_option']);
+    	echo $yamaps_defaults_front['controls_map_option'];
+    	update_option($option_name, $yamaps_defaults_front); 
     }
     //конец правки. Будет удалено в следующих версиях.
+}
+
+//Проверяем все ли дефолтные параметры есть в настройках плагина
+foreach($yamaps_defaults_front_bak as $yamaps_options_key => $yamaps_options_val) {	
+	if(!isset($yamaps_defaults_front[$yamaps_options_key])) {
+		$yamaps_defaults_front[$yamaps_options_key]=$yamaps_defaults_front_bak[$yamaps_options_key];
+	}
 }
 
 //Добавляем счетчик полей с контентом (для постов с произвольными полями)
@@ -145,15 +155,15 @@ function yaplacemark_func($atts) {
 
 //Функция вывода карты
 function yamap_func($atts, $content){
-	global $yaplacemark_count, $yamaps_defaults, $yacontrol_count, $maps_count, $count_content, $yamap_load_api, $suppressMapOpenBlock;
+	global $yaplacemark_count, $yamaps_defaults_front, $yamaps_defaults_front_bak, $yacontrol_count, $maps_count, $count_content, $yamap_load_api, $suppressMapOpenBlock;
 	
 	$placearr = '';
 	$atts = shortcode_atts( array(
-		'center' => $yamaps_defaults['center_map_option'],
-		'zoom' => $yamaps_defaults['zoom_map_option'],
+		'center' => $yamaps_defaults_front['center_map_option'],
+		'zoom' => $yamaps_defaults_front['zoom_map_option'],
 		'type' => 'map',
-		'height' => $yamaps_defaults['height_map_option'],
-		'controls' => $yamaps_defaults['controls_map_option'],
+		'height' => $yamaps_defaults_front['height_map_option'],
+		'controls' => $yamaps_defaults_front['controls_map_option'],
 		'scrollzoom' => '1',
 		'mobiledrag' => '1',
 		'container' => '',
@@ -168,8 +178,8 @@ function yamap_func($atts, $content){
 	if (trim($yamactrl)<>"") $yamactrl='"'.$yamactrl.'"';
 
 	if (($yamap_load_api)) { // First time content and single map
-		if (trim($yamaps_defaults['apikey_map_option'])<>"") {
-			$apikey='&apikey='.$yamaps_defaults['apikey_map_option'];
+		if (trim($yamaps_defaults_front['apikey_map_option'])<>"") {
+			$apikey='&apikey='.$yamaps_defaults_front['apikey_map_option'];
 		}
 		else {
 			$apikey = '';
@@ -199,7 +209,7 @@ function yamap_func($atts, $content){
 	}	
 	
 	// Проверяем опцию включения кнопки большой карты
-	if ($yamaps_defaults['open_map_option']<>'on') {
+	if ($yamaps_defaults_front['open_map_option']<>'on') {
 		$suppressMapOpenBlock='true'; 
 	}
 	else {
@@ -251,7 +261,7 @@ function yamap_func($atts, $content){
     ';
     $authorLinkTitle=__( 'YaMaps plugin for Wordpress', 'yamaps' );
 
-    if($yamaps_defaults['authorlink_map_option']<>'on'){
+    if($yamaps_defaults_front['authorlink_map_option']<>'on'){
     	
     $authorlink='<style>.yamapauthor {position: relative; height: 0;  margin-bottom: 1rem !important; overflow: visible; width: 100%; text-align: center; top: -32px;} .yamapauthor a {display: inline-block; -webkit-box-align: center; padding: 3.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);} .yamapauthor a img {width: 17px; height: 17px; margin: 0; display: block;}</style><div class="yamapauthor" style=""><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style=""><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" /></a></div>';
     }
@@ -325,8 +335,8 @@ function yamap_plugin_scripts($plugin_array)
 	
 	wp_localize_script('yamap_plugin', 'yamap_object', $lang_array); 
 
-	global $yamaps_defaults;
-	wp_localize_script('yamap_plugin', 'yamap_defaults', $yamaps_defaults); 
+	global $yamaps_defaults_front;
+	wp_localize_script('yamap_plugin', 'yamap_defaults', $yamaps_defaults_front); 
 
 	//enqueue TinyMCE plugin script with its ID.
 

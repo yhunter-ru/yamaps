@@ -1,14 +1,14 @@
 <?php
 $yamaps_page = 'yamaps-options.php'; 
 
-global $yamaps_page, $yamaps_defaults, $yamaps_defaults_bak;
+global $yamaps_page, $yamaps_defaults, $yamaps_defaults_front_bak;
 $option_name = 'yamaps_options';
 if(get_option($option_name)){
 	$yamaps_defaults=get_option($option_name);
 	if (isset($yamaps_defaults['reset_maps_option'])) {
 		if ($yamaps_defaults['reset_maps_option']==="on") {
-			update_option( $option_name, $yamaps_defaults_bak);
-			$yamaps_defaults=$yamaps_defaults_bak;
+			update_option( $option_name, $yamaps_defaults_front_bak);
+			$yamaps_defaults=$yamaps_defaults_front_bak;
 		}
 	}
 }
@@ -261,7 +261,7 @@ function yamaps_option_settings() {
 	$yamaps_field_params = array(
 		'type'      => 'text', // тип
 		'id'        => 'apikey_map_option',
-		'desc'      => __( '<a href="https://developer.tech.yandex.com/services/">Get a key</a> if it necessary', 'yamaps' ), 
+		'desc'      => __( '<a href="https://developer.tech.yandex.com/services/">Get a key</a> (JavaScript API & HTTP Geocoder) if it necessary', 'yamaps' ), 
 		'label_for' => 'apikey_map_option'
 	);
 	add_settings_field( 'apikey_map_option', __( 'API key', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'apikey_section', $yamaps_field_params );
@@ -286,28 +286,25 @@ add_action( 'admin_init', 'yamaps_option_settings' );
  * Здесь задаётся HTML и PHP, выводящий поля
  */
 function yamaps_option_display_settings($args) {
-	global $yamaps_defaults, $yamaps_defaults_bak;
+	global $yamaps_defaults, $yamaps_defaults_front_bak;
 	extract( $args );
  
 	$option_name = 'yamaps_options';
 	//delete_option($option_name); //удаление настроек для тестов
  	
+	//Если настройки не найдены в БД, сохраняем туда дефолтные настройки плагина
 	if(!get_option( $option_name)){
-    	update_option( $option_name, $yamaps_defaults_bak);
+    	update_option( $option_name, $yamaps_defaults_front_bak);
 	}
 
 	//Нужно перебрать настройки и поставить дефолт в отсутствующие.
 
 	$o = get_option( $option_name );
 
-	if ($id==='center_map_option') { // удалиит
-
-	}
-
-	foreach ($yamaps_defaults_bak as $key => $value) {
+	foreach ($yamaps_defaults_front_bak as $key => $value) {
 		if (!isset($o[$key])) {
 			if (($value=='off')or($value=='on')) {
-				$o[$key]=$yamaps_defaults[$key];
+				$o[$key]=$yamaps_defaults_front_bak[$key];
 			}
 		}
 

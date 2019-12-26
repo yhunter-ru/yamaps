@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - YaMaps for WordPress Plugin - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-12-25 20:25+0000\n"
+"PO-Revision-Date: 2019-10-09 07:16+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,132 +13,132 @@ msgstr ""
 "Project-Id-Version: Plugins - YaMaps for WordPress Plugin - Development "
 "(trunk)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-25 20:24+0000\n"
+"POT-Creation-Date: 2019-10-09 07:13+0000\n"
 "Last-Translator: tester <pmt.hunter@gmail.com>\n"
 "Language-Team: Русский\n"
-"X-Loco-Version: 2.3.1; wp-5.3.2"
+"X-Loco-Version: 2.2.2; wp-5.2.3"
 
-#: yamap.php:262
+#: yamap.php:249
 msgid "YaMaps plugin for Wordpress"
 msgstr "YaMaps — Яндекс.Карты для WordPress"
 
-#: yamap.php:297 yamap.php:302
+#: yamap.php:284 yamap.php:289
 msgid "Map"
 msgstr "Карта"
 
-#: yamap.php:298
+#: yamap.php:285
 msgid "Add map"
 msgstr "Добавить карту"
 
-#: yamap.php:299
+#: yamap.php:286
 msgid "Edit map"
 msgstr "Редактировать карту"
 
-#: yamap.php:300
+#: yamap.php:287
 msgid "YaMaps plugin: Yandex.Map"
 msgstr "Плагин YaMaps: Яндекс.Карта"
 
-#: yamap.php:301
+#: yamap.php:288
 msgid "Placemark"
 msgstr "Метка"
 
-#: yamap.php:303 options.php:246
+#: yamap.php:290 options.php:244
 msgid "Icon"
 msgstr "Иконка"
 
-#: yamap.php:304
+#: yamap.php:291
 msgid "Blue only"
 msgstr "Только синяя"
 
-#: yamap.php:305
+#: yamap.php:292
 msgid "Link"
 msgstr "Ссылка"
 
-#: yamap.php:306
+#: yamap.php:293
 msgid "Placemark hyperlink url or post ID"
 msgstr "Адрес URL или ID записи для перехода по клику "
 
-#: yamap.php:307 options.php:193
+#: yamap.php:294 options.php:191
 msgid "Map height"
 msgstr "Высота карты"
 
-#: yamap.php:308
+#: yamap.php:295
 msgid "Placemark name"
 msgstr "Название метки"
 
-#: yamap.php:309
+#: yamap.php:296
 msgid "Text for hint or icon content"
 msgstr "Для всплывающей подсказки или содержимого"
 
-#: yamap.php:310
+#: yamap.php:297
 msgid "Use the links below"
 msgstr "Используйте подсказки снизу"
 
-#: yamap.php:311
+#: yamap.php:298
 msgid "Сoordinates"
 msgstr "Координаты метки"
 
-#: yamap.php:312
+#: yamap.php:299
 msgid "Click on the map to choose or create the mark"
 msgstr "Кликните на карте для выбора или создания метки"
 
-#: yamap.php:313 options.php:202
+#: yamap.php:300 options.php:200
 msgid "Map controls"
 msgstr "Элементы управления"
 
-#: yamap.php:314
+#: yamap.php:301
 msgid "Delete"
 msgstr "Удалить"
 
-#: yamap.php:315 options.php:184 options.php:200
+#: yamap.php:302 options.php:182 options.php:198
 msgid "Map type"
 msgstr "Тип карты"
 
-#: yamap.php:316 options.php:200
+#: yamap.php:303 options.php:198
 msgid "Zoom"
 msgstr "Кнопки масштаба"
 
-#: yamap.php:317 options.php:210
+#: yamap.php:304 options.php:208
 msgid "Wheel zoom"
 msgstr "Масштаб колесом"
 
-#: yamap.php:318 options.php:218
+#: yamap.php:305 options.php:216
 msgid "Mobile drag"
 msgstr "Перетаскивание на моб."
 
-#: yamap.php:319 options.php:200
+#: yamap.php:306 options.php:198
 msgid "Search"
 msgstr "Поиск"
 
-#: yamap.php:320 options.php:200
+#: yamap.php:307 options.php:198
 msgid "Route"
 msgstr "Маршрут"
 
-#: yamap.php:321 options.php:200
+#: yamap.php:308 options.php:198
 msgid "Ruler"
 msgstr "Масштаб"
 
-#: yamap.php:322 options.php:200
+#: yamap.php:309 options.php:198
 msgid "Traffic"
 msgstr "Пробки"
 
-#: yamap.php:323 options.php:200
+#: yamap.php:310 options.php:198
 msgid "Full screen"
 msgstr "Полный экран"
 
-#: yamap.php:324 options.php:200
+#: yamap.php:311 options.php:198
 msgid "Geolocation"
 msgstr "Геолокация"
 
-#: yamap.php:325 options.php:254
+#: yamap.php:312 options.php:252
 msgid "Marker color"
 msgstr "Цвет метки"
 
-#: yamap.php:326
+#: yamap.php:313
 msgid "Put in ID"
 msgstr "Поместить в ID"
 
-#: yamap.php:327
+#: yamap.php:314
 msgid ""
 "Do not create a block in the content. Use the existing block of the WP theme "
 "with the specified ID"
@@ -146,11 +146,11 @@ msgstr ""
 "Не создавать блок в содержимом. Использовать существующий блок в теме WP с "
 "указанным ID."
 
-#: yamap.php:328
+#: yamap.php:315
 msgid "Extra"
 msgstr "Дополнительно"
 
-#: yamap.php:329 options.php:133
+#: yamap.php:316 options.php:131
 msgid ""
 "<div style=\"position: relative; display: block; width: 100%; white-space: "
 "normal !important;\"><h2 style=\"color: #444;font-size: 18px;font-weight: "
@@ -200,92 +200,92 @@ msgstr ""
 "//github.com/yhunter-ru/yamaps/issues\" style=\"white-space: normal\">"
 "GitHub</a>.</div>"
 
-#: options.php:34
+#: options.php:32
 msgid "YaMaps default options"
 msgstr "Настройки плагина YaMaps по умолчанию"
 
-#: options.php:157
+#: options.php:155
 msgid "Map options"
 msgstr "Настройки карты"
 
-#: options.php:163
+#: options.php:161
 msgid "Drag the map to set its default coordinates"
 msgstr "Перемещайте карту сверху для выбора точки отображения по умолчанию"
 
-#: options.php:166
+#: options.php:164
 msgid "Map center"
 msgstr "Центр карты"
 
-#: options.php:172
+#: options.php:170
 msgid "Zoom the map to set its default scale"
 msgstr "Мастабируйте карту сверху для выбора значения"
 
-#: options.php:175
+#: options.php:173
 msgid "Map zoom"
 msgstr "Масштаб карты"
 
-#: options.php:181
+#: options.php:179
 msgid "Choose default map type: yandex#map, yandex#satellite, yandex#hybrid"
 msgstr ""
 "Изменяйте тип отображения карты: yandex#map, yandex#satellite, yandex#hybrid"
 
-#: options.php:208
+#: options.php:206
 msgid "The map can be scaled with mouse scroll"
 msgstr "Карту можно будет масштабировать колесом мыши"
 
-#: options.php:216
+#: options.php:214
 msgid "The map can be dragged on mobile"
 msgstr "Карту можно перемещать на мобильных устройствах"
 
-#: options.php:224
+#: options.php:222
 msgid "Open big map/how to get button"
 msgstr "Посмотреть на большой карте/как добраться"
 
-#: options.php:226
+#: options.php:224
 msgid "Big map"
 msgstr "На большую карту"
 
-#: options.php:232
+#: options.php:230
 msgid "Disable link to plugin page"
 msgstr "Выключить ссылку на страницу плагина"
 
-#: options.php:234
+#: options.php:232
 msgid "Author link"
 msgstr "Ссылка"
 
-#: options.php:238
+#: options.php:236
 msgid "Marker options"
 msgstr "Настройки метки"
 
-#: options.php:244
+#: options.php:242
 msgid "Other icon types"
 msgstr "Другие типы меток"
 
-#: options.php:252
+#: options.php:250
 msgid "For example:"
 msgstr "Например:"
 
-#: options.php:258
+#: options.php:256
 msgid "Yandex.Maps API key"
 msgstr "API-ключ Яндекс.Карт"
 
-#: options.php:264
+#: options.php:262
 msgid ""
-"<a href=\"https://developer.tech.yandex.com/services/\">Get a key</a> "
-"(JavaScript API & HTTP Geocoder) if it necessary"
+"<a href=\"https://developer.tech.yandex.com/services/\">Get a key</a> if it "
+"necessary"
 msgstr ""
-"<a href=\"https://developer.tech.yandex.ru/services/\">Получите API-ключ</a> "
-"(JavaScript API и HTTP геокодер) если необходимо"
+"Если необходимо <a href=\"https://developer.tech.yandex.com/services/\">"
+"получите API-ключ</a>"
 
-#: options.php:267
+#: options.php:265
 msgid "API key"
 msgstr "API-ключ"
 
-#: options.php:271 options.php:279
+#: options.php:269 options.php:277
 msgid "Reset options"
 msgstr "Сброс настроек"
 
-#: options.php:277
+#: options.php:275
 msgid "Restore defaults"
 msgstr "Восстановить по умолчанию"
 

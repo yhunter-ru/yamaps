@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaMaps for Wordpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-25 20:24+0000\n"
+"POT-Creation-Date: 2019-12-25 20:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -242,7 +242,7 @@ msgstr ""
 #: options.php:264
 msgid ""
 "<a href=\"https://developer.tech.yandex.com/services/\">Get a key</a> "
-"(JavaScript API & HTTP Geocoder) if it necessary"
+"(JavaScript API и HTTP Geocoder) if it necessary"
 msgstr ""
 
 #: options.php:267
