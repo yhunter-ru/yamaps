@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.5.1
+ * Version:     0.6.12
  *
  *
  * License:     GPL2
@@ -15,19 +15,65 @@
  *
  */
 
+
+
 $maps_count=0;
 
 // Test for the first time content and single map (WooCommerce and other custom posts)
 $count_content=0;
+$yamap_load_api=true;
 
-add_filter( 'the_content', 'tutsplus_the_content' ); 
-function tutsplus_the_content( $content ) {
+$yamaps_defaults_front = array(
+	'center_map_option'			=> '55.7473,37.6247',
+	'zoom_map_option'			=> '12',
+	'type_map_option'			=> 'yandex#map',
+	'height_map_option'			=> '22rem',
+	'controls_map_option'		=> '',
+	'wheelzoom_map_option'		=> 'on',
+	'mobiledrag_map_option'		=> 'off',
+	'type_icon_option'			=> 'islands#dotIcon',
+	'color_icon_option'			=> '#1e98ff',
+	'authorlink_map_option'		=> 'off',
+	'open_map_option'			=> 'off',
+	'apikey_map_option'			=> '',
+	'reset_maps_option'			=> 'off',
+);	
+
+$yamaps_defaults_front_bak=$yamaps_defaults_front;
+$yamaps_defaults=$yamaps_defaults_front;
+
+//Загрузка настроек
+
+$option_name = 'yamaps_options';
+if(get_option($option_name)){
+    $yamaps_defaults_front=get_option($option_name);
+    //исправляем ошибку с дефолтными настройками 0.5.7
+    $fixpos = strripos($yamaps_defaults_front['controls_map_option'], '111');
+    if (is_int($fixpos)) {
+    	$fixpattern=array('111;','111');
+    	$yamaps_defaults_front['controls_map_option']=str_replace($fixpattern, '', $yamaps_defaults_front['controls_map_option']);
+    	update_option($option_name, $yamaps_defaults_front); 
+    }
+    //конец правки. Будет удалено в следующих версиях.
+}
+
+//Проверяем все ли дефолтные параметры есть в настройках плагина
+foreach($yamaps_defaults_front_bak as $yamaps_options_key => $yamaps_options_val) {	
+	if(!isset($yamaps_defaults_front[$yamaps_options_key])) {
+		$yamaps_defaults_front[$yamaps_options_key]=$yamaps_defaults_front_bak[$yamaps_options_key];
+	}
+}
+
+//Добавляем счетчик полей с контентом (для постов с произвольными полями)
+add_filter( 'the_content', 'yamaps_the_content'); 
+add_filter('widget_text', 'yamaps_the_content');
+function yamaps_the_content( $content ) {
 	global $count_content;
 	$count_content++;
     return $content;
 }
 
-
+//Функция добавления метки на карту
 function yaplacemark_func($atts) {
 	$atts = shortcode_atts( array(
 		'coord' => '',
@@ -36,7 +82,8 @@ function yaplacemark_func($atts) {
 		'url' => '',
 		'icon' => 'islands#dotIcon',
 	), $atts );
-	global $yaplacemark_count;
+
+	global $yaplacemark_count, $maps_count;
 	$yaplacemark_count++;
 	$yahint="";
 	$yacontent="";
@@ -59,61 +106,69 @@ function yaplacemark_func($atts) {
 	}
 	
 	
-
 	$yaplacemark='
-		placemark'.$yaplacemark_count.' = new ymaps.Placemark(['.$atts["coord"].'], {
+		YaMapsWP.myMap'.$maps_count.'.places.placemark'.$yaplacemark_count.' = {icon: "'.$atts["icon"].'", name: "'.$atts["name"].'", color: "'.$atts["color"].'", coord: "'.$atts["coord"].'", url: "'.$atts["url"].'",};
+		myMap'.$maps_count.'placemark'.$yaplacemark_count.' = new ymaps.Placemark(['.$atts["coord"].'], {
                                 hintContent: "'.$yahint.'",
                                 iconContent: "'.$yacontent.'",
 
 
                               
-                            }, {
-                            	preset: "'.$atts["icon"].'", 
-                            	iconColor: "'.$atts["color"].'"
+                            }, {';
+    //Проверяем, является ли поле иконки url-адресом. Если да, то ставим в качестве иконки кастомное изображение.
+    $iconurl = strripos($atts["icon"], 'http');
+    if (is_int($iconurl)) {
+    	$yaplacemark.='                        
+                            	iconLayout: "default#image",
+        						iconImageHref: "'.$atts["icon"].'"
                             });  
-	';
+		';
 
+    }
+    else {
+    	$yaplacemark.='                        
+                            	preset: "'.$atts["icon"].'", 
+                            	iconColor: "'.$atts["color"].'",
+                            });  
+		';
+    }
+    
 	$atts["url"]=trim($atts["url"]);
 	if (($atts["url"]<>"")and($atts["url"]<>"0")) {
 		$marklink=$atts["url"];
 		settype($marklink, "integer");
 		if ($marklink<>0) {
 			$marklink=get_the_permalink($atts["url"]);
+			$yaplacemark.='YaMapsWP.myMap'.$maps_count.'.places["placemark'.$yaplacemark_count.'"].url="'.$marklink.'"';
 		}
 		else {
 			$marklink=$atts["url"];
 		}
+		$yaplacemark.=' 
+				YMlisteners.myMap'.$maps_count.'['.$yaplacemark_count.'] = myMap'.$maps_count.'placemark'.$yaplacemark_count.'.events.group().add("click", function(e) {yamapsonclick("'.$marklink.'")});
 
-
-			$yaplacemark.=' 
-				placemark'.$yaplacemark_count.'.events.add("click", function () {
-	                location.href="'.$marklink.'";
-	            });
-			';
-
+		';
 	}
-	
-
 	return $yaplacemark;
-
 }
 
+//Функция вывода карты
 function yamap_func($atts, $content){
+	global $yaplacemark_count, $yamaps_defaults_front, $yamaps_defaults_front_bak, $yacontrol_count, $maps_count, $count_content, $yamap_load_api, $suppressMapOpenBlock;
+	
 	$placearr = '';
 	$atts = shortcode_atts( array(
-		'center' => '55.7532,37.6225',
-		'zoom' => '12',
+		'center' => $yamaps_defaults_front['center_map_option'],
+		'zoom' => $yamaps_defaults_front['zoom_map_option'],
 		'type' => 'map',
-		'height' => '20rem',
-		'controls' => '',
+		'height' => $yamaps_defaults_front['height_map_option'],
+		'controls' => $yamaps_defaults_front['controls_map_option'],
 		'scrollzoom' => '1',
+		'mobiledrag' => '1',
 		'container' => '',
 
 	), $atts );
-	global $yaplacemark_count;
-	global $yacontrol_count;
-	global $maps_count;
-	global $count_content;
+	
 	$yaplacemark_count=0;
 	$yacontrol_count=0;
 
@@ -121,9 +176,21 @@ function yamap_func($atts, $content){
 
 	if (trim($yamactrl)<>"") $yamactrl='"'.$yamactrl.'"';
 
-	if ($maps_count==0) { // Test for first time content and single map
-		$yamap='<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().'" type="text/javascript"></script>
-                    ';
+	if (($yamap_load_api)) { // First time content and single map
+		if (trim($yamaps_defaults_front['apikey_map_option'])<>"") {
+			$apikey='&apikey='.$yamaps_defaults_front['apikey_map_option'];
+		}
+		else {
+			$apikey = '';
+		}
+		$yamap='<!-- YaMaps — Yandex Maps for WordPress plugin  https://www.yhunter.ru/portfolio/dev/yamaps/ -->
+		<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey.'" type="text/javascript"></script>
+		<script>
+			if (typeof(YaMapsWP) === "undefined") {
+				var YaMapsWP = {}, YMlisteners = {};
+			}			
+		</script>';
+		$yamap_load_api=false;
 	}
 	else {
 		$yamap='';
@@ -138,38 +205,69 @@ function yamap_func($atts, $content){
 	}
 	else {
 		$mapcontainter='yamap'.$maps_count;
-	}
+	}	
 	
+	// Проверяем опцию включения кнопки большой карты
+	if ($yamaps_defaults_front['open_map_option']<>'on') {
+		$suppressMapOpenBlock='true'; 
+	}
+	else {
+		$suppressMapOpenBlock='false';
+	}
 
     $yamap.='
-
 						<script type="text/javascript">
                         ymaps.ready(init); 
-                 
+                 		var myMap'.$maps_count.';
+						YMlisteners.myMap'.$maps_count.' = {};
+						YaMapsWP.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["controls"].'", places: {}};
+
+                 		var yamapsonclick = function (url) {
+							location.href=url;
+                 		}
+
                         function init () {
-                            var myMap'.$maps_count.' = new ymaps.Map("'.$mapcontainter.'", {
+                            myMap'.$maps_count.' = new ymaps.Map("'.$mapcontainter.'", {
                                     center: ['.$atts["center"].'],
                                     zoom: '.$atts["zoom"].',
                                     type: "'.$atts["type"].'",
-                                    controls: ['.$yamactrl.'] 
-                                });   
+                                    controls: ['.$yamactrl.'] ,
+                                    
+                                },
+                                {
+                                	suppressMapOpenBlock: '.$suppressMapOpenBlock.'
+                                }); 
 
-							'.do_shortcode($placemarkscode);
-
-
+							'.do_shortcode($placemarkscode);							
 							
 							for ($i = 1; $i <= $yaplacemark_count; $i++) {
-								$placearr.='.add(placemark'.$i.')';
+								$placearr.='.add(myMap'.$maps_count.'placemark'.$i.')';
 							}
                             $yamap.='myMap'.$maps_count.'.geoObjects'.$placearr.';';
                             if ($atts["scrollzoom"]=="0") $yamap.="myMap".$maps_count.".behaviors.disable('scrollZoom');";
+                            //Если у карты mobiledrag=0, отключаем прокрутку карты для следующих платформ
+                            if ($atts["mobiledrag"]=="0") {
+                            	$yamap.="
+                            	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+                            		myMap".$maps_count.".behaviors.disable('drag');	
+								}";
+                            }
                             $yamap.='
 
                         }
                     </script>
                     
     ';
-    if ($atts["container"]=="") $yamap.='<div id="'.$mapcontainter.'"  style="position: relative; min-height: '.$atts["height"].'; margin-bottom: 1rem;"></div>';
+    $authorLinkTitle=__( 'YaMaps plugin for Wordpress', 'yamaps' );
+
+    if($yamaps_defaults_front['authorlink_map_option']<>'on'){
+    	
+    $authorlink='<style>.yamapauthor {position: relative; height: 0;  margin-bottom: 1rem !important; overflow: visible; width: 100%; text-align: center; top: -32px;} .yamapauthor a {display: inline-block; -webkit-box-align: center; padding: 3.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);} .yamapauthor a img {width: 17px; height: 17px; margin: 0; display: block;}</style><div class="yamapauthor" style=""><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style=""><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" /></a></div>';
+    }
+    else {
+    	$authorlink="";
+    }
+    if ($atts["container"]=="") $yamap.='<div id="'.$mapcontainter.'"  style="position: relative; min-height: '.$atts["height"].'; margin-bottom: 0 !important;"></div>'.$authorlink;
 
     if ($count_content>=1) $maps_count++;
     return $yamap; 
@@ -179,25 +277,20 @@ add_shortcode( 'yaplacemark', 'yaplacemark_func' );
 add_shortcode( 'yamap', 'yamap_func' ); 
 add_shortcode( 'yacontrol', 'yacontrol_func' ); 
 
-
-
-
-
-
+//Функция подключения текстового домена для локализации
 function yamaps_plugin_load_plugin_textdomain() {
     load_plugin_textdomain( 'yamaps', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'yamaps_plugin_load_plugin_textdomain' );
 
 
-// Add map button
-
+// Функция подключения скриптов и массив для локализации
 function yamap_plugin_scripts($plugin_array)
 {
     
     // Plugin localization
 
-	wp_register_script('yamap_plugin', plugin_dir_url(__FILE__) . 'js/shortcode_parser.js');
+	wp_register_script('yamap_plugin', plugin_dir_url(__FILE__) . 'js/shortcode_parser.js?v=0.2');
 	wp_enqueue_script('yamap_plugin');
 	
 	$lang_array	 = array('YaMap' => __('Map', 'yamaps'),
@@ -221,6 +314,7 @@ function yamap_plugin_scripts($plugin_array)
 							'type' => __('Map type', 'yamaps'),
 							'zoom' => __('Zoom', 'yamaps'),
 							'ScrollZoom' => __('Wheel zoom', 'yamaps'),
+							'MobileDrag' => __('Mobile drag', 'yamaps'),
 							'search' => __('Search', 'yamaps'),
 							'route' => __('Route', 'yamaps'),
 							'ruler' => __('Ruler', 'yamaps'),
@@ -240,12 +334,12 @@ function yamap_plugin_scripts($plugin_array)
 	
 	wp_localize_script('yamap_plugin', 'yamap_object', $lang_array); 
 
-	//Подключаем шаблон правки шорткода
-	include_once dirname(__FILE__).'/templates/tmpl-editor-yamap.html';
+	global $yamaps_defaults_front;
+	wp_localize_script('yamap_plugin', 'yamap_defaults', $yamaps_defaults_front); 
 
 	//enqueue TinyMCE plugin script with its ID.
 
-	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js";
+	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js?v=0.2";
 
     return $plugin_array;
 
@@ -254,8 +348,9 @@ function yamap_plugin_scripts($plugin_array)
 
 
 
-add_filter("mce_external_plugins", "yamap_plugin_scripts");
+add_filter("mce_external_plugins", "yamap_plugin_scripts", 999 );
 
+//Функция регистрации кнопок в редакторе
 function register_buttons_editor($buttons)
 {
     //register buttons with their id.
@@ -264,23 +359,30 @@ function register_buttons_editor($buttons)
 }
 
 
-add_filter("mce_buttons", "register_buttons_editor");
+add_filter("mce_buttons", "register_buttons_editor", 999 );
 
-add_action('admin_head', 'yamaps_custom_fonts');
+add_action('admin_head', 'yamaps_custom_fonts', 999 );
 
-function yamaps_custom_fonts() {
-	//Исправляем проблему со съехавшим шрифтом в Stretchy метке на карте в редакторе		
+//Исправляем проблему со съехавшим шрифтом в Stretchy метке на карте в редакторе
+function yamaps_custom_fonts() {			
 	  echo '<style>
-	    .mce-container ymaps {
-	    	
+	    .mce-container ymaps {	    	
 	    	font-family: "Source Sans Pro",HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif !important;
 	    	font-size: 11px !important;
 	    }
 	  </style>';
 }
 
-//Подключаем внешние стили
 
+//Подключаем шаблон шорткода
+function yamaps_shortcode_tmpl() {
+	//Подключаем шаблон правки шорткода
+	include_once dirname(__FILE__).'/templates/tmpl-editor-yamap.html';
+}
+
+add_action('admin_head', 'yamaps_shortcode_tmpl');
+
+//Подключаем внешние стили
 function yamap_mce_css( $mce_css ) {
   if ( !empty( $mce_css ) )
     $mce_css .= ',';
@@ -289,7 +391,7 @@ function yamap_mce_css( $mce_css ) {
   }
 add_filter( 'mce_css', 'yamap_mce_css' );
 
-//Поддключаем стили для нового редактора Gutenberg
+//Подключаем стили для нового редактора Gutenberg
 function yamaps_gutenberg_styles() {
 	// Load the theme styles within Gutenberg.
 	 wp_enqueue_style( 'yamaps-gutenberg', plugins_url( 'style.content.css', __FILE__ ));
@@ -297,4 +399,4 @@ function yamaps_gutenberg_styles() {
 add_action( 'enqueue_block_editor_assets', 'yamaps_gutenberg_styles' );
 
 
-?>
+include( plugin_dir_path( __FILE__ ) . 'options.php'); 

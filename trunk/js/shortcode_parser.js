@@ -29,16 +29,18 @@ function parseShortcodes(){
     wp.mce.yamap = {
         shortcode_data: {},
         template: media.template( 'editor-yamap' ),
-        getContent: function() {
+        getContent: function() { 
             var options = this.shortcode.attrs.named;
             options.text = this.text;
             options.plugin = yamap_object.PluginTitle;
             options.innercontent = this.shortcode.content;
-            return this.template(options);
+            if (typeof ElementorConfig === 'undefined') { //код внутри функции блокирует вставку шорткода в Elementor. Нужно разобраться.
+                return this.template(options);
+            }
         },
         View: { // before WP 4.2:
             template: media.template( 'editor-yamap' ), 
-            postID: $('#post_ID').val(),
+            postID: jQuery('#post_ID').val(),
             initialize: function( options ) {
                 this.shortcode = options.shortcode;
                 wp.mce.yamap.shortcode_data = this.shortcode;
@@ -64,7 +66,7 @@ function parseShortcodes(){
             ym['map0']={};
             ym['map0'].places={};
             for(var key in values) {
-                ym['map0'][key]=values[key];
+                ym['map0'][key]=values[key];                
                 delete ym['map0'].innercontent;
                 findPlaceMarks(values.innercontent);                            
                                 
