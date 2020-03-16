@@ -6,7 +6,9 @@ function findPlaceMarks(found) {
                     foundplacemark=foundplace[j].match(/([a-zA-Z]+)="([^"]+)+"/gi);     
                     ym['map0'].places['placemark'+j]={};
                     for (var k = 0; k < foundplacemark.length; k++) {
-			
+
+			            foundplacemark[k]=foundplacemark[k].split("&amp;").join("&"); //Bugfix: Гутенберг меняет амперсанды на html тэги. Меняем обратно.
+
                         placeparams=foundplacemark[k].split("=");
                         if (placeparams.length>2) { //Bugfix: Если строка в шорткоде содержит знак равества, не теряем ее продолжение при делении на ключ/значение
                         	placeparams[1]=foundplacemark[k].replace(placeparams[0]+"=", "");
@@ -17,8 +19,7 @@ function findPlaceMarks(found) {
                         }
                         else {
                             ym['map0'].places['placemark'+j][placeparams[0]]=[placeparams[1]].join('');                            
-                        }
-                                            
+                        }                                            
                     }
         }
     }
