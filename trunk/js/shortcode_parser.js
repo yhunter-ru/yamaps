@@ -1,4 +1,4 @@
-//Парсим шорткод меток внутри карты
+﻿//Парсим шорткод меток внутри карты
 function findPlaceMarks(found) {
     foundplace = found.match(/\[yaplacemark(.*?)\]/g);
         if (foundplace!==null) {
@@ -6,7 +6,11 @@ function findPlaceMarks(found) {
                     foundplacemark=foundplace[j].match(/([a-zA-Z]+)="([^"]+)+"/gi);     
                     ym['map0'].places['placemark'+j]={};
                     for (var k = 0; k < foundplacemark.length; k++) {
+			
                         placeparams=foundplacemark[k].split("=");
+                        if (placeparams.length>2) { //Bugfix: Если строка в шорткоде содержит знак равества, не теряем ее продолжение при делении на ключ/значение
+                        	placeparams[1]=foundplacemark[k].replace(placeparams[0]+"=", "");
+                        }
                         placeparams[1]=placeparams[1].replace(/\"|\'/g, '');
                         if (placeparams[0]==='coord') {
                             ym['map0'].places['placemark'+j][placeparams[0]]=placeparams[1];

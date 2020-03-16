@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.12
+ * Version:     0.6.13
  *
  *
  * License:     GPL2
@@ -52,6 +52,7 @@ if(get_option($option_name)){
     if (is_int($fixpos)) {
     	$fixpattern=array('111;','111');
     	$yamaps_defaults_front['controls_map_option']=str_replace($fixpattern, '', $yamaps_defaults_front['controls_map_option']);
+    	echo $yamaps_defaults_front['controls_map_option'];
     	update_option($option_name, $yamaps_defaults_front); 
     }
     //конец правки. Будет удалено в следующих версиях.

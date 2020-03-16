@@ -101,6 +101,10 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6.13 =
+
+* Fixed: Bugfix.
+
 = 0.6.12 =
 
 * Fixed: Bugfix.
