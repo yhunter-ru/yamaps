@@ -1,0 +1,39 @@
+.yamap_shortcode {
+    clear:both;
+    padding: .0rem 1rem 1rem 1rem;
+    border: 1px #ccc dashed;
+    overflow: hidden;
+    display: block;
+}
+
+.yamap_shortcode .content{
+    margin: 1px 0 0 0px;
+    display: inline-block;
+    float: left;
+    padding: 0;
+
+}
+
+.yamap_title {
+    font-size: .8em;
+    color: #666;
+    margin-bottom: .5em;
+    border-bottom: 1px #ccc dashed;
+    padding: .5em 0;
+}
+
+.yamap_icon {
+    display: inline-block;
+    position: relative;
+    width: 1.2em;
+    height: 1.2em;
+    background-image: url('js/img/placeholder.svg');
+    background-repeat: no-repeat;
+    opacity: .7;
+}
+
+
+.mce-container ymaps {
+        font-family: "Source Sans Pro",HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif !important;
+        font-size: 12px !important;
+}
