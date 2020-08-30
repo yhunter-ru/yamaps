@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.13
+ * Version:     0.6.17
  *
  *
  * License:     GPL2
@@ -16,12 +16,14 @@
  */
 
 
-
-$maps_count=0;
+if (!isset($maps_count)) {
+	$maps_count=0;
+}
 
 // Test for the first time content and single map (WooCommerce and other custom posts)
 $count_content=0;
 $yamap_load_api=true;
+$apikey='';
 
 $yamaps_defaults_front = array(
 	'center_map_option'			=> '55.7473,37.6247',
@@ -29,7 +31,7 @@ $yamaps_defaults_front = array(
 	'type_map_option'			=> 'yandex#map',
 	'height_map_option'			=> '22rem',
 	'controls_map_option'		=> '',
-	'wheelzoom_map_option'		=> 'on',
+	'wheelzoom_map_option'		=> 'off',
 	'mobiledrag_map_option'		=> 'off',
 	'type_icon_option'			=> 'islands#dotIcon',
 	'color_icon_option'			=> '#1e98ff',
@@ -72,6 +74,28 @@ function yamaps_the_content( $content ) {
 	global $count_content;
 	$count_content++;
     return $content;
+}
+
+//Новый вызов Yandex Map API. Если передаем true, отдается только адрес API с локалью и API-ключем. Нужно для альтернативного подключения API, при отсутствии wp_footer
+function YandexMapAPI_script($noFooter = false) {  
+		global $yamaps_defaults_front, $apikey;
+		if (trim($yamaps_defaults_front['apikey_map_option'])<>"") {
+			$apikey='&apikey='.$yamaps_defaults_front['apikey_map_option'];
+		}
+		else {
+			$apikey = '';
+		}
+		if ($noFooter) {
+			return 'https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey;
+		}
+		else {
+			// Register the script like this for a plugin:  
+			wp_register_script( 'YandexMapAPI', 'https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey, [], 2.1, true );  
+
+			// For either a plugin or a theme, you can then enqueue the script:  
+		    wp_enqueue_script( 'YandexMapAPI' ); 
+		}
+		 
 }
 
 //Функция добавления метки на карту
@@ -156,7 +180,7 @@ function yaplacemark_func($atts) {
 //Функция вывода карты
 function yamap_func($atts, $content){
 	global $yaplacemark_count, $yamaps_defaults_front, $yamaps_defaults_front_bak, $yacontrol_count, $maps_count, $count_content, $yamap_load_api, $suppressMapOpenBlock;
-	
+
 	$placearr = '';
 	$atts = shortcode_atts( array(
 		'center' => $yamaps_defaults_front['center_map_option'],
@@ -184,14 +208,15 @@ function yamap_func($atts, $content){
 		else {
 			$apikey = '';
 		}
-		$yamap='<!-- YaMaps — Yandex Maps for WordPress plugin  https://www.yhunter.ru/portfolio/dev/yamaps/ -->
-		<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey.'" type="text/javascript"></script>
+
+		$yamap='
 		<script>
 			if (typeof(YaMapsWP) === "undefined") {
 				var YaMapsWP = {}, YMlisteners = {};
+				var YaMapsScript = document.createElement("script");	
+				var YaMapsScriptCounter = [];	
 			}			
 		</script>';
-		$yamap_load_api=false;
 	}
 	else {
 		$yamap='';
@@ -215,47 +240,79 @@ function yamap_func($atts, $content){
 	else {
 		$suppressMapOpenBlock='false';
 	}
-
+	//1. Дожидаемся загрузки всей страницы для инициализации карты
+	//2. Проверяем, подключился ли API в wp_footer по ID "YandexMapAPI-js" (wp_footer может не оказаться в кастомных шаблонах)
+	//3. Если нет, запускаем функцию альтернативного подключения API - AltApiLoad, подключаем скрипт с ID "YandexMapAPI-alt-js"
+	//4. Функцию инициализации каждой карты на странице записываем в массив YaMapsScriptCounter и, после загрузки скрипта, поочередно инициализируем
     $yamap.='
-						<script type="text/javascript">
-                        ymaps.ready(init); 
-                 		var myMap'.$maps_count.';
-						YMlisteners.myMap'.$maps_count.' = {};
-						YaMapsWP.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["controls"].'", places: {}};
+						<script type="text/javascript">										
+						document.addEventListener("DOMContentLoaded", function() { 
+						   if (document.getElementById("YandexMapAPI-js") == null ) {
+					   			YaMapsScriptCounter.push(function() {ymaps.ready(init)});
+						   		if (document.getElementById("YandexMapAPI-alt-js") == null ) { 
+						   			function AltApiLoad(src){
 
-                 		var yamapsonclick = function (url) {
-							location.href=url;
-                 		}
+									  YaMapsScript.id = "YandexMapAPI-alt-js";
+									  YaMapsScript.src = src;
+									  YaMapsScript.async = false;
+									  document.head.appendChild(YaMapsScript);
 
-                        function init () {
-                            myMap'.$maps_count.' = new ymaps.Map("'.$mapcontainter.'", {
-                                    center: ['.$atts["center"].'],
-                                    zoom: '.$atts["zoom"].',
-                                    type: "'.$atts["type"].'",
-                                    controls: ['.$yamactrl.'] ,
-                                    
-                                },
-                                {
-                                	suppressMapOpenBlock: '.$suppressMapOpenBlock.'
-                                }); 
+									}
 
-							'.do_shortcode($placemarkscode);							
-							
-							for ($i = 1; $i <= $yaplacemark_count; $i++) {
-								$placearr.='.add(myMap'.$maps_count.'placemark'.$i.')';
-							}
-                            $yamap.='myMap'.$maps_count.'.geoObjects'.$placearr.';';
-                            if ($atts["scrollzoom"]=="0") $yamap.="myMap".$maps_count.".behaviors.disable('scrollZoom');";
-                            //Если у карты mobiledrag=0, отключаем прокрутку карты для следующих платформ
-                            if ($atts["mobiledrag"]=="0") {
-                            	$yamap.="
-                            	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
-                            		myMap".$maps_count.".behaviors.disable('drag');	
-								}";
-                            }
-                            $yamap.='
+									AltApiLoad("'.YandexMapAPI_script(true).'");
 
-                        }
+									window.onload = function() {
+										YaMapsScriptCounter.forEach(function(entryFunc) {
+										    entryFunc();
+										});
+									}
+						   		}
+
+						   		
+
+						   } 
+						   else {
+						   		ymaps.ready(init); 
+						   }
+						   
+	                 		var myMap'.$maps_count.';
+							YMlisteners.myMap'.$maps_count.' = {};
+							YaMapsWP.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["controls"].'", places: {}};
+
+	                 		var yamapsonclick = function (url) {
+								location.href=url;
+	                 		}                        
+
+	                        function init () {
+	                            myMap'.$maps_count.' = new ymaps.Map("'.$mapcontainter.'", {
+	                                    center: ['.$atts["center"].'],
+	                                    zoom: '.$atts["zoom"].',
+	                                    type: "'.$atts["type"].'",
+	                                    controls: ['.$yamactrl.'] ,
+	                                    
+	                                },
+	                                {
+	                                	suppressMapOpenBlock: '.$suppressMapOpenBlock.'
+	                                }); 
+
+								'.do_shortcode($placemarkscode);							
+								
+								for ($i = 1; $i <= $yaplacemark_count; $i++) {
+									$placearr.='.add(myMap'.$maps_count.'placemark'.$i.')';
+								}
+	                            $yamap.='myMap'.$maps_count.'.geoObjects'.$placearr.';';
+	                            if ($atts["scrollzoom"]=="0") $yamap.="myMap".$maps_count.".behaviors.disable('scrollZoom');";
+	                            //Если у карты mobiledrag=0, отключаем прокрутку карты для следующих платформ
+	                            if ($atts["mobiledrag"]=="0") {
+	                            	$yamap.="
+	                            	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+	                            		myMap".$maps_count.".behaviors.disable('drag');	
+									}";
+	                            }
+	                            $yamap.='
+
+	                        }
+                        }, false);
                     </script>
                     
     ';
@@ -326,7 +383,9 @@ function yamap_plugin_scripts($plugin_array)
 							'MapContainerID' => __('Put in ID', 'yamaps'),
 							'MapContainerIDTip' => __('Do not create a block in the content. Use the existing block of the WP theme with the specified ID', 'yamaps'),
 							'Extra' => __('Extra', 'yamaps'),
-							'ExtraHTML' => __('<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other icon types?</h2>Additional types of icons can be found by the link in the <a href="https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ " style="white-space: normal">Yandex.Map documentation</a>.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Do you like YaMaps plugin?</h2>You can support its development by donate (<a href="https://money.yandex.ru/to/41001278340150" style="white-space: normal">Yandex</a>, <a href="https://www.paypal.me/yhunter" style="white-space: normal">PayPal</a>) or just leave a positive feedback in the <a href="https://wordpress.org/support/plugin/yamaps/reviews/" style="white-space: normal">plugin repository</a>. It\'s very motivating!</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Any questions?</h2>Ask in the comments <a href="https://www.yhunter.ru/portfolio/dev/yamaps/" style="white-space: normal">on the plug-in\'s page</a>, <a href="https://wordpress.org/support/plugin/yamaps" style="white-space: normal">WP support forum</a> or <a href="https://github.com/yhunter-ru/yamaps/issues" style="white-space: normal">on GitHub</a>.</div>', 'yamaps')
+							'ExtraHTML' => __('<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other icon types?</h2>Additional types of icons can be found by the link in the <a href="https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ " style="white-space: normal">Yandex.Map documentation</a>.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Do you like YaMaps plugin?</h2>You can support its development by donate (<a href="https://money.yandex.ru/to/41001278340150" style="white-space: normal">Yandex</a>, <a href="https://www.paypal.me/yhunter" style="white-space: normal">PayPal</a>) or just leave a positive feedback in the <a href="https://wordpress.org/support/plugin/yamaps/reviews/" style="white-space: normal">plugin repository</a>. It\'s very motivating!</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Any questions?</h2>Ask in the comments <a href="https://www.yhunter.ru/portfolio/dev/yamaps/" style="white-space: normal">on the plug-in\'s page</a>, <a href="https://wordpress.org/support/plugin/yamaps" style="white-space: normal">WP support forum</a> or <a href="https://github.com/yhunter-ru/yamaps/issues" style="white-space: normal">on GitHub</a>.</div>', 'yamaps'),
+							'DeveloperInfoTab' => __('Design & Development', 'yamaps'),
+							'DeveloperInfo' => __('<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other plugin features?</h2>Do you like the plugin but lack features for your project? For commercial modifications of the plugin, please contact me.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">WordPress website design and development</h2>My name is Yuri and I have been creating websites for over 15 years. I have been familiar with WordPress since 2008. I know and love this CMS for its user friendly interface. This is exactly how I tried to make the interface of my YaMaps plugin, which you are currently using. If you need to create a website, make an interface design or write a plugin for WordPress - I will be happy to help you!<p style="margin-top: .5rem; text-align: center;"><b>Contacts:</b>  <a href="mailto:mail@yhunter.ru">mail@yhunter.ru</a>, <b>telegram:</b> <a href="tg://resolve?domain=yhunter">@yhunter</a>, <b>tel:</b> <a href="tel:+79028358830">+7-902-83-588-30</a></p></div>', 'yamaps'),
 
 						);
 
@@ -400,4 +459,11 @@ function yamaps_gutenberg_styles() {
 add_action( 'enqueue_block_editor_assets', 'yamaps_gutenberg_styles' );
 
 
+
+	
+if (($yamap_load_api)) {  
+	add_action( 'wp_enqueue_scripts', 'YandexMapAPI_script', 5 );
+}
+
 include( plugin_dir_path( __FILE__ ) . 'options.php'); 
+

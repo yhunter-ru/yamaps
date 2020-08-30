@@ -1,7 +1,8 @@
 ;var script = document.createElement('script');
-var apikey = '';
+var apikey = '', apikeyexist = false;
 if (yamap_defaults['apikey_map_option']!='') {
     apikey="&apikey="+yamap_defaults['apikey_map_option'];
+    apikeyexist = true;
 }
 script.src = "https://api-maps.yandex.ru/2.1/?lang="+tinymce.util.I18n.getCode()+apikey;    
 script.setAttribute('type', 'text/javascript');
@@ -448,6 +449,8 @@ function iconname(place) {       //change icon name
                     //Функция инициализации карты
                     function init () {
                             var myMap=[];
+                            var controlsArr=["zoomControl", "typeSelector"];
+                            if (apikeyexist) controlsArr.push("searchControl"); //Если определен API key, добавляем поиск на карту. Без ключа он все равно не будет работать и выдавать ошибку.
 
                             mapcenter=ym.map0.center[0];
                             coords=ym.map0.center[0];
@@ -455,7 +458,7 @@ function iconname(place) {       //change icon name
                                     center: ym.map0.center[0],
                                     zoom: ym.map0.zoom,
                                     type: ym.map0.maptype,
-                                    controls: ["zoomControl", "searchControl", "typeSelector"] 
+                                    controls: controlsArr 
                             },
                             {
                                 suppressMapOpenBlock: true
@@ -771,6 +774,34 @@ function iconname(place) {       //change icon name
                                                                        
                                                 minWidth : 598,   
                                                 html   : yamap_object.ExtraHTML,
+                                            },
+                                                
+                                                ]
+                                        },
+
+
+                                     
+
+
+                                    ]
+
+                                },
+                                {
+                                    type: 'panel',
+                                    title: '🦉\u00A0' + yamap_object.DeveloperInfoTab,
+                                    items: [
+                                        {
+                                            type: 'form',
+                                            name: 'form2',
+                                            minWidth : 598,
+
+                                            items: [
+                                                {
+                                                type   : 'container',
+                                                name   : 'addcontrol',
+                                                                       
+                                                minWidth : 598,   
+                                                html   : yamap_object.DeveloperInfo,
                                             },
                                                 
                                                 ]

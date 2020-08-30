@@ -3,7 +3,7 @@ Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
 Tags: yandex, яндекс, карты, карта, maps, placemark, elementor
 Requires at least: 4.7
-Tested up to: 5.3
+Tested up to: 5.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -63,7 +63,7 @@ https://www.youtube.com/watch?v=m7YncsBrL5g
 
 = Do I need a Yandex Map API key for using YaMaps? =
 
-No, You don't need it. But if you have problems with limits (including due to other sites on the same IP) you can get the key (https://developer.tech.yandex.ru/services/) and enter it in the plugin settings.
+At the moment, the key is needed only for the search on the map. The rest of the plugin functionality will work without a key. You can get the key (https://developer.tech.yandex.ru/services/) and enter it in the plugin settings page.
 
 = How to choose the type and zoom of the map? =
 
@@ -100,6 +100,27 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.6.18 =
+
+* Edit: If no wp_footer() function is called in the template footer, the map API will be called in an alternative way.
+
+= 0.6.17 =
+
+* Edit: If the Yandex.Maps API key is not set in the plugin settings page, the search field on the map is not displayed.
+
+= 0.6.16 =
+
+* New: Yandex Map Api request and map moved to the footer to speed up content loading.
+* Fixed: Bugfix.
+
+= 0.6.15 =
+
+* Fixed: Bugfix.
+
+= 0.6.14 =
+
+* Fixed: Bugfix.
 
 = 0.6.13 =
 
