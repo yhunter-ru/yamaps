@@ -30,6 +30,9 @@ function yamaps_option_page(){
 	if (trim($yamaps_defaults['apikey_map_option'])<>"") {
 			$apikey='&apikey='.$yamaps_defaults['apikey_map_option'];
 	}
+	else {
+		$apikey="";
+	}
 	?><div class="wrap">
 		<h2><?php echo __( 'YaMaps default options', 'yamaps' ); ?></h2>
 		<form method="post" id="YaMapsOptions" enctype="multipart/form-data" action="options.php">
@@ -52,11 +55,16 @@ function yamaps_option_page(){
                  		//Инициализируем карту для страницы настроек
                         function init () {
                         	var testvar=document.getElementById('center_map_option').value;
+                        	var apikeyexist = false, apikey=<?php echo '"'.$apikey.'"' ?>;
+                        	if (apikey!=="") apikeyexist=true;
+                        	var controlsArr=["zoomControl", "typeSelector"];
+                            if (apikeyexist) controlsArr.push("searchControl"); //Если определен API key, добавляем поиск на карту. Без ключа он все равно не будет работать и выдавать ошибку.
+
                             var myMap0 = new ymaps.Map("yamap", {
                                     center: [<?php echo $yamaps_defaults["center_map_option"]; ?>],
                                     zoom: <?php echo $yamaps_defaults["zoom_map_option"]; ?>,
                                     type: '<?php echo $yamaps_defaults["type_map_option"]; ?>',
-                                    controls: ["typeSelector", "zoomControl", "searchControl"] 
+                                    controls: controlsArr 
                                 });   
 
 							//Добавляем пример метки
@@ -129,8 +137,13 @@ function yamaps_option_page(){
             </script>
                     
     		<div id="yamap"  style="position: relative; min-height: 15rem; margin-bottom: 1rem;"></div><br />
-    		<div class="thanks" style="border: 4px #ffdb4d solid; background: #fff ; padding: 0 1rem 2rem 1rem;">
-    			<?php echo __( '<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other icon types?</h2>Additional types of icons can be found by the link in the <a href="https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ " style="white-space: normal">Yandex.Map documentation</a>.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Do you like YaMaps plugin?</h2>You can support its development by donate (<a href="https://money.yandex.ru/to/41001278340150" style="white-space: normal">Yandex</a>, <a href="https://www.paypal.me/yhunter" style="white-space: normal">PayPal</a>) or just leave a positive feedback in the <a href="https://wordpress.org/support/plugin/yamaps/reviews/" style="white-space: normal">plugin repository</a>. It\'s very motivating!</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Any questions?</h2>Ask in the comments <a href="https://www.yhunter.ru/portfolio/dev/yamaps/" style="white-space: normal">on the plug-in\'s page</a>, <a href="https://wordpress.org/support/plugin/yamaps" style="white-space: normal">WP support forum</a> or <a href="https://github.com/yhunter-ru/yamaps/issues" style="white-space: normal">on GitHub</a>.</div>', 'yamaps' ); ?>
+    		<div class="thanks" style="border: 4px #ffdb4d solid; background: #fff ; padding: 0 1rem 2rem 1rem; display: flex;">
+    			<div style="flex: 1">
+    				<?php echo __( '<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other icon types?</h2>Additional types of icons can be found by the link in the <a href="https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ " style="white-space: normal">Yandex.Map documentation</a>.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Do you like YaMaps plugin?</h2>You can support its development by donate (<a href="https://money.yandex.ru/to/41001278340150" style="white-space: normal">Yandex</a>, <a href="https://www.paypal.me/yhunter" style="white-space: normal">PayPal</a>) or just leave a positive feedback in the <a href="https://wordpress.org/support/plugin/yamaps/reviews/" style="white-space: normal">plugin repository</a>. It\'s very motivating!</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Any questions?</h2>Ask in the comments <a href="https://www.yhunter.ru/portfolio/dev/yamaps/" style="white-space: normal">on the plug-in\'s page</a>, <a href="https://wordpress.org/support/plugin/yamaps" style="white-space: normal">WP support forum</a> or <a href="https://github.com/yhunter-ru/yamaps/issues" style="white-space: normal">on GitHub</a>.</div>', 'yamaps' ); ?>
+    			</div>
+    			<div style="flex: 1">					
+					<?php echo __('<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other plugin features?</h2>Do you like the plugin but lack features for your project? For commercial modifications of the plugin, please contact me.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">WordPress website design and development</h2>My name is Yuri and I have been creating websites for over 15 years. I have been familiar with WordPress since 2008. I know and love this CMS for its user friendly interface. This is exactly how I tried to make the interface of my YaMaps plugin, which you are currently using. If you need to create a website, make an interface design or write a plugin for WordPress - I will be happy to help you!<p style="margin-top: .5rem; text-align: center;"><b>Contacts:</b>  <a href="mailto:mail@yhunter.ru">mail@yhunter.ru</a>, <b>telegram:</b> <a href="tg://resolve?domain=yhunter">@yhunter</a>, <b>tel:</b> <a href="tel:+79028358830">+7-902-83-588-30</a></p></div>', 'yamaps') ?>
+    			</div>
     		</div>
 			<?php 
 			settings_fields('yamaps_options'); // Идентификатор настроек плагина

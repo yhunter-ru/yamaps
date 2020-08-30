@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - YaMaps for WordPress Plugin - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-12-25 20:25+0000\n"
+"PO-Revision-Date: 2020-08-12 11:29+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,10 +13,10 @@ msgstr ""
 "Project-Id-Version: Plugins - YaMaps for WordPress Plugin - Development "
 "(trunk)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-25 20:24+0000\n"
-"Last-Translator: tester <pmt.hunter@gmail.com>\n"
+"POT-Creation-Date: 2020-04-28 18:22+0000\n"
+"Last-Translator: \n"
 "Language-Team: Русский\n"
-"X-Loco-Version: 2.3.1; wp-5.3.2"
+"X-Loco-Version: 2.4.2; wp-5.4.2"
 
 #: yamap.php:262
 msgid "YaMaps plugin for Wordpress"
@@ -42,7 +42,7 @@ msgstr "Плагин YaMaps: Яндекс.Карта"
 msgid "Placemark"
 msgstr "Метка"
 
-#: yamap.php:303 options.php:246
+#: yamap.php:303 options.php:251
 msgid "Icon"
 msgstr "Иконка"
 
@@ -58,7 +58,7 @@ msgstr "Ссылка"
 msgid "Placemark hyperlink url or post ID"
 msgstr "Адрес URL или ID записи для перехода по клику "
 
-#: yamap.php:307 options.php:193
+#: yamap.php:307 options.php:198
 msgid "Map height"
 msgstr "Высота карты"
 
@@ -82,7 +82,7 @@ msgstr "Координаты метки"
 msgid "Click on the map to choose or create the mark"
 msgstr "Кликните на карте для выбора или создания метки"
 
-#: yamap.php:313 options.php:202
+#: yamap.php:313 options.php:207
 msgid "Map controls"
 msgstr "Элементы управления"
 
@@ -90,47 +90,47 @@ msgstr "Элементы управления"
 msgid "Delete"
 msgstr "Удалить"
 
-#: yamap.php:315 options.php:184 options.php:200
+#: yamap.php:315 options.php:189 options.php:205
 msgid "Map type"
 msgstr "Тип карты"
 
-#: yamap.php:316 options.php:200
+#: yamap.php:316 options.php:205
 msgid "Zoom"
 msgstr "Кнопки масштаба"
 
-#: yamap.php:317 options.php:210
+#: yamap.php:317 options.php:215
 msgid "Wheel zoom"
 msgstr "Масштаб колесом"
 
-#: yamap.php:318 options.php:218
+#: yamap.php:318 options.php:223
 msgid "Mobile drag"
 msgstr "Перетаскивание на моб."
 
-#: yamap.php:319 options.php:200
+#: yamap.php:319 options.php:205
 msgid "Search"
 msgstr "Поиск"
 
-#: yamap.php:320 options.php:200
+#: yamap.php:320 options.php:205
 msgid "Route"
 msgstr "Маршрут"
 
-#: yamap.php:321 options.php:200
+#: yamap.php:321 options.php:205
 msgid "Ruler"
 msgstr "Масштаб"
 
-#: yamap.php:322 options.php:200
+#: yamap.php:322 options.php:205
 msgid "Traffic"
 msgstr "Пробки"
 
-#: yamap.php:323 options.php:200
+#: yamap.php:323 options.php:205
 msgid "Full screen"
 msgstr "Полный экран"
 
-#: yamap.php:324 options.php:200
+#: yamap.php:324 options.php:205
 msgid "Geolocation"
 msgstr "Геолокация"
 
-#: yamap.php:325 options.php:254
+#: yamap.php:325 options.php:259
 msgid "Marker color"
 msgstr "Цвет метки"
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Extra"
 msgstr "Дополнительно"
 
-#: yamap.php:329 options.php:133
+#: yamap.php:329 options.php:134
 msgid ""
 "<div style=\"position: relative; display: block; width: 100%; white-space: "
 "normal !important;\"><h2 style=\"color: #444;font-size: 18px;font-weight: "
@@ -200,76 +200,117 @@ msgstr ""
 "//github.com/yhunter-ru/yamaps/issues\" style=\"white-space: normal\">"
 "GitHub</a>.</div>"
 
+#: yamap.php:330
+msgid "Design & Development"
+msgstr "Дизайн и разработка"
+
+#: yamap.php:331 options.php:137
+msgid ""
+"<div style=\"position: relative; display: block; width: 100%; white-space: "
+"normal !important;\"><h2 style=\"color: #444;font-size: 18px;font-weight: "
+"600;line-height: 36px;\">Want other plugin features?</h2>Do you like the "
+"plugin but lack features for your project? For commercial modifications of "
+"the plugin, please contact me.</div><div style=\"position: relative; display:"
+" block; width: 100%; white-space: normal !important;\"><h2 style=\"color: "
+"#444;font-size: 18px;font-weight: 600;line-height: 36px;\">WordPress website "
+"design and development</h2>My name is Yuri and I have been creating websites "
+"for over 15 years. I have been familiar with WordPress since 2008. I know "
+"and love this CMS for its user friendly interface. This is exactly how I "
+"tried to make the interface of my YaMaps plugin, which you are currently "
+"using. If you need to create a website, make an interface design or write a "
+"plugin for WordPress - I will be happy to help you!<p style=\"margin-top: ."
+"5rem; text-align: center;\"><b>Contacts:</b>  <a href=\"mailto:mail@yhunter."
+"ru\">mail@yhunter.ru</a>, <b>telegram:</b> <a href=\"tg://resolve?"
+"domain=yhunter\">@yhunter</a>, <b>tel:</b> <a href=\"tel:+79028358830\">+7-"
+"902-83-588-30</a></p></div>"
+msgstr ""
+"<div style=\"position: relative; display: block; width: 100%; white-space: "
+"normal !important;\"><h2 style=\"color: #444;font-size: 18px;font-weight: "
+"600;line-height: 36px;\">Нужен дополнительный функционал?</h2>Вам нравится "
+"плагин, но не хватает функций для вашего проекта? Для коммерческих доработок "
+"плагина свяжитесь со мной.</div><div style=\"position: relative; display: "
+"block; width: 100%; white-space: normal !important;\"><h2 style=\"color: "
+"#444;font-size: 18px;font-weight: 600;line-height: 36px;\">Дизайн и "
+"разработка сайтов на WordPress</h2>Меня зовут Юрий и я занимюсь созданием "
+"сайтов уже более 15 лет. Я знаком с WordPress с 2008 года. Я знаю и люблю "
+"эту CMS за дружественный к пользователю интерфейс. Именно таким я старался "
+"сделать интерфейс своего плагина YaMaps, которым вы сейчас пользуетесь. Если "
+"вам нужно создать сайт, сделать дизайн интерфеса или написать плагин для "
+"WordPress — я буду рад вам помочь!<p style=\"margin-top: .5rem; text-align: "
+"center;\"><b>Для связи:</b>  <a href=\"mailto:mail@yhunter.ru\">mail@yhunter."
+"ru</a>, <b>telegram:</b> <a href=\"tg://resolve?domain=yhunter\">@yhunter</a>"
+", <b>тел.:</b> <a href=\"tel:+79028358830\">+7-902-83-588-30</a></p></div>"
+
 #: options.php:34
 msgid "YaMaps default options"
 msgstr "Настройки плагина YaMaps по умолчанию"
 
-#: options.php:157
+#: options.php:162
 msgid "Map options"
 msgstr "Настройки карты"
 
-#: options.php:163
+#: options.php:168
 msgid "Drag the map to set its default coordinates"
 msgstr "Перемещайте карту сверху для выбора точки отображения по умолчанию"
 
-#: options.php:166
+#: options.php:171
 msgid "Map center"
 msgstr "Центр карты"
 
-#: options.php:172
+#: options.php:177
 msgid "Zoom the map to set its default scale"
-msgstr "Мастабируйте карту сверху для выбора значения"
+msgstr "Масштабируйте карту сверху для выбора значения"
 
-#: options.php:175
+#: options.php:180
 msgid "Map zoom"
 msgstr "Масштаб карты"
 
-#: options.php:181
+#: options.php:186
 msgid "Choose default map type: yandex#map, yandex#satellite, yandex#hybrid"
 msgstr ""
 "Изменяйте тип отображения карты: yandex#map, yandex#satellite, yandex#hybrid"
 
-#: options.php:208
+#: options.php:213
 msgid "The map can be scaled with mouse scroll"
 msgstr "Карту можно будет масштабировать колесом мыши"
 
-#: options.php:216
+#: options.php:221
 msgid "The map can be dragged on mobile"
 msgstr "Карту можно перемещать на мобильных устройствах"
 
-#: options.php:224
+#: options.php:229
 msgid "Open big map/how to get button"
 msgstr "Посмотреть на большой карте/как добраться"
 
-#: options.php:226
+#: options.php:231
 msgid "Big map"
 msgstr "На большую карту"
 
-#: options.php:232
+#: options.php:237
 msgid "Disable link to plugin page"
 msgstr "Выключить ссылку на страницу плагина"
 
-#: options.php:234
+#: options.php:239
 msgid "Author link"
 msgstr "Ссылка"
 
-#: options.php:238
+#: options.php:243
 msgid "Marker options"
 msgstr "Настройки метки"
 
-#: options.php:244
+#: options.php:249
 msgid "Other icon types"
 msgstr "Другие типы меток"
 
-#: options.php:252
+#: options.php:257
 msgid "For example:"
 msgstr "Например:"
 
-#: options.php:258
+#: options.php:263
 msgid "Yandex.Maps API key"
 msgstr "API-ключ Яндекс.Карт"
 
-#: options.php:264
+#: options.php:269
 msgid ""
 "<a href=\"https://developer.tech.yandex.com/services/\">Get a key</a> "
 "(JavaScript API & HTTP Geocoder) if it necessary"
@@ -277,15 +318,15 @@ msgstr ""
 "<a href=\"https://developer.tech.yandex.ru/services/\">Получите API-ключ</a> "
 "(JavaScript API и HTTP геокодер) если необходимо"
 
-#: options.php:267
+#: options.php:272
 msgid "API key"
 msgstr "API-ключ"
 
-#: options.php:271 options.php:279
+#: options.php:276 options.php:284
 msgid "Reset options"
 msgstr "Сброс настроек"
 
-#: options.php:277
+#: options.php:282
 msgid "Restore defaults"
 msgstr "Восстановить по умолчанию"
 
