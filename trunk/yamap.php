@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.18
+ * Version:     0.6.19
  *
  *
  * License:     GPL2
@@ -399,7 +399,7 @@ function yamap_plugin_scripts($plugin_array)
 
 	//enqueue TinyMCE plugin script with its ID.
 
-	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js?v=0.2";
+	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js?v=0.32";
 
     return $plugin_array;
 

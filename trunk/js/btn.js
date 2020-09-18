@@ -498,13 +498,15 @@ function iconname(place) {       //change icon name
 
 
                         //Отслеживаем событие поиска и ставим метку в центр
-                        var searchControl = myMap[mapcount].controls.get('searchControl');                        
-                        searchControl.events.add("resultshow", function (e) {
-                            coords = searchControl.getResultsArray()[0].geometry.getCoordinates();
-                            searchControl.hideResult();
-                            createplacemark(myMap[mapcount], coords);
-                            mapSave(); 
-                        });
+                        if (apikeyexist) {
+	                        var searchControl = myMap[mapcount].controls.get('searchControl');                        
+	                        searchControl.events.add("resultshow", function (e) {
+	                            coords = searchControl.getResultsArray()[0].geometry.getCoordinates();
+	                            searchControl.hideResult();
+	                            createplacemark(myMap[mapcount], coords);
+	                            mapSave(); 
+	                        });
+	                    }
 
 
                         //Ослеживаем событие изменения области просмотра карты - масштаб и центр карты
@@ -570,6 +572,12 @@ function iconname(place) {       //change icon name
                     }
 
                     //Параметры модального окна редактора
+                    function checkApiKeyForSearchField() {
+                    	if (apikeyexist) {
+                    		return '<a data-control="searchControl">'+yamap_object.search+'</a>, ';
+                    	}
+                    	else return '';
+                    }
                     var win = ed.windowManager.open( {
                         
                         title: checkTitle(),
@@ -719,7 +727,7 @@ function iconname(place) {       //change icon name
                                                 name   : 'addcontrol',
                                                 id     : 'ctrlhelper',                        
                                                 minWidth : 598,   
-                                                html   : '<div id="addcontrol" style="text-align: right;"><a data-control="typeSelector">'+yamap_object.type+'</a>, <a data-control="zoomControl">'+yamap_object.zoom+'</a>, <a data-control="searchControl">'+yamap_object.search+'</a>, <a data-control="routeButtonControl">'+yamap_object.route+'</a>, <a data-control="rulerControl">'+yamap_object.ruler+'</a>, <a data-control="trafficControl">'+yamap_object.traffic+'</a>, <a data-control="fullscreenControl">'+yamap_object.fullscreen+'</a>, <a data-control="geolocationControl">'+yamap_object.geolocation+'</a></div>'
+                                                html   : '<div id="addcontrol" style="text-align: right;"><a data-control="typeSelector">'+yamap_object.type+'</a>, <a data-control="zoomControl">'+yamap_object.zoom+'</a>, '+checkApiKeyForSearchField()+'<a data-control="routeButtonControl">'+yamap_object.route+'</a>, <a data-control="rulerControl">'+yamap_object.ruler+'</a>, <a data-control="trafficControl">'+yamap_object.traffic+'</a>, <a data-control="fullscreenControl">'+yamap_object.fullscreen+'</a>, <a data-control="geolocationControl">'+yamap_object.geolocation+'</a></div>'
                                                 },                                                
                                                 {
                                                     type: 'checkbox',

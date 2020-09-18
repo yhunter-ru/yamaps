@@ -3,7 +3,7 @@ Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
 Tags: yandex, яндекс, карты, карта, maps, placemark, elementor
 Requires at least: 4.7
-Tested up to: 5.5
+Tested up to: 5.5.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -100,6 +100,10 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.6.19 =
+
+* Fixed: Adding controls in the editor does not work if the API key is not entered in the plugin settings
 
 = 0.6.18 =
 
