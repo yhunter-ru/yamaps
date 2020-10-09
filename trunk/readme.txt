@@ -101,6 +101,10 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6.20 =
+
+* Fixed: HTML validation fix
+
 = 0.6.19 =
 
 * Fixed: Adding controls in the editor does not work if the API key is not entered in the plugin settings

@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.19
+ * Version:     0.6.20
  *
  *
  * License:     GPL2
@@ -214,8 +214,9 @@ function yamap_func($atts, $content){
 			if (typeof(YaMapsWP) === "undefined") {
 				var YaMapsWP = {}, YMlisteners = {};
 				var YaMapsScript = document.createElement("script");	
-				var YaMapsScriptCounter = [];	
-			}			
+				var YaMapsScriptCounter = [];					
+			}
+			var myMap'.$maps_count.';			
 		</script>';
 	}
 	else {
@@ -275,7 +276,7 @@ function yamap_func($atts, $content){
 						   		ymaps.ready(init); 
 						   }
 						   
-	                 		var myMap'.$maps_count.';
+	                 		
 							YMlisteners.myMap'.$maps_count.' = {};
 							YaMapsWP.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["controls"].'", places: {}};
 
@@ -320,7 +321,7 @@ function yamap_func($atts, $content){
 
     if($yamaps_defaults_front['authorlink_map_option']<>'on'){
     	
-    $authorlink='<style>.yamapauthor {position: relative; height: 0;  margin-bottom: 1rem !important; overflow: visible; width: 100%; text-align: center; top: -32px;} .yamapauthor a {display: inline-block; -webkit-box-align: center; padding: 3.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);} .yamapauthor a img {width: 17px; height: 17px; margin: 0; display: block;}</style><div class="yamapauthor" style=""><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style=""><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" /></a></div>';
+    $authorlink='<div style="position: relative; height: 0;  margin-bottom: 1rem !important; overflow: visible; width: 100%; text-align: center; top: -32px;"><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style="display: inline-block; -webkit-box-align: center; padding: 3.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);"><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" alt="" style="width: 17px; height: 17px; margin: 0; display: block;" /></a></div>';
     }
     else {
     	$authorlink="";
