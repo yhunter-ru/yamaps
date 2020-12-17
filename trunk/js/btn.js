@@ -11,6 +11,12 @@ document.getElementsByTagName('head')[0].appendChild(script);
 var mapselector = 'map0', activeplace="", ym={}, editMapAction=false, editorContentData;
 var placemark = [];
 
+if (!editMapAction) {//Перенесено для корректной работы в WP 5.6
+                            
+    ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionCheck('wheelzoom_map_option'), mobiledrag: optionCheck('mobiledrag_map_option'), container: '', places: {}}};
+
+}  
+
 //Определяем отключен ли скролл колесом на редактируемой карте
 function checkParam(param) {
     var checker=true;
@@ -299,14 +305,17 @@ function iconname(place) {       //change icon name
                     
                     
                     //Инициализируем карту
-                    jQuery(document).ready(function() {
-                        ymaps.ready(init);
-                        if (!editMapAction) {
-                            
-                            ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionCheck('wheelzoom_map_option'), mobiledrag: optionCheck('mobiledrag_map_option'), container: '', places: {}}};
+                    jQuery(document).ready(function() {                       
+                        
+
+                        if (!editMapAction) { //Перенесено в начало кода из-за проблем в WP 5.6
+                            delete  ym.map0.places;
+                            ym.map0.places = {};
+
+                        //    ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionCheck('wheelzoom_map_option'), mobiledrag: optionCheck('mobiledrag_map_option'), container: '', places: {}}};
 
                         }  
-                        
+                        ymaps.ready(init);                      
 
                     });
                     

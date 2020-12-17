@@ -3,7 +3,7 @@ Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
 Tags: yandex, яндекс, карты, карта, maps, placemark, elementor
 Requires at least: 4.7
-Tested up to: 5.5.1
+Tested up to: 5.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -101,9 +101,14 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6.21 =
+
+* Fixed: Adding WP 5.6 support
+
 = 0.6.20 =
 
 * Fixed: HTML validation fix
+* Fixed: Bugfix.
 
 = 0.6.19 =
 
