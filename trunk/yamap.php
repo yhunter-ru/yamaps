@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.21
+ * Version:     0.6.22
  *
  *
  * License:     GPL2
@@ -14,14 +14,17 @@
  * Domain Path: /languages/
  *
  */
-
+global $maps_count, $count_content; 
 
 if (!isset($maps_count)) {
 	$maps_count=0;
 }
+if (!isset($count_content)) {
+	$count_content=0;
+}
 
 // Test for the first time content and single map (WooCommerce and other custom posts)
-$count_content=0;
+//$count_content=0;
 $yamap_load_api=true;
 $apikey='';
 
@@ -70,6 +73,8 @@ foreach($yamaps_defaults_front_bak as $yamaps_options_key => $yamaps_options_val
 //Добавляем счетчик полей с контентом (для постов с произвольными полями)
 add_filter( 'the_content', 'yamaps_the_content'); 
 add_filter('widget_text', 'yamaps_the_content');
+add_filter('requirement', 'yamaps_the_content');
+
 function yamaps_the_content( $content ) {
 	global $count_content;
 	$count_content++;

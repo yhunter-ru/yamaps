@@ -116,10 +116,12 @@ function yamaps_option_page(){
 			                            document.getElementById('type_map_option').value = myMap0.getType();
 		                    });
 		                    //Cобытие поиска, скрываем метку результата
-                        	var searchControl = myMap0.controls.get('searchControl');                        
-                        	searchControl.events.add("resultshow", function (e) {
-                            	searchControl.hideResult();
-                        	});
+		                    if (apikeyexist) { //Баг, если нет API.ключа, то нет поискового поля и вызывает ошибку
+	                        	var searchControl = myMap0.controls.get('searchControl');                        
+	                        	searchControl.events.add('resultshow', function (e) {
+	                            	searchControl.hideResult();
+	                        	});
+                        	}
                         	//Функция добавления элементов управления картой в поле настроек
                         	var controlElems = document.querySelectorAll('#addcontrol a');
                         	for (var i = 0; i < controlElems.length; i++) {

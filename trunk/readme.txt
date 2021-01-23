@@ -101,6 +101,9 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6.22 =
+* Fixed: Bugfix.
+
 = 0.6.21 =
 
 * Fixed: Adding WP 5.6 support
