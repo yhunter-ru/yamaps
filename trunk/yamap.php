@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.22
+ * Version:     0.6.23
  *
  *
  * License:     GPL2
@@ -14,7 +14,7 @@
  * Domain Path: /languages/
  *
  */
-global $maps_count, $count_content; 
+global $maps_count, $count_content, $yamap_load_api; 
 
 if (!isset($maps_count)) {
 	$maps_count=0;
@@ -83,7 +83,7 @@ function yamaps_the_content( $content ) {
 
 //Новый вызов Yandex Map API. Если передаем true, отдается только адрес API с локалью и API-ключем. Нужно для альтернативного подключения API, при отсутствии wp_footer
 function YandexMapAPI_script($noFooter = false) {  
-		global $yamaps_defaults_front, $apikey;
+		global $yamaps_defaults_front, $apikey, $post;
 		if (trim($yamaps_defaults_front['apikey_map_option'])<>"") {
 			$apikey='&apikey='.$yamaps_defaults_front['apikey_map_option'];
 		}
@@ -94,11 +94,13 @@ function YandexMapAPI_script($noFooter = false) {
 			return 'https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey;
 		}
 		else {
-			// Register the script like this for a plugin:  
-			wp_register_script( 'YandexMapAPI', 'https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey, [], 2.1, true );  
+			if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'yamap') ) {
+				// Register the script like this for a plugin:  
+				wp_register_script( 'YandexMapAPI', 'https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey, [], 2.1, true );  
 
-			// For either a plugin or a theme, you can then enqueue the script:  
-		    wp_enqueue_script( 'YandexMapAPI' ); 
+				// For either a plugin or a theme, you can then enqueue the script:  
+			    wp_enqueue_script( 'YandexMapAPI' ); 
+			}    
 		}
 		 
 }
@@ -184,7 +186,7 @@ function yaplacemark_func($atts) {
 
 //Функция вывода карты
 function yamap_func($atts, $content){
-	global $yaplacemark_count, $yamaps_defaults_front, $yamaps_defaults_front_bak, $yacontrol_count, $maps_count, $count_content, $yamap_load_api, $suppressMapOpenBlock;
+	global $yaplacemark_count, $yamaps_defaults_front, $yamaps_defaults_front_bak, $yacontrol_count, $maps_count, $count_content, $yamap_load_api, $suppressMapOpenBlock, $yamap_onpage;
 
 	$placearr = '';
 	$atts = shortcode_atts( array(
@@ -201,6 +203,7 @@ function yamap_func($atts, $content){
 	
 	$yaplacemark_count=0;
 	$yacontrol_count=0;
+	$yamap_onpage=true;
 
 	$yamactrl=str_replace(';', '", "', $atts["controls"]);
 
@@ -465,11 +468,8 @@ function yamaps_gutenberg_styles() {
 add_action( 'enqueue_block_editor_assets', 'yamaps_gutenberg_styles' );
 
 
-
-	
 if (($yamap_load_api)) {  
 	add_action( 'wp_enqueue_scripts', 'YandexMapAPI_script', 5 );
-}
+} 
 
 include( plugin_dir_path( __FILE__ ) . 'options.php'); 
-

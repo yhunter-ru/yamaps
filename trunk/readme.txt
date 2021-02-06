@@ -1,9 +1,9 @@
-﻿=== YaMaps for WordPress Plugin ===
+=== YaMaps for WordPress Plugin ===
 Contributors: yhunter
 Donate link: https://www.paypal.me/yhunter
 Tags: yandex, яндекс, карты, карта, maps, placemark, elementor
 Requires at least: 4.7
-Tested up to: 5.6
+Tested up to: 5.6.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -100,6 +100,9 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.6.23 =
+* New: Yandex Map Api is called only for pages with a map.
 
 = 0.6.22 =
 * Fixed: Bugfix.
