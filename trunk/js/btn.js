@@ -1,10 +1,16 @@
 ;var script = document.createElement('script');
-var apikey = '', apikeyexist = false;
+var apikey = '', apikeyexist = false, wp_locale=tinymce.util.I18n.getCode();
 if (yamap_defaults['apikey_map_option']!='') {
     apikey="&apikey="+yamap_defaults['apikey_map_option'];
     apikeyexist = true;
 }
-script.src = "https://api-maps.yandex.ru/2.1/?lang="+tinymce.util.I18n.getCode()+apikey;    
+if (typeof wp_locale !== 'undefined') { //Защита от пустой локали. У кого-то была такая проблема
+    if (wp_locale.length<1) {wp_locale="en_US";} 
+}
+else {
+    wp_locale="en_US";
+}
+script.src = "https://api-maps.yandex.ru/2.1/?lang="+wp_locale+apikey;    
 script.setAttribute('type', 'text/javascript');
 document.getElementsByTagName('head')[0].appendChild(script);
 

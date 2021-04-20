@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.23
+ * Version:     0.6.24
  *
  *
  * License:     GPL2
@@ -84,6 +84,8 @@ function yamaps_the_content( $content ) {
 //Новый вызов Yandex Map API. Если передаем true, отдается только адрес API с локалью и API-ключем. Нужно для альтернативного подключения API, при отсутствии wp_footer
 function YandexMapAPI_script($noFooter = false) {  
 		global $yamaps_defaults_front, $apikey, $post;
+		$maplocale = get_locale();
+		if (strlen($maplocale)<5) $maplocale = "en_US";
 		if (trim($yamaps_defaults_front['apikey_map_option'])<>"") {
 			$apikey='&apikey='.$yamaps_defaults_front['apikey_map_option'];
 		}
@@ -91,12 +93,12 @@ function YandexMapAPI_script($noFooter = false) {
 			$apikey = '';
 		}
 		if ($noFooter) {
-			return 'https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey;
+			return 'https://api-maps.yandex.ru/2.1/?lang='.$maplocale.$apikey;
 		}
 		else {
 			if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'yamap') ) {
 				// Register the script like this for a plugin:  
-				wp_register_script( 'YandexMapAPI', 'https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey, [], 2.1, true );  
+				wp_register_script( 'YandexMapAPI', 'https://api-maps.yandex.ru/2.1/?lang='.$maplocale.$apikey, [], 2.1, true );  
 
 				// For either a plugin or a theme, you can then enqueue the script:  
 			    wp_enqueue_script( 'YandexMapAPI' ); 
@@ -408,7 +410,7 @@ function yamap_plugin_scripts($plugin_array)
 
 	//enqueue TinyMCE plugin script with its ID.
 
-	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js?v=0.33";
+	$plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "js/btn.js?v=0.34";
 
     return $plugin_array;
 

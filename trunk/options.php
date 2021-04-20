@@ -27,6 +27,8 @@ add_action('admin_menu', 'yamaps_options');
  */ 
 function yamaps_option_page(){
 	global $yamaps_page, $yamaps_defaults;
+	$maplocale = get_locale();
+	if (strlen($maplocale)<5) $maplocale = "en_US";
 	if (trim($yamaps_defaults['apikey_map_option'])<>"") {
 			$apikey='&apikey='.$yamaps_defaults['apikey_map_option'];
 	}
@@ -36,7 +38,7 @@ function yamaps_option_page(){
 	?><div class="wrap">
 		<h2><?php echo __( 'YaMaps default options', 'yamaps' ); ?></h2>
 		<form method="post" id="YaMapsOptions" enctype="multipart/form-data" action="options.php">
-		<?php echo'<script src="https://api-maps.yandex.ru/2.1/?lang='.get_locale().$apikey.'" type="text/javascript"></script>'; ?>
+		<?php echo'<script src="https://api-maps.yandex.ru/2.1/?lang='.$maplocale.$apikey.'" type="text/javascript"></script>'; ?>
 			<script type="text/javascript">
 						//Округляем координаты до 4 знаков после запятой
 						function coordaprox(fullcoord) {
@@ -125,6 +127,7 @@ function yamaps_option_page(){
                         	//Функция добавления элементов управления картой в поле настроек
                         	var controlElems = document.querySelectorAll('#addcontrol a');
                         	for (var i = 0; i < controlElems.length; i++) {
+                        		controlElems[i].style.cursor = "pointer";
                         		controlElems[i].addEventListener('click', function() {                        		
 		                        if (document.getElementById('controls_map_option').value.trim()!="") {
 		                               document.getElementById('controls_map_option').value = document.getElementById('controls_map_option').value + ';'; 
