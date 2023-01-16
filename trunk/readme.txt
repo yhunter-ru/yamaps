@@ -1,4 +1,4 @@
-﻿=== YaMaps for WordPress Plugin ===
+=== YaMaps for WordPress Plugin ===
 Contributors: yhunter
 Donate link: https://yoomoney.ru/to/41001278340150
 Tags: yandex, яндекс, карты, карта, maps, placemark, elementor
@@ -101,7 +101,10 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
-= 0.6.24 =
+= 0.6.26 =
+* Fixed: Bugfix.
+
+= 0.6.25 =
 * Fixed: WP 6.0 support
 
 = 0.6.24 =

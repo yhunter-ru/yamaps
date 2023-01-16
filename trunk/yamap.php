@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.25
+ * Version:     0.6.26
  *
  *
  * License:     GPL2
@@ -57,7 +57,7 @@ if(get_option($option_name)){
     if (is_int($fixpos)) {
     	$fixpattern=array('111;','111');
     	$yamaps_defaults_front['controls_map_option']=str_replace($fixpattern, '', $yamaps_defaults_front['controls_map_option']);
-    	echo $yamaps_defaults_front['controls_map_option'];
+    	echo esc_html($yamaps_defaults_front['controls_map_option']);
     	update_option($option_name, $yamaps_defaults_front); 
     }
     //конец правки. Будет удалено в следующих версиях.
@@ -87,18 +87,18 @@ function YandexMapAPI_script($noFooter = false) {
 		$maplocale = get_locale();
 		if (strlen($maplocale)<5) $maplocale = "en_US";
 		if (trim($yamaps_defaults_front['apikey_map_option'])<>"") {
-			$apikey='&apikey='.$yamaps_defaults_front['apikey_map_option'];
+			$apikey='&apikey='.esc_html($yamaps_defaults_front['apikey_map_option']);
 		}
 		else {
 			$apikey = '';
 		}
 		if ($noFooter) {
-			return 'https://api-maps.yandex.ru/2.1/?lang='.$maplocale.$apikey;
+			return 'https://api-maps.yandex.ru/2.1/?lang='.esc_html($maplocale).esc_html($apikey);
 		}
 		else {
 			if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'yamap') ) {
 				// Register the script like this for a plugin:  
-				wp_register_script( 'YandexMapAPI', 'https://api-maps.yandex.ru/2.1/?lang='.$maplocale.$apikey, [], 2.1, true );  
+				wp_register_script( 'YandexMapAPI', 'https://api-maps.yandex.ru/2.1/?lang='.esc_html($maplocale).esc_html($apikey), [], 2.1, true );  
 
 				// For either a plugin or a theme, you can then enqueue the script:  
 			    wp_enqueue_script( 'YandexMapAPI' ); 
@@ -121,30 +121,30 @@ function yaplacemark_func($atts) {
 	$yaplacemark_count++;
 	$yahint="";
 	$yacontent="";
-	$yaicon=trim($atts["icon"]);
+	$yaicon=trim(esc_html($atts["icon"]));
 
 
 	if (strstr($yaicon, "Stretchy")<>FALSE) {
 		$yahint="";
-		$yacontent=$atts["name"];
+		$yacontent=sanitize_text_field($atts["name"]);
 		}
 	else {
 			if (($yaicon==="islands#blueIcon")or($yaicon==="islands#blueCircleIcon")) {
-				$yahint=$atts["name"];
-				$yacontent=mb_substr($yahint, 0, 1);
+				$yahint=esc_html($atts["name"]);
+				$yacontent=esc_html(mb_substr($yahint, 0, 1));
 			}
 			else {
-				$yahint=$atts["name"];
+				$yahint=esc_html($atts["name"]);
 				$yacontent="";
 			}
 	}
 	
 	
 	$yaplacemark='
-		YaMapsWP.myMap'.$maps_count.'.places.placemark'.$yaplacemark_count.' = {icon: "'.$atts["icon"].'", name: "'.$atts["name"].'", color: "'.$atts["color"].'", coord: "'.$atts["coord"].'", url: "'.$atts["url"].'",};
+		YaMapsWP.myMap'.$maps_count.'.places.placemark'.$yaplacemark_count.' = {icon: "'.esc_js($atts["icon"]).'", name: "'.esc_js($atts["name"]).'", color: "'.esc_js($atts["color"]).'", coord: "'.esc_js($atts["coord"]).'", url: "'.esc_url($atts["url"]).'",};
 		myMap'.$maps_count.'placemark'.$yaplacemark_count.' = new ymaps.Placemark(['.$atts["coord"].'], {
-                                hintContent: "'.$yahint.'",
-                                iconContent: "'.$yacontent.'",
+                                hintContent: "'.esc_js($yahint).'",
+                                iconContent: "'.esc_js($yacontent).'",
 
 
                               
@@ -154,32 +154,32 @@ function yaplacemark_func($atts) {
     if (is_int($iconurl)) {
     	$yaplacemark.='                        
                             	iconLayout: "default#image",
-        						iconImageHref: "'.$atts["icon"].'"
+        						iconImageHref: "'.esc_js($atts["icon"]).'"
                             });  
 		';
 
     }
     else {
     	$yaplacemark.='                        
-                            	preset: "'.$atts["icon"].'", 
-                            	iconColor: "'.$atts["color"].'",
+                            	preset: "'.esc_js($atts["icon"]).'", 
+                            	iconColor: "'.esc_js($atts["color"]).'",
                             });  
 		';
     }
     
-	$atts["url"]=trim($atts["url"]);
+	$atts["url"]=trim(esc_js($atts["url"]));
 	if (($atts["url"]<>"")and($atts["url"]<>"0")) {
 		$marklink=$atts["url"];
 		settype($marklink, "integer");
 		if ($marklink<>0) {
-			$marklink=get_the_permalink($atts["url"]);
+			$marklink=get_the_permalink(esc_js($atts["url"]));
 			$yaplacemark.='YaMapsWP.myMap'.$maps_count.'.places["placemark'.$yaplacemark_count.'"].url="'.$marklink.'"';
 		}
 		else {
 			$marklink=$atts["url"];
 		}
 		$yaplacemark.=' 
-				YMlisteners.myMap'.$maps_count.'['.$yaplacemark_count.'] = myMap'.$maps_count.'placemark'.$yaplacemark_count.'.events.group().add("click", function(e) {yamapsonclick("'.$marklink.'")});
+				YMlisteners.myMap'.$maps_count.'['.$yaplacemark_count.'] = myMap'.$maps_count.'placemark'.$yaplacemark_count.'.events.group().add("click", function(e) {yamapsonclick("'.esc_url($marklink).'")});
 
 		';
 	}
@@ -192,11 +192,11 @@ function yamap_func($atts, $content){
 
 	$placearr = '';
 	$atts = shortcode_atts( array(
-		'center' => $yamaps_defaults_front['center_map_option'],
-		'zoom' => $yamaps_defaults_front['zoom_map_option'],
+		'center' => esc_js($yamaps_defaults_front['center_map_option']),
+		'zoom' => esc_js($yamaps_defaults_front['zoom_map_option']),
 		'type' => 'map',
-		'height' => $yamaps_defaults_front['height_map_option'],
-		'controls' => $yamaps_defaults_front['controls_map_option'],
+		'height' => esc_js($yamaps_defaults_front['height_map_option']),
+		'controls' => esc_js($yamaps_defaults_front['controls_map_option']),
 		'scrollzoom' => '1',
 		'mobiledrag' => '1',
 		'container' => '',
@@ -207,13 +207,13 @@ function yamap_func($atts, $content){
 	$yacontrol_count=0;
 	$yamap_onpage=true;
 
-	$yamactrl=str_replace(';', '", "', $atts["controls"]);
+	$yamactrl=str_replace(';', '", "', esc_js($atts["controls"]));
 
 	if (trim($yamactrl)<>"") $yamactrl='"'.$yamactrl.'"';
 
 	if (($yamap_load_api)) { // First time content and single map
 		if (trim($yamaps_defaults_front['apikey_map_option'])<>"") {
-			$apikey='&apikey='.$yamaps_defaults_front['apikey_map_option'];
+			$apikey='&apikey='.esc_js($yamaps_defaults_front['apikey_map_option']);
 		}
 		else {
 			$apikey = '';
@@ -237,7 +237,7 @@ function yamap_func($atts, $content){
 
 	$atts["container"]=trim($atts["container"]);
 	if ($atts["container"]<>"") {
-		$mapcontainter=$atts["container"];
+		$mapcontainter=esc_html($atts["container"]);
 		$mapcontainter=str_replace("#", "", $mapcontainter);
 	}
 	else {
@@ -288,7 +288,7 @@ function yamap_func($atts, $content){
 						   
 	                 		
 							YMlisteners.myMap'.$maps_count.' = {};
-							YaMapsWP.myMap'.$maps_count.' = {center: "'.$atts["center"].'", zoom: "'.$atts["zoom"].'", type: "'.$atts["type"].'", controls: "'.$atts["controls"].'", places: {}};
+							YaMapsWP.myMap'.$maps_count.' = {center: "'.esc_js($atts["center"]).'", zoom: "'.esc_js($atts["zoom"]).'", type: "'.esc_js($atts["type"]).'", controls: "'.esc_js($atts["controls"]).'", places: {}};
 
 	                 		var yamapsonclick = function (url) {
 								location.href=url;
@@ -296,14 +296,14 @@ function yamap_func($atts, $content){
 
 	                        function init () {
 	                            myMap'.$maps_count.' = new ymaps.Map("'.$mapcontainter.'", {
-	                                    center: ['.$atts["center"].'],
-	                                    zoom: '.$atts["zoom"].',
-	                                    type: "'.$atts["type"].'",
-	                                    controls: ['.$yamactrl.'] ,
+	                                    center: ['.sanitize_text_field($atts["center"]).'],
+	                                    zoom: '.sanitize_text_field($atts["zoom"]).',
+	                                    type: "'.sanitize_text_field($atts["type"]).'",
+	                                    controls: ['.sanitize_text_field($yamactrl).'] ,
 	                                    
 	                                },
 	                                {
-	                                	suppressMapOpenBlock: '.$suppressMapOpenBlock.'
+	                                	suppressMapOpenBlock: '.esc_js($suppressMapOpenBlock).'
 	                                }); 
 
 								'.do_shortcode($placemarkscode);							
@@ -331,12 +331,12 @@ function yamap_func($atts, $content){
 
     if($yamaps_defaults_front['authorlink_map_option']<>'on'){
     	
-    $authorlink='<div style="position: relative; height: 0;  margin-bottom: 1rem !important; overflow: visible; width: 100%; text-align: center; top: -32px;"><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.$authorLinkTitle.'" target="_blank" style="display: inline-block; -webkit-box-align: center; padding: 3.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);"><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" alt="" style="width: 17px; height: 17px; margin: 0; display: block;" /></a></div>';
+    $authorlink='<div style="position: relative; height: 0;  margin-bottom: 1rem !important; overflow: visible; width: 100%; text-align: center; top: -32px;"><a href="https://www.yhunter.ru/portfolio/dev/yamaps/" title="'.esc_attr($authorLinkTitle).'" target="_blank" style="display: inline-block; -webkit-box-align: center; padding: 3.5px 5px; text-decoration: none !important; border-bottom: 0; border-radius: 3px; background-color: #fff; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px 1px rgba(0,0,0,.15),0 2px 5px -3px rgba(0,0,0,.15);"><img src="'.plugins_url( 'js/img/placeholder.svg' , __FILE__ ).'" alt="" style="width: 17px; height: 17px; margin: 0; display: block;" /></a></div>';
     }
     else {
     	$authorlink="";
     }
-    if ($atts["container"]=="") $yamap.='<div id="'.$mapcontainter.'"  style="position: relative; min-height: '.$atts["height"].'; margin-bottom: 0 !important;"></div>'.$authorlink;
+    if ($atts["container"]=="") $yamap.='<div id="'.esc_attr($mapcontainter).'"  style="position: relative; height: '.esc_attr($atts["height"]).'; margin-bottom: 0 !important;"></div>'.$authorlink;
 
     if ($count_content>=1) $maps_count++;
     return $yamap; 
@@ -363,38 +363,38 @@ function yamap_plugin_scripts($plugin_array)
 	wp_enqueue_script('yamap_plugin');
 	
 	$lang_array	 = array('YaMap' => __('Map', 'yamaps'),
-							'AddMap' => __('Add map', 'yamaps'),
-							'EditMap' => __('Edit map', 'yamaps'),
-							'PluginTitle' => __('YaMaps plugin: Yandex.Map', 'yamaps'),
-							'MarkerTab' => __('Placemark', 'yamaps'),
-							'MapTab' => __('Map', 'yamaps'),
-							'MarkerIcon' => __('Icon', 'yamaps'),
-							'BlueOnly' => __('Blue only', 'yamaps'),
-							'MarkerUrl' => __('Link', 'yamaps'),
-							'MarkerUrlTip' => __('Placemark hyperlink url or post ID', 'yamaps'),
-							'MapHeight' => __('Map height', 'yamaps'),
-							'MarkerName' => __('Placemark name', 'yamaps'),
-							'MarkerNameTip' => __('Text for hint or icon content', 'yamaps'),
-							'MapControlsTip' => __('Use the links below', 'yamaps'),		
-							'MarkerCoord' => __('Сoordinates', 'yamaps'),
-							'NoCoord' => __('Click on the map to choose or create the mark', 'yamaps'),
-							'MapControls' => __('Map controls', 'yamaps'),
-							'MarkerDelete' => __('Delete', 'yamaps'),
-							'type' => __('Map type', 'yamaps'),
-							'zoom' => __('Zoom', 'yamaps'),
-							'ScrollZoom' => __('Wheel zoom', 'yamaps'),
-							'MobileDrag' => __('Mobile drag', 'yamaps'),
-							'search' => __('Search', 'yamaps'),
-							'route' => __('Route', 'yamaps'),
-							'ruler' => __('Ruler', 'yamaps'),
-							'traffic' => __('Traffic', 'yamaps'),
-							'fullscreen' => __('Full screen', 'yamaps'),
-							'geolocation' => __('Geolocation', 'yamaps'),
-							'MarkerColor' => __('Marker color', 'yamaps'),
-							'MapContainerID' => __('Put in ID', 'yamaps'),
-							'MapContainerIDTip' => __('Do not create a block in the content. Use the existing block of the WP theme with the specified ID', 'yamaps'),
-							'Extra' => __('Extra', 'yamaps'),
-							'ExtraHTML' => __('<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other icon types?</h2>Additional types of icons can be found by the link in the <a href="https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ " style="white-space: normal">Yandex.Map documentation</a>.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Do you like YaMaps plugin?</h2>You can support its development by donate (<a href="https://yoomoney.ru/to/41001278340150" style="white-space: normal">Yoomoney</a>) or just leave a positive feedback in the <a href="https://wordpress.org/support/plugin/yamaps/reviews/" style="white-space: normal">plugin repository</a>. It\'s very motivating!</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Any questions?</h2>Ask in the comments <a href="https://www.yhunter.ru/portfolio/dev/yamaps/" style="white-space: normal">on the plug-in\'s page</a>, <a href="https://wordpress.org/support/plugin/yamaps" style="white-space: normal">WP support forum</a> or <a href="https://github.com/yhunter-ru/yamaps/issues" style="white-space: normal">on GitHub</a>.</div>', 'yamaps'),
+						 'AddMap' => __('Add map', 'yamaps'),
+						 'EditMap' => __('Edit map', 'yamaps'),
+						 'PluginTitle' => __('YaMaps plugin: Yandex.Map', 'yamaps'),
+						 'MarkerTab' => __('Placemark', 'yamaps'),
+						 'MapTab' => __('Map', 'yamaps'),
+						 'MarkerIcon' => __('Icon', 'yamaps'),
+						 'BlueOnly' => __('Blue only', 'yamaps'),
+						 'MarkerUrl' => __('Link', 'yamaps'),
+						 'MarkerUrlTip' => __('Placemark hyperlink url or post ID', 'yamaps'),
+						 'MapHeight' => __('Map height', 'yamaps'),
+						 'MarkerName' => __('Placemark name', 'yamaps'),
+						 'MarkerNameTip' => __('Text for hint or icon content', 'yamaps'),
+						 'MapControlsTip' => __('Use the links below', 'yamaps'),		
+						 'MarkerCoord' => __('Сoordinates', 'yamaps'),
+						 'NoCoord' => __('Click on the map to choose or create the mark', 'yamaps'),
+						 'MapControls' => __('Map controls', 'yamaps'),
+						 'MarkerDelete' => __('Delete', 'yamaps'),
+						 'type' => __('Map type', 'yamaps'),
+						 'zoom' => __('Zoom', 'yamaps'),
+						 'ScrollZoom' => __('Wheel zoom', 'yamaps'),
+						 'MobileDrag' => __('Mobile drag', 'yamaps'),
+						 'search' => __('Search', 'yamaps'),
+						 'route' => __('Route', 'yamaps'),
+						 'ruler' => __('Ruler', 'yamaps'),
+						 'traffic' => __('Traffic', 'yamaps'),
+						 'fullscreen' => __('Full screen', 'yamaps'),
+						 'geolocation' => __('Geolocation', 'yamaps'),
+						 'MarkerColor' => __('Marker color', 'yamaps'),
+						 'MapContainerID' => __('Put in ID', 'yamaps'),
+						 'MapContainerIDTip' => __('Do not create a block in the content. Use the existing block of the WP theme with the specified ID', 'yamaps'),
+						 'Extra' => __('Extra', 'yamaps'),
+						 'ExtraHTML' => __('<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other icon types?</h2>Additional types of icons can be found by the link in the <a href="https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ " style="white-space: normal">Yandex.Map documentation</a>.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Do you like YaMaps plugin?</h2>You can support its development by donate (<a href="https://yoomoney.ru/to/41001278340150" style="white-space: normal">Yoomoney</a>) or just leave a positive feedback in the <a href="https://wordpress.org/support/plugin/yamaps/reviews/" style="white-space: normal">plugin repository</a>. It\'s very motivating!</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Any questions?</h2>Ask in the comments <a href="https://www.yhunter.ru/portfolio/dev/yamaps/" style="white-space: normal">on the plug-in\'s page</a>, <a href="https://wordpress.org/support/plugin/yamaps" style="white-space: normal">WP support forum</a> or <a href="https://github.com/yhunter-ru/yamaps/issues" style="white-space: normal">on GitHub</a>.</div>', 'yamaps'),
 							'DeveloperInfoTab' => __('Design & Development', 'yamaps'),
 							'DeveloperInfo' => __('<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other plugin features?</h2>Do you like the plugin but lack features for your project? For commercial modifications of the plugin, please contact me.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">WordPress website design and development</h2>My name is Yuri and I have been creating websites for over 15 years. I have been familiar with WordPress since 2008. I know and love this CMS for its user friendly interface. This is exactly how I tried to make the interface of my YaMaps plugin, which you are currently using. If you need to create a website, make an interface design or write a plugin for WordPress - I will be happy to help you!<p style="margin-top: .5rem; text-align: center;"><b>Contacts:</b>  <a href="mailto:mail@yhunter.ru">mail@yhunter.ru</a>, <b>telegram:</b> <a href="tg://resolve?domain=yhunter">@yhunter</a>, <b>tel:</b> <a href="tel:+79028358830">+7-902-83-588-30</a></p></div>', 'yamaps'),
 
