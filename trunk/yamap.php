@@ -5,7 +5,7 @@
  * Plugin URI:  www.yhunter.ru/portfolio/dev/yamaps/
  * Author URI:  www.yhunter.ru
  * Author:      Yuri Baranov
- * Version:     0.6.26
+ * Version:     0.6.27
  *
  *
  * License:     GPL2
@@ -93,7 +93,9 @@ function YandexMapAPI_script($noFooter = false) {
 			$apikey = '';
 		}
 		if ($noFooter) {
-			return 'https://api-maps.yandex.ru/2.1/?lang='.esc_html($maplocale).esc_html($apikey);
+			$AltApiSrc = 'https://api-maps.yandex.ru/2.1/?lang='.esc_html($maplocale).esc_html($apikey).'&ver=2.1';
+			$AltApiSrc = str_replace("&amp;", "&", $AltApiSrc);
+			return $AltApiSrc;
 		}
 		else {
 			if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'yamap') ) {
