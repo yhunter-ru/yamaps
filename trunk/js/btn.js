@@ -808,35 +808,35 @@ function iconname(place) {       //change icon name
 
                                     ]
 
-                                },
-                                {
-                                    type: 'panel',
-                                    title: '🦉\u00A0' + yamap_object.DeveloperInfoTab,
-                                    items: [
-                                        {
-                                            type: 'form',
-                                            name: 'form2',
-                                            minWidth : 598,
+                                }//,
+                                //{
+                                //    type: 'panel',
+                                //    title: '🦉\u00A0' + yamap_object.DeveloperInfoTab,
+                                //    items: [
+                                //        {
+                                //            type: 'form',
+                                //            name: 'form2',
+                                //            minWidth : 598,
 
-                                            items: [
-                                                {
-                                                type   : 'container',
-                                                name   : 'addcontrol',
+                                //            items: [
+                                //                {
+                                //                type   : 'container',
+                                //                name   : 'addcontrol',
                                                                        
-                                                minWidth : 598,   
-                                                html   : yamap_object.DeveloperInfo,
-                                            },
+                                //                minWidth : 598,   
+                                //                html   : yamap_object.DeveloperInfo,
+                                //            },
                                                 
-                                                ]
-                                        },
+                                //                ]
+                                //        },
 
 
                                      
 
 
-                                    ]
+                                //    ]
 
-                                }
+                                //}
                                 
 
                             ]

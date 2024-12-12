@@ -3,7 +3,7 @@ Contributors: yhunter
 Donate link: https://yoomoney.ru/to/41001278340150
 Tags: yandex, яндекс, карты, карта, maps, placemark, elementor
 Requires at least: 4.7
-Tested up to: 6.5
+Tested up to: 6.8
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -101,8 +101,11 @@ https://github.com/yhunter-ru/yamaps
 
 == Changelog ==
 
+= 0.6.28 =
+* Fixed: Bugfix.
+
 = 0.6.27 =
-* Fixed: Bugfix. Map outside the main WordPress loop caused an error: Invalid API key.
+* Fixed: Bugfix.
 
 = 0.6.26 =
 * Fixed: Bugfix.
