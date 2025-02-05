@@ -1,29 +1,29 @@
 ;var script = document.createElement('script');
 var apikey = '', apikeyexist = false, wp_locale=tinymce.util.I18n.getCode();
 if (yamap_defaults['apikey_map_option']!='') {
-    apikey="&apikey="+yamap_defaults['apikey_map_option'];
+    apikey="&apikey="+encodeURIComponent(yamap_defaults['apikey_map_option']);
     apikeyexist = true;
 }
-if (typeof wp_locale !== 'undefined') { //Защита от пустой локали. У кого-то была такая проблема
+if (typeof wp_locale !== 'undefined') { // Protection against empty locale. Some users had this problem
     if (wp_locale.length<1) {wp_locale="en_US";} 
 }
 else {
     wp_locale="en_US";
 }
-script.src = "https://api-maps.yandex.ru/2.1/?lang="+wp_locale+apikey;    
+script.src = "https://api-maps.yandex.ru/2.1/?lang="+encodeURIComponent(wp_locale)+apikey;    
 script.setAttribute('type', 'text/javascript');
 document.getElementsByTagName('head')[0].appendChild(script);
 
 var mapselector = 'map0', activeplace="", ym={}, editMapAction=false, editorContentData;
 var placemark = [];
 
-if (!editMapAction) {//Перенесено для корректной работы в WP 5.6
+if (!editMapAction) { // Moved for correct operation in WP 5.6
                             
     ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionCheck('wheelzoom_map_option'), mobiledrag: optionCheck('mobiledrag_map_option'), container: '', places: {}}};
 
 }  
 
-//Определяем отключен ли скролл колесом на редактируемой карте
+// Determine if scroll zoom is disabled on the edited map
 function checkParam(param) {
     var checker=true;
     if (ym.map0[param]==="0") { 
@@ -32,7 +32,7 @@ function checkParam(param) {
     return checker;
 }
 
-//Задаем дефолтные параметры из настроек
+// Set default parameters from settings
 function optionCheck(param) {
 	var checker="0";
 	if (yamap_defaults[param]==='on')	{
@@ -41,7 +41,7 @@ function optionCheck(param) {
 	return checker;
 }
 
-//Определяем заголовок окна для создания или редактирования
+// Determine the window title for creating or editing
 function checkTitle() {
     if (editMapAction) {
         return yamap_object.EditMap;
@@ -51,7 +51,7 @@ function checkTitle() {
     }
 }
 
-//Дефолтные данные
+// Default data
 var coords=[], mapcenter=yamap_defaults['center_map_option'], mapzoom=yamap_defaults['zoom_map_option'], maptype=yamap_defaults['type_map_option'], markicon, markcount=0, mapcount=1;
 
 (function($) {
@@ -59,7 +59,7 @@ var coords=[], mapcenter=yamap_defaults['center_map_option'], mapzoom=yamap_defa
 })(jQuery);
 
 
-//Изменение поля типа иконки    
+// Change the icon type field    
 function iconselectchange() {      // change icon type    
         if (activeplace!=='') {
             ym[mapselector].places[activeplace].icon=jQuery("#markericon-inp").val();
@@ -68,11 +68,9 @@ function iconselectchange() {      // change icon type
         }             
 }
 
-
-
-//Округляем координаты до 4 знаков после запятой
+// Round coordinates to 4 decimal places
 function coordaprox(fullcoord) {
-        //надо сделать проверку на корректный ввод координат
+        // Need to check for valid coordinate input
         if (fullcoord.length!==2) {
             fullcoord=fullcoord.split(',');
             if (fullcoord.length!==2) { 
@@ -82,26 +80,26 @@ function coordaprox(fullcoord) {
         return [parseFloat(fullcoord[0]).toFixed(4), parseFloat(fullcoord[1]).toFixed(4)];
 }
 
-//Изменяем поле с координатами метки
+// Change the coordinates field of the marker
 function markcoordchange() {
         jQuery("#markercoord").val(coordaprox(ym[mapselector].places[activeplace].coord));
 }
 
-//Активируем выключенное поле
+// Activate the disabled field
 function enablesinglefield(field) {
         jQuery(field).attr('disabled',false);
         jQuery(field).removeClass('mce-disabled');
         jQuery(field+'-l').removeClass('mce-disabled');
 }
 
-//Деактивируем поле
+// Deactivate the field
 function disablesinglefield(field) {
         jQuery(field).attr('disabled',true);
         jQuery(field).addClass('mce-disabled');
         jQuery(field+'-l').addClass('mce-disabled');        
 }
 
-//Активируем выключенные поля после создания метки
+// Activate disabled fields after creating a marker
 function enablefields(fieldact=true) {
         if (fieldact) {
             enablesinglefield('#markercoord'); 
@@ -112,7 +110,7 @@ function enablefields(fieldact=true) {
             
 } 
 
-//Проверяем значение чекбокса
+// Check the value of the checkbox
 function checkcheckbox(param) {
     if (jQuery("#"+param).attr('aria-checked')!="undefined") {
         if (jQuery("#"+param).attr('aria-checked')=='true') {
@@ -123,7 +121,7 @@ function checkcheckbox(param) {
     }           
 }
 
-//Изменяем данные карты в массиве после изменения полей
+// Change the map data in the array after changing fields
 function mapdatechange() {
         
         if(document.getElementById('mapcontrols')) {
@@ -148,29 +146,46 @@ function mapdatechange() {
         
 }
 
-//Изменяем данные карты в массиве после изменения карты в редакторе
+// Change the map data in the array after changing the map in the editor
 function mapSave() {
         ym[mapselector].zoom=mapzoom;
         ym[mapselector].center=[coordaprox(mapcenter)];
         ym[mapselector].maptype=maptype;  
 }
 
-//Изменаем данные активной метки в массиве по данным полей ввода
+// Change the active marker data in the array based on input field data
 function markchange() {
-
         if (activeplace!=='') {
-        
-            ym[mapselector].places[activeplace].name=jQuery("#markername").val().replace(/["]/g, '&quot;');
-            ym[mapselector].places[activeplace].coord=jQuery("#markercoord").val();
-            ym[mapselector].places[activeplace].color=jQuery("#colorbox #colorbox-inp").val();
-            ym[mapselector].places[activeplace].icon=jQuery("#markericon #markericon-inp").val();
+            // Escape special characters in the marker name
+            var markerName = jQuery("#markername").val().replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }[m];
+            });
             
-            ym[mapselector].places[activeplace].url=jQuery("#markerurl").val();
-
+            ym[mapselector].places[activeplace].name = markerName;
+            ym[mapselector].places[activeplace].coord = jQuery("#markercoord").val();
+            ym[mapselector].places[activeplace].color = jQuery("#colorbox #colorbox-inp").val();
+            ym[mapselector].places[activeplace].icon = jQuery("#markericon #markericon-inp").val();
+            
+            // Escape URL
+            var markerUrl = jQuery("#markerurl").val();
+            if(markerUrl) {
+                try {
+                    markerUrl = encodeURI(markerUrl);
+                } catch(e) {
+                    markerUrl = '';
+                }
+            }
+            ym[mapselector].places[activeplace].url = markerUrl;
         }
 }
 
-//Изменяем данные полей ввода по данным массива    
+// Change the input field data based on the array data    
 function markerfields() {
 		if (typeof ym[mapselector].places[activeplace].name !== 'undefined') {
         	jQuery("#markername").val(ym[mapselector].places[activeplace].name.replace(/(&quot;)/g, '"'));
@@ -183,15 +198,14 @@ function markerfields() {
         jQuery("#markerurl").val(ym[mapselector].places[activeplace].url);
 }
 
-//Выключаем поле координат, когда не выбрана метка
+// Disable the coordinates field when no marker is selected
 function inactive() {
             jQuery("#markercoord").val(yamap_object.NoCoord);
             enablefields(false);
 }
 
-
-//Изменяем имя или хинт иконки в зависимости от ее типа
-function iconname(place) {       //change icon name
+// Change the name or hint of the icon depending on its type
+function iconname(place) {       // change icon name
 		yacontent="";
         if (activeplace!=='') { 
             place=activeplace;
@@ -200,23 +214,29 @@ function iconname(place) {       //change icon name
         var markicon = ym[mapselector].places[place].icon;
         var yahint = "";
 
-        //Если иконка тянется, выводим название в iconContent
+        // Escape the marker name for safe display
+        markername = markername ? markername.replace(/[&<>"']/g, function(m) {
+            return {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[m];
+        }) : '';
+
+        // If the icon is stretchy, display the name in iconContent
         if (markicon.indexOf("Stretchy")!==-1) { 
             yahint="";
             yacontent=markername;
         }
-
-        //Если круглая пустая иконка, то выводим в iconContent первый символ и название в hintContent
         else {
             if ((markicon==="islands#blueIcon")||(markicon==="islands#blueCircleIcon")) {
                 yahint=markername;
-
                 if ((yahint!="")&&(yahint!=undefined)) {
                     yacontent=yahint[0];
                 }
-                
             }
-            //Если иконка с точкой, то выводим название в hintContent
             else {
                 yahint=markername;
                 yacontent="";
@@ -226,7 +246,7 @@ function iconname(place) {       //change icon name
         if (place!=='') {
             placemark[place.replace('placemark', '')].properties.set('hintContent', yahint);
             placemark[place.replace('placemark', '')].properties.set('iconContent', yacontent);
-            //Проверяем, является ли поле иконки url-адресом. Если да, то ставим в качестве иконки кастомное изображение.
+            // Check if the icon field is a URL. If yes, set a custom image as the icon.
             if (markicon.indexOf("http")===-1) {
                 placemark[place.replace('placemark', '')].options.unset('iconLayout', 'default#image');
                 placemark[place.replace('placemark', '')].options.unset('iconImageHref', markicon);
@@ -235,26 +255,27 @@ function iconname(place) {       //change icon name
             else {            
                 placemark[place.replace('placemark', '')].options.unset('preset', markicon);
                 placemark[place.replace('placemark', '')].options.set('iconLayout', 'default#image');
+                // Escape the icon URL
+                markicon = encodeURI(markicon);
                 placemark[place.replace('placemark', '')].options.set('iconImageHref', markicon);
             }
         }
 }
 
-
-//Работаем с редактором tinyMCE в модальном окне
+// Work with the tinyMCE editor in the modal window
 (function() { 
     var editor = tinymce.activeEditor;
 
-    //Изменяем цвет иконки на карте, записываем в массив  
+    // Change the icon color on the map, write to the array  
     function markercolor (pcolor) {
-        //Если метки нет, цвета не прописываем
+        // If there is no marker, do not set the color
         if (activeplace!=='') {
             placemark[activeplace.replace('placemark', '')].options.set('iconColor', pcolor);
             ym[mapselector].places[activeplace].color=jQuery("#colorbox #colorbox-inp").val();
         }                            
     }
 
-    //Плагин colorPicker для tinyMCE
+    // ColorPicker plugin for tinyMCE
     function createColorPickAction() {
 
             var colorPickerCallback = editor.settings.color_picker_callback;
@@ -276,16 +297,13 @@ function iconname(place) {       //change icon name
             }
     }
 
-
-    //Добавляем кнопку и меню плагина в редактор
+    // Add button and plugin menu to the editor
     tinymce.create("tinymce.plugins.yamap_plugin", {
 
-        //url argument holds the absolute url of our plugin directory
+        // url argument holds the absolute url of our plugin directory
         init : function(ed, url) {
 
-
-
-            //add new button    
+            // Add new button    
             ed.addButton("yamap", {
                 title : yamap_object.AddMap,
                 type: 'button',
@@ -296,49 +314,40 @@ function iconname(place) {       //change icon name
                         editMapAction=false;
                         ed.execCommand("yamap_command");
                 }
-
-
             });
 
-
-
-
-
-            //Функционал кнопки в редакторе
+            // Functionality of the button in the editor
             ed.addCommand("yamap_command", function() {
             activeplace="";   
             markcount=0;         
                     
-                    
-                    //Инициализируем карту
+                    // Initialize the map
                     jQuery(document).ready(function() {                       
                         
 
-                        if (!editMapAction) { //Перенесено в начало кода из-за проблем в WP 5.6
+                        if (!editMapAction) { // Moved to the beginning of the code due to issues in WP 5.6
                             delete  ym.map0.places;
                             ym.map0.places = {};
-
-                        //    ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionCheck('wheelzoom_map_option'), mobiledrag: optionCheck('mobiledrag_map_option'), container: '', places: {}}};
 
                         }  
                         ymaps.ready(init);                      
 
                     });
                     
-                    //Удаляем метку с карты
+                    // Remove the marker from the map
                     function removeplacemark(map, place) {
                         map.geoObjects.remove(place);
                     }
 
-                    //Функция создания метки
+                    // Function to create a marker
                     function createplacemark(map, defcoord=[55.7532,37.6225]) {
                         var newmark=false;
-                        enablefields(); //Активируем выключенные поля
+                        enablefields(); // Activate disabled fields
 
                         if (!ym.map0.places.hasOwnProperty('placemark'+markcount))  {  
                             newmark=true;
                             ym.map0['places']['placemark'+markcount] = {name: '', coord: defcoord, icon: yamap_defaults['type_icon_option'], color: jQuery("#colorbox #colorbox-inp").val(), url: ''}; //: {name: 'placemark1', coord: coords, type: 'islands#blueDotIcon', color: '#ff0000', url: 'url1'};
-                            if (activeplace==='') { //Если создается первая метка, берем значения из полей формы
+                            if (activeplace==='') { // If the first marker is being created, take values from the form fields
                                 activeplace = 'placemark'+markcount; 
                                 markchange();
                                 ym.map0['places']['placemark'+markcount].coord = defcoord;
@@ -348,10 +357,7 @@ function iconname(place) {       //change icon name
                             markerfields();
                         }
 
-                        
-
-
-                        //Создание метки на карте
+                        // Create a marker on the map
                         placemark[markcount] = new ymaps.Placemark(defcoord, {
                                 hintContent: "name",
                                 id: 'placemark'+markcount,
@@ -370,9 +376,7 @@ function iconname(place) {       //change icon name
                         activeplace = '';
                         coords = defcoord;
 
-
-
-                        //Отслеживаем событие перемещения метки
+                        // Track the event of moving the marker
                         placemark[markcount].events.add("dragend", function (e) {   
                             var trg = e.get('target');         
                             coords = this.geometry.getCoordinates();
@@ -381,7 +385,7 @@ function iconname(place) {       //change icon name
                             inactive(); 
                         }, placemark[markcount]);
 
-                        //Отслеживаем событие начала перемещения метки
+                        // Track the event of starting to move the marker
                         placemark[markcount].events.add("dragstart", function (e) {            
                             var trg = e.get('target'); 
                             activeplace=trg.properties.get('id');
@@ -395,7 +399,7 @@ function iconname(place) {       //change icon name
                         }, placemark[markcount]);
 
                         
-                        //Добавляем событие клика по метке
+                        // Add click event to the marker
                         placemark[markcount].events.add('click', function (e) {
 
                             var trg = e.get('target');
@@ -404,7 +408,7 @@ function iconname(place) {       //change icon name
                             markerfields();
                             enablefields();
                             
-                            //Удаляем метку-закрытия для всех меток
+                            // Remove the closing marker for all markers
                             map.geoObjects.each(function (geoObject) {
                                 if (geoObject.properties.get('id') == 'closesvg') {
                                     map.geoObjects.remove(geoObject);                                   
@@ -412,7 +416,7 @@ function iconname(place) {       //change icon name
                                 activeplace='';
                             });
 
-                            //Добавляем метку-кнопку закрытия родительской метки
+                            // Add a closing button marker for the parent marker
                             var closePlacemark = new ymaps.Placemark(
                                   plcoord,
                                   {
@@ -423,8 +427,8 @@ function iconname(place) {       //change icon name
                                     iconLayout: 'default#image',
                                     iconImageHref: url+ "/img/close.svg",
                                     iconImageSize: [16, 16],
-                                    // Описываем фигуру активной области
-                                    // "Прямоугольник".
+                                    // Describe the shape of the active area
+                                    // "Rectangle".
                                     iconOffset: [-2, -30],
                                     iconImageOffset: [5, 10],
                                     zIndex: 999,
@@ -438,15 +442,15 @@ function iconname(place) {       //change icon name
                                 removeplacemark(map, trg);
                                 activeplace='';  
                                 inactive();                                
-                                delete ym.map0['places'][trg.properties.get('id')]; // удаляем все свойства точки из массива
+                                delete ym.map0['places'][trg.properties.get('id')]; // remove all properties of the point from the array
                                 if (Object.keys(ym.map0.places).length===0) {
-                                    //Выключаем поле с координатами
+                                    // Disable the coordinates field
                                     jQuery('#markercoord').val(yamap_object.NoCoord);
                                     enablefields(false);
                                 }
                             });
 
-                            //Событие клика для закрытия метки
+                            // Click event for closing the marker
                             map.events.add('click', function (e) { 
                                 removeplacemark(map, closePlacemark);
                             });
@@ -459,13 +463,11 @@ function iconname(place) {       //change icon name
 
                     }   
 
-
-
-                    //Функция инициализации карты
+                    // Function to initialize the map
                     function init () {
                             var myMap=[];
                             var controlsArr=["zoomControl", "typeSelector"];
-                            if (apikeyexist) controlsArr.push("searchControl"); //Если определен API key, добавляем поиск на карту. Без ключа он все равно не будет работать и выдавать ошибку.
+                            if (apikeyexist) controlsArr.push("searchControl"); // If the API key is defined, add search to the map. Without a key, it won't work anyway and will throw an error.
 
                             mapcenter=ym.map0.center[0];
                             coords=ym.map0.center[0];
@@ -479,16 +481,14 @@ function iconname(place) {       //change icon name
                                 suppressMapOpenBlock: true
                             }); 
 
-                        //Заполняем данные формы из массива при редактировании
+                        // Fill in the form data from the array when editing
                         function loadMap() {
                             if (ym.map0.height!=="undefined") jQuery('#mapheight').val(ym.map0.height);
                             if (ym.map0.controls!=="undefined") jQuery('#mapcontrols').val(ym.map0.controls);
 
                         }
 
-
-
-                        //Ставим метки редактируемой карты
+                        // Set markers for the edited map
                         function loadPlacemarks(map) {
 
                             for(var key in ym.map0['places']) {
@@ -506,13 +506,12 @@ function iconname(place) {       //change icon name
 
                         } 
 
-                        //Отслеживаем событие щелчка по карте
+                        // Track the event of clicking on the map
                         myMap[mapcount].events.add('click', function (e) { 
                             createplacemark(myMap[mapcount], e.get('coords'));
                         }); 
 
-
-                        //Отслеживаем событие поиска и ставим метку в центр
+                        // Track the event of searching and place a marker in the center
                         if (apikeyexist) {
 	                        var searchControl = myMap[mapcount].controls.get('searchControl');                        
 	                        searchControl.events.add("resultshow", function (e) {
@@ -523,8 +522,7 @@ function iconname(place) {       //change icon name
 	                        });
 	                    }
 
-
-                        //Ослеживаем событие изменения области просмотра карты - масштаб и центр карты
+                        // Track the event of changing the map view area - zoom and center of the map
                         myMap[mapcount].events.add('boundschange', function (event) {
                         if (event.get('newZoom') != event.get('oldZoom')) {     
                             mapzoom=event.get('newZoom');
@@ -540,14 +538,13 @@ function iconname(place) {       //change icon name
 
                         maptype = myMap[mapcount].getType();                        
 
-                        //Отслеживаем изменение типа карты
+                        // Track the change of the map type
                         myMap[mapcount].events.add('typechange', function (event) {
                             maptype = myMap[mapcount].getType();
                             mapSave();
                         });
                         
                         iconselectchange();
-
 
                         jQuery("#mapheight, #mapcontrols").change(function() {
                             mapdatechange();
@@ -556,21 +553,19 @@ function iconname(place) {       //change icon name
                             mapdatechange();
                         });
 
-                        //отслеживаем изменение полей иконки  
+                        // Track the change of icon fields  
                         jQuery("#markername, #markercoord, #markericon-inp, #markerurl").change(function() {
                             markchange();
                         });   
 
-
-                        //отслеживаем изменение имени иконки  
+                        // Track the change of the icon name  
                         jQuery("#markername").change(function() {
                             if (activeplace!=="") {
                                 iconname();
                             }                            
                         });  
 
-
-                        //отслеживаем изменение типа иконки
+                        // Track the change of the icon type
                         jQuery("#markericon-inp").change(function() {
                             iconselectchange();
                         });                  
@@ -586,7 +581,7 @@ function iconname(place) {       //change icon name
 
                     }
 
-                    //Параметры модального окна редактора
+                    // Parameters of the editor modal window
                     function checkApiKeyForSearchField() {
                     	if (apikeyexist) {
                     		return '<a data-control="searchControl">'+yamap_object.search+'</a>, ';
@@ -892,11 +887,6 @@ function iconname(place) {       //change icon name
                     });
                 mapdatechange();
                 mapSave();
-
-
-                
-
-                
             });
 
         },    
@@ -915,8 +905,4 @@ function iconname(place) {       //change icon name
     });
     
     tinymce.PluginManager.add("yamap_plugin", tinymce.plugins.yamap_plugin);
-
-
-    
 })();
-

@@ -1,26 +1,56 @@
 ﻿//Парсим шорткод меток внутри карты
 function findPlaceMarks(found) {
+    if (typeof found !== 'string') return;
+    
     foundplace = found.match(/\[yaplacemark(.*?)\]/g);
-        if (foundplace!==null) {
-                for (var j = 0; j < foundplace.length; j++) {       
-                    foundplacemark=foundplace[j].match(/([a-zA-Z]+)="([^"]+)+"/gi);     
-                    ym['map0'].places['placemark'+j]={};
-                    for (var k = 0; k < foundplacemark.length; k++) {
+    if (foundplace !== null) {
+        for (var j = 0; j < foundplace.length; j++) {       
+            foundplacemark = foundplace[j].match(/([a-zA-Z]+)="([^"]+)+"/gi);     
+            ym['map0'].places['placemark'+j] = {};
+            for (var k = 0; k < foundplacemark.length; k++) {
+                foundplacemark[k] = foundplacemark[k].split("&amp;").join("&"); //Bugfix: Гутенберг меняет амперсанды на html тэги. Меняем обратно.
 
-			            foundplacemark[k]=foundplacemark[k].split("&amp;").join("&"); //Bugfix: Гутенберг меняет амперсанды на html тэги. Меняем обратно.
+                placeparams = foundplacemark[k].split("=");
+                if (placeparams.length > 2) { //Bugfix: Если строка в шорткоде содержит знак равества, не теряем ее продолжение при делении на ключ/значение
+                    placeparams[1] = foundplacemark[k].replace(placeparams[0]+"=", "");
+                }
+                placeparams[1] = placeparams[1].replace(/\"|\'/g, '');
 
-                        placeparams=foundplacemark[k].split("=");
-                        if (placeparams.length>2) { //Bugfix: Если строка в шорткоде содержит знак равества, не теряем ее продолжение при делении на ключ/значение
-                        	placeparams[1]=foundplacemark[k].replace(placeparams[0]+"=", "");
+                // Безопасная обработка URL и координат
+                if (placeparams[0] === 'coord') {
+                    // Валидация координат
+                    var coords = placeparams[1].split(',');
+                    if (coords.length === 2) {
+                        var lat = parseFloat(coords[0]);
+                        var lng = parseFloat(coords[1]);
+                        if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                            ym['map0'].places['placemark'+j][placeparams[0]] = lat + ',' + lng;
+                        } else {
+                            ym['map0'].places['placemark'+j][placeparams[0]] = '55.7473,37.6247'; // Дефолтные координаты
                         }
-                        placeparams[1]=placeparams[1].replace(/\"|\'/g, '');
-                        if (placeparams[0]==='coord') {
-                            ym['map0'].places['placemark'+j][placeparams[0]]=placeparams[1];
-                        }
-                        else {
-                            ym['map0'].places['placemark'+j][placeparams[0]]=[placeparams[1]].join('');                            
-                        }                                            
+                    } else {
+                        ym['map0'].places['placemark'+j][placeparams[0]] = '55.7473,37.6247'; // Дефолтные координаты
                     }
+                }
+                else if (placeparams[0] === 'url') {
+                    // Безопасная обработка URL
+                    try {
+                        var url = decodeURI(placeparams[1]);
+                        // Проверяем, является ли значение числом (ID поста)
+                        if (!isNaN(url)) {
+                            ym['map0'].places['placemark'+j][placeparams[0]] = placeparams[1];
+                        } else {
+                            // Если это URL, кодируем его
+                            ym['map0'].places['placemark'+j][placeparams[0]] = encodeURI(url);
+                        }
+                    } catch(e) {
+                        ym['map0'].places['placemark'+j][placeparams[0]] = '';
+                    }
+                }
+                else {
+                    ym['map0'].places['placemark'+j][placeparams[0]] = placeparams[1];
+                }
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 === YaMaps for WordPress Plugin ===
 Contributors: yhunter
 Donate link: https://yoomoney.ru/to/41001278340150
-Tags: yandex, яндекс, карты, карта, maps, placemark, elementor
+Tags: yandex, яндекс, карты, карта, maps
 Requires at least: 4.7
 Tested up to: 6.8
 Stable tag: trunk
@@ -100,6 +100,11 @@ https://github.com/yhunter-ru/yamaps
 5. Visual selecting the marker color.
 
 == Changelog ==
+
+= 0.6.30 =
+* Security improvements.
+* Code refactoring.
+* Fixed: Bugfix. 
 
 = 0.6.28 =
 * Fixed: Bugfix.

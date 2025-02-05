@@ -1,7 +1,7 @@
 <?php
 $yamaps_page = 'yamaps-options.php'; 
 
-global $yamaps_page, $yamaps_defaults, $yamaps_defaults_front_bak;
+global $yamaps_page, $yamaps_defaults, $yamaps_defaults_front_bak, $lang_array;
 $option_name = 'yamaps_options';
 if(get_option($option_name)){
 	$yamaps_defaults=get_option($option_name);
@@ -14,7 +14,7 @@ if(get_option($option_name)){
 }
 
 /*
- * Функция, добавляющая страницу в пункт меню Настройки
+ * Function to add a page to the Settings menu
  */
 function yamaps_options() {
 	global $yamaps_page;
@@ -23,24 +23,31 @@ function yamaps_options() {
 add_action('admin_menu', 'yamaps_options');
  
 /**
- * Возвратная функция (Callback)
+ * Callback function
  */ 
 function yamaps_option_page(){
+	// Check user permissions
+	if (!current_user_can('manage_options')) {
+		wp_die(__('You do not have sufficient permissions to access this page.', 'yamaps'));
+	}
+
 	global $yamaps_page, $yamaps_defaults;
 	$maplocale = get_locale();
 	if (strlen($maplocale)<5) $maplocale = "en_US";
 	if (trim($yamaps_defaults['apikey_map_option'])<>"") {
-			$apikey='&apikey='.$yamaps_defaults['apikey_map_option'];
+			$apikey='&apikey='.esc_attr($yamaps_defaults['apikey_map_option']);
 	}
 	else {
 		$apikey="";
 	}
 	?><div class="wrap">
-		<h2><?php echo __( 'YaMaps default options', 'yamaps' ); ?></h2>
+		<h2><?php echo esc_html__('YaMaps default options', 'yamaps'); ?></h2>
 		<form method="post" id="YaMapsOptions" enctype="multipart/form-data" action="options.php">
-		<?php echo'<script src="https://api-maps.yandex.ru/2.1/?lang='.$maplocale.$apikey.'" type="text/javascript"></script>'; ?>
+		<?php 
+		wp_nonce_field('yamaps_options_verify', 'yamaps_options_nonce');
+		echo '<script src="https://api-maps.yandex.ru/2.1/?lang='.esc_attr($maplocale).esc_attr($apikey).'" type="text/javascript"></script>'; ?>
 			<script type="text/javascript">
-						//Округляем координаты до 4 знаков после запятой
+						// Round coordinates to 4 decimal places
 						function coordaprox(fullcoord) {
 						        if (fullcoord.length!==2) {
 						            fullcoord=fullcoord.split(',');
@@ -54,13 +61,13 @@ function yamaps_option_page(){
                         ymaps.ready(init); 
 
 
-                 		//Инициализируем карту для страницы настроек
+                 		// Initialize the map for the settings page
                         function init () {
                         	var testvar=document.getElementById('center_map_option').value;
                         	var apikeyexist = false, apikey=<?php echo '"'.$apikey.'"' ?>;
                         	if (apikey!=="") apikeyexist=true;
                         	var controlsArr=["zoomControl", "typeSelector"];
-                            if (apikeyexist) controlsArr.push("searchControl"); //Если определен API key, добавляем поиск на карту. Без ключа он все равно не будет работать и выдавать ошибку.
+                            if (apikeyexist) controlsArr.push("searchControl"); // If the API key is defined, add search to the map. Without a key, it won't work anyway and will throw an error.
 
                             var myMap0 = new ymaps.Map("yamap", {
                                     center: [<?php echo $yamaps_defaults["center_map_option"]; ?>],
@@ -69,7 +76,7 @@ function yamaps_option_page(){
                                     controls: controlsArr 
                                 });   
 
-							//Добавляем пример метки
+							// Add a sample placemark
 							placemark1 = new ymaps.Placemark([<?php echo $yamaps_defaults["center_map_option"]; ?>], {
                                 hintContent: "Placemark",
                                 iconContent: "",
@@ -77,7 +84,7 @@ function yamaps_option_page(){
                               
                             }, {
                             	<?php 
-                            		//Проверяем, является ли поле иконки url-адресом. Если да, то ставим в качестве иконки кастомное изображение.
+                            		// Check if the icon field is a URL. If yes, set a custom image as the icon.
 								    $iconurl = strripos($yamaps_defaults["type_icon_option"], 'http');
 								    if (is_int($iconurl)) {
 								    	echo '                        
@@ -100,31 +107,31 @@ function yamaps_option_page(){
                             });  
 							myMap0.geoObjects.add(placemark1);
 
-							//Событие перемещения карты
+							// Map movement event
 							myMap0.events.add('boundschange', function (event) {
-										//Если изменили масштаб
+										// If the zoom level changed
 				                        if (event.get('newZoom') != event.get('oldZoom')) {     
 				                            document.getElementById('zoom_map_option').value = event.get('newZoom');				                            
 				                        }
-				                        //Если переместили центр
+				                        // If the center was moved
 				                          if (event.get('newCenter') != event.get('oldCenter')) {
 				                            document.getElementById('center_map_option').value = coordaprox(event.get('newCenter'));   
 				                        }
-				                        //Помещаем метку в новый центр
+				                        // Place the marker in the new center
 				                        placemark1.geometry.setCoordinates(event.get('newCenter'));			                        
 			                });
-			                //Событие смены иконки
+			                // Icon change event
 			                myMap0.events.add('typechange', function (event) {
 			                            document.getElementById('type_map_option').value = myMap0.getType();
 		                    });
-		                    //Cобытие поиска, скрываем метку результата
-		                    if (apikeyexist) { //Баг, если нет API.ключа, то нет поискового поля и вызывает ошибку
+		                    // Search event, hide the result marker
+		                    if (apikeyexist) { // Bug, if there is no API key, then there is no search field and it throws an error
 	                        	var searchControl = myMap0.controls.get('searchControl');                        
 	                        	searchControl.events.add('resultshow', function (e) {
 	                            	searchControl.hideResult();
 	                        	});
                         	}
-                        	//Функция добавления элементов управления картой в поле настроек
+                        	// Function to add map control elements in the settings field
                         	var controlElems = document.querySelectorAll('#addcontrol a');
                         	for (var i = 0; i < controlElems.length; i++) {
                         		controlElems[i].style.cursor = "pointer";
@@ -153,7 +160,7 @@ function yamaps_option_page(){
     			-->
     		</div>
 			<?php 
-			settings_fields('yamaps_options'); // Идентификатор настроек плагина
+			settings_fields('yamaps_options'); // Plugin settings identifier
 			do_settings_sections($yamaps_page);
 			?>
 			<p class="submit">  
@@ -165,47 +172,47 @@ function yamaps_option_page(){
 }
  
 /*
- * Регистрируем настройки
- * Мои настройки будут храниться в базе под названием yamaps_options (это также видно в предыдущей функции)
+ * Register settings
+ * My settings will be stored in the database under the name yamaps_options (this is also visible in the previous function)
  */
 function yamaps_option_settings() {
 	global $yamaps_page;
-	// Присваиваем функцию валидации ( yamaps_validate_settings() ). Вы найдете её ниже
+	// Assign validation function ( yamaps_validate_settings() ). You will find it below
 	register_setting( 'yamaps_options', 'yamaps_options', 'yamaps_validate_settings' ); // yamaps_options
  
-	// Область настроек карты
+	// Map settings area
 	add_settings_section( 'map_section', __( 'Map options', 'yamaps' ), '', $yamaps_page );
  
-	// Поле центра карты
+	// Map center field
 	$yamaps_field_params = array(
-		'type'      => 'text', // тип
+		'type'      => 'text', // type
 		'id'        => 'center_map_option',
 		'desc'      => __( 'Drag the map to set its default coordinates', 'yamaps' ), 
 		'label_for' => 'center_map_option' 
 	);
 	add_settings_field( 'center_map_option', __( 'Map center', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
-	// Поле масштаба карты
+	// Map zoom field
 	$yamaps_field_params = array(
-		'type'      => 'text', // тип
+		'type'      => 'text', // type
 		'id'        => 'zoom_map_option',
 		'desc'      => __( 'Zoom the map to set its default scale', 'yamaps' ), 
 		'label_for' => 'zoom_map_option' 
 	);
 	add_settings_field( 'zoom_map_option', __( 'Map zoom', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
-	// Поле типа карты
+	// Map type field
 	$yamaps_field_params = array(
-		'type'      => 'text', // тип
+		'type'      => 'text', // type
 		'id'        => 'type_map_option',
 		'desc'      => __( 'Choose default map type: yandex#map, yandex#satellite, yandex#hybrid', 'yamaps' ), 
 		'label_for' => 'type_map_option' 
 	);
 	add_settings_field( 'type_map_option', __( 'Map type', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
-	// Поле высоты карты
+	// Map height field
 	$yamaps_field_params = array(
-		'type'      => 'text', // тип
+		'type'      => 'text', // type
 		'id'        => 'height_map_option',
 		'desc'      => 'rem, em, px, %', 
 		'label_for' => 'height_map_option'
@@ -213,7 +220,7 @@ function yamaps_option_settings() {
 	add_settings_field( 'height_map_option', __( 'Map height', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
  
-	// Поле элементов управления карты
+	// Map controls field
 	$yamaps_field_params = array(
 		'type'      => 'textarea',
 		'id'        => 'controls_map_option',
@@ -221,7 +228,7 @@ function yamaps_option_settings() {
 	);
 	add_settings_field( 'controls_map_option', __( 'Map controls', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
-	// Чекбокс масштаба колесом
+	// Checkbox for wheel zoom
 	$yamaps_field_params = array(
 		'type'      => 'checkbox',
 		'id'        => 'wheelzoom_map_option',
@@ -229,7 +236,7 @@ function yamaps_option_settings() {
 	);
 	add_settings_field( 'wheelzoom_map_option', __( 'Wheel zoom', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
-	// Чекбокс мобильного перетаскивания
+	// Checkbox for mobile dragging
 	$yamaps_field_params = array(
 		'type'      => 'checkbox',
 		'id'        => 'mobiledrag_map_option',
@@ -237,7 +244,7 @@ function yamaps_option_settings() {
 	);
 	add_settings_field( 'mobiledrag_map_option', __( 'Mobile drag', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
-	// Чекбокс открытия большой карты
+	// Checkbox for opening a big map
 	$yamaps_field_params = array(
 		'type'      => 'checkbox',
 		'id'        => 'open_map_option',
@@ -245,7 +252,7 @@ function yamaps_option_settings() {
 	);
 	add_settings_field( 'open_map_option', __( 'Big map', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
-	// Чекбокс ссылки на автора
+	// Checkbox for author link
 	$yamaps_field_params = array(
 		'type'      => 'checkbox',
 		'id'        => 'authorlink_map_option',
@@ -253,11 +260,11 @@ function yamaps_option_settings() {
 	);
 	add_settings_field( 'authorlink_map_option', __( 'Author link', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
  
-	// Область настроек метки
+	// Marker settings area
  
 	add_settings_section( 'icon_section', __( 'Marker options', 'yamaps' ), '', $yamaps_page );
  
-	// Поле типа метки
+	// Marker type field
 	$yamaps_field_params = array(
 		'type'      => 'text',
 		'id'        => 'type_icon_option',
@@ -265,7 +272,7 @@ function yamaps_option_settings() {
 	);
 	add_settings_field( 'type_icon_option', __( 'Icon', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'icon_section', $yamaps_field_params );
 
-	// Поле цвета метки
+	// Marker color field
 	$yamaps_field_params = array(
 		'type'      => 'text',
 		'id'        => 'color_icon_option',
@@ -273,24 +280,24 @@ function yamaps_option_settings() {
 	);
 	add_settings_field( 'color_icon_option', __( 'Marker color', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'icon_section', $yamaps_field_params );
 
-	// Область ключа API
+	// API key area
 
 	add_settings_section( 'apikey_section', __( 'Yandex.Maps API key', 'yamaps' ), '', $yamaps_page );
 
-	// Поле ключа API
+	// API key field
 	$yamaps_field_params = array(
-		'type'      => 'text', // тип
+		'type'      => 'text', // type
 		'id'        => 'apikey_map_option',
 		'desc'      => __( '<a href="https://developer.tech.yandex.com/services/">Get a key</a> (JavaScript API & HTTP Geocoder) if it necessary', 'yamaps' ), 
 		'label_for' => 'apikey_map_option'
 	);
 	add_settings_field( 'apikey_map_option', __( 'API key', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'apikey_section', $yamaps_field_params );
 
-	// Область сброса настроек
+	// Reset settings area
  
 	add_settings_section( 'reset_section', __( 'Reset options', 'yamaps' ), '', $yamaps_page );
 
-	// Чекбокс сброса настроек
+	// Reset settings checkbox
 	$yamaps_field_params = array(
 		'type'      => 'checkbox',
 		'id'        => 'reset_maps_option',
@@ -302,22 +309,22 @@ function yamaps_option_settings() {
 add_action( 'admin_init', 'yamaps_option_settings' );
  
 /*
- * Функция отображения полей ввода
- * Здесь задаётся HTML и PHP, выводящий поля
+ * Function to display input fields
+ * Here is the HTML and PHP that outputs the fields
  */
 function yamaps_option_display_settings($args) {
 	global $yamaps_defaults, $yamaps_defaults_front_bak;
 	extract( $args );
  
 	$option_name = 'yamaps_options';
-	//delete_option($option_name); //удаление настроек для тестов
+	//delete_option($option_name); // delete settings for testing
  	
-	//Если настройки не найдены в БД, сохраняем туда дефолтные настройки плагина
+	// If settings are not found in the database, save the default settings of the plugin there
 	if(!get_option( $option_name)){
     	update_option( $option_name, $yamaps_defaults_front_bak);
 	}
 
-	//Нужно перебрать настройки и поставить дефолт в отсутствующие.
+	// Need to iterate through the settings and set the default for the missing ones.
 
 	$o = get_option( $option_name );
 
@@ -364,6 +371,19 @@ function yamaps_option_display_settings($args) {
 			echo "</fieldset>";  
 		break; 
 	}
+}
+
+/*
+ * Data validation function
+ */
+function yamaps_validate_settings($input) {
+    // Check nonce
+    if (!isset($_POST['yamaps_options_nonce']) || !wp_verify_nonce($_POST['yamaps_options_nonce'], 'yamaps_options_verify')) {
+        add_settings_error('yamaps_options', 'invalid_nonce', __('Security check failed', 'yamaps'));
+        return get_option('yamaps_options');
+    }
+
+    return $input;
 }
 
 ?>

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaMaps for Wordpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-01 19:28+0000\n"
+"POT-Creation-Date: 2025-02-05 21:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,13 +14,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: options.php:282
+#: options.php:291
 msgid ""
 "<a href=\"https://developer.tech.yandex.com/services/\">Get a key</a> "
 "(JavaScript API & HTTP Geocoder) if it necessary"
 msgstr ""
 
-#: yamap.php:397 options.php:147
+#: options.php:154 includes/admin.php:42
 msgid ""
 "<div style=\"position: relative; display: block; width: 100%; white-space: "
 "normal !important;\"><h2 style=\"color: #444;font-size: 18px;font-weight: "
@@ -46,210 +46,193 @@ msgid ""
 "GitHub</a>.</div>"
 msgstr ""
 
-#: yamap.php:399 options.php:150
-msgid ""
-"<div style=\"position: relative; display: block; width: 100%; white-space: "
-"normal !important;\"><h2 style=\"color: #444;font-size: 18px;font-weight: "
-"600;line-height: 36px;\">Want other plugin features?</h2>Do you like the "
-"plugin but lack features for your project? For commercial modifications of "
-"the plugin, please contact me.</div><div style=\"position: relative; display:"
-" block; width: 100%; white-space: normal !important;\"><h2 style=\"color: "
-"#444;font-size: 18px;font-weight: 600;line-height: 36px;\">WordPress website "
-"design and development</h2>My name is Yuri and I have been creating websites "
-"for over 15 years. I have been familiar with WordPress since 2008. I know "
-"and love this CMS for its user friendly interface. This is exactly how I "
-"tried to make the interface of my YaMaps plugin, which you are currently "
-"using. If you need to create a website, make an interface design or write a "
-"plugin for WordPress - I will be happy to help you!<p style=\"margin-top: ."
-"5rem; text-align: center;\"><b>Contacts:</b>  <a href=\"mailto:mail@yhunter."
-"ru\">mail@yhunter.ru</a>, <b>telegram:</b> <a href=\"tg://resolve?"
-"domain=yhunter\">@yhunter</a>, <b>tel:</b> <a href=\"tel:+79028358830\">+7-"
-"902-83-588-30</a></p></div>"
-msgstr ""
-
-#: yamap.php:366
+#: includes/admin.php:10
 msgid "Add map"
 msgstr ""
 
-#: options.php:285
+#: options.php:294
 msgid "API key"
 msgstr ""
 
-#: options.php:252
+#: options.php:261
 msgid "Author link"
 msgstr ""
 
-#: options.php:244
+#: options.php:253
 msgid "Big map"
 msgstr ""
 
-#: yamap.php:372
+#: includes/admin.php:16
 msgid "Blue only"
 msgstr ""
 
-#: options.php:199
+#: options.php:208
 msgid "Choose default map type: yandex#map, yandex#satellite, yandex#hybrid"
 msgstr ""
 
-#: yamap.php:380
+#: includes/admin.php:24
 msgid "Click on the map to choose or create the mark"
 msgstr ""
 
-#: yamap.php:382
+#: includes/admin.php:26
 msgid "Delete"
 msgstr ""
 
-#: yamap.php:398
+#: includes/admin.php:41
 msgid "Design & Development"
 msgstr ""
 
-#: options.php:250
+#: options.php:259
 msgid "Disable link to plugin page"
 msgstr ""
 
-#: yamap.php:395
+#: includes/admin.php:39
 msgid ""
 "Do not create a block in the content. Use the existing block of the WP theme "
 "with the specified ID"
 msgstr ""
 
-#: options.php:181
+#: options.php:190
 msgid "Drag the map to set its default coordinates"
 msgstr ""
 
-#: yamap.php:367
+#: includes/admin.php:11
 msgid "Edit map"
 msgstr ""
 
-#: yamap.php:396
+#: includes/admin.php:40
 msgid "Extra"
 msgstr ""
 
-#: options.php:270
+#: options.php:279
 msgid "For example:"
 msgstr ""
 
-#: yamap.php:391 options.php:218
+#: options.php:227 includes/admin.php:35
 msgid "Full screen"
 msgstr ""
 
-#: yamap.php:392 options.php:218
+#: options.php:227 includes/admin.php:36
 msgid "Geolocation"
 msgstr ""
 
-#: yamap.php:371 options.php:264
+#: options.php:273 includes/admin.php:15
 msgid "Icon"
 msgstr ""
 
-#: yamap.php:373
+#: includes/admin.php:17
 msgid "Link"
 msgstr ""
 
-#: yamap.php:365 yamap.php:370
+#: includes/admin.php:9 includes/admin.php:14
 msgid "Map"
 msgstr ""
 
-#: options.php:184
+#: options.php:193
 msgid "Map center"
 msgstr ""
 
-#: yamap.php:381 options.php:220
+#: options.php:229 includes/admin.php:25
 msgid "Map controls"
 msgstr ""
 
-#: yamap.php:375 options.php:211
+#: options.php:220 includes/admin.php:19
 msgid "Map height"
 msgstr ""
 
-#: options.php:175
+#: options.php:184
 msgid "Map options"
 msgstr ""
 
-#: yamap.php:383 options.php:202 options.php:218
+#: options.php:211 options.php:227 includes/admin.php:27
 msgid "Map type"
 msgstr ""
 
-#: options.php:193
+#: options.php:202
 msgid "Map zoom"
 msgstr ""
 
-#: yamap.php:393 options.php:272
+#: options.php:281 includes/admin.php:37
 msgid "Marker color"
 msgstr ""
 
-#: options.php:256
+#: options.php:265
 msgid "Marker options"
 msgstr ""
 
-#: yamap.php:386 options.php:236
+#: options.php:245 includes/admin.php:30
 msgid "Mobile drag"
 msgstr ""
 
-#: options.php:242
+#: options.php:251
 msgid "Open big map/how to get button"
 msgstr ""
 
-#: options.php:262
+#: options.php:271
 msgid "Other icon types"
 msgstr ""
 
-#: yamap.php:369
+#: includes/admin.php:13
 msgid "Placemark"
 msgstr ""
 
-#: yamap.php:374
+#: includes/admin.php:18
 msgid "Placemark hyperlink url or post ID"
 msgstr ""
 
-#: yamap.php:376
+#: includes/admin.php:20
 msgid "Placemark name"
 msgstr ""
 
-#: yamap.php:394
+#: includes/admin.php:38
 msgid "Put in ID"
 msgstr ""
 
-#: options.php:289 options.php:297
+#: options.php:298 options.php:306
 msgid "Reset options"
 msgstr ""
 
-#: options.php:295
+#: options.php:304
 msgid "Restore defaults"
 msgstr ""
 
-#: yamap.php:388 options.php:218
+#: options.php:227 includes/admin.php:32
 msgid "Route"
 msgstr ""
 
-#: yamap.php:389 options.php:218
+#: options.php:227 includes/admin.php:33
 msgid "Ruler"
 msgstr ""
 
-#: yamap.php:387 options.php:218
+#: options.php:227 includes/admin.php:31
 msgid "Search"
 msgstr ""
 
-#: yamap.php:377
+#: options.php:382
+msgid "Security check failed"
+msgstr ""
+
+#: includes/admin.php:21
 msgid "Text for hint or icon content"
 msgstr ""
 
-#: options.php:234
+#: options.php:243
 msgid "The map can be dragged on mobile"
 msgstr ""
 
-#: options.php:226
+#: options.php:235
 msgid "The map can be scaled with mouse scroll"
 msgstr ""
 
-#: yamap.php:390 options.php:218
+#: options.php:227 includes/admin.php:34
 msgid "Traffic"
 msgstr ""
 
-#: yamap.php:378
+#: includes/admin.php:22
 msgid "Use the links below"
 msgstr ""
 
-#: yamap.php:385 options.php:228
+#: options.php:237 includes/admin.php:29
 msgid "Wheel zoom"
 msgstr ""
 
@@ -261,7 +244,7 @@ msgstr ""
 msgid "www.yhunter.ru/portfolio/dev/yamaps/"
 msgstr ""
 
-#: options.php:39
+#: options.php:44
 msgid "YaMaps default options"
 msgstr ""
 
@@ -269,11 +252,11 @@ msgstr ""
 msgid "YaMaps for Wordpress"
 msgstr ""
 
-#: yamap.php:330
+#: includes/shortcodes.php:207
 msgid "YaMaps plugin for Wordpress"
 msgstr ""
 
-#: yamap.php:368
+#: includes/admin.php:12
 msgid "YaMaps plugin: Yandex.Map"
 msgstr ""
 
@@ -281,22 +264,26 @@ msgstr ""
 msgid "Yandex Map integration"
 msgstr ""
 
-#: options.php:276
+#: options.php:285
 msgid "Yandex.Maps API key"
+msgstr ""
+
+#: options.php:31
+msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
 #. Author of the plugin
 msgid "Yuri Baranov"
 msgstr ""
 
-#: yamap.php:384 options.php:218
+#: options.php:227 includes/admin.php:28
 msgid "Zoom"
 msgstr ""
 
-#: options.php:190
+#: options.php:199
 msgid "Zoom the map to set its default scale"
 msgstr ""
 
-#: yamap.php:379
+#: includes/admin.php:23
 msgid "Сoordinates"
 msgstr ""
