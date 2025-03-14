@@ -52,7 +52,7 @@ https://www.youtube.com/watch?v=m7YncsBrL5g
 
 = Shortcode Example =
 
-[yamap center="55.7532,37.6225" height="15rem" zoom="12" type="yandex#map" controls="typeSelector;zoomControl"][yaplacemark coord="55.7532,37.6225" icon="islands#blueRailwayIcon" color="#ff751f" name="Placemark"][/yamap]
+`[yamap center="55.7532,37.6225" height="15rem" zoom="12" type="yandex#map" controls="typeSelector;zoomControl"][yaplacemark coord="55.7532,37.6225" icon="islands#blueRailwayIcon" color="#ff751f" name="Placemark"][/yamap]`
 
 == Installation ==
 
@@ -79,7 +79,7 @@ Use the tag "echo do_shortcode('')" with your map shortcode insde.
 
 = How to set an icon that is not in the drop-down list? =
 
-You can chose icon at https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ and set it manually to the "Icon" field. For example "islands#blueRailwayIcon". Also you can insert the URL of your file in the field. For example, PNG-image with transparency.
+You can choose icon at https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ and set it manually to the "Icon" field. For example "islands#blueRailwayIcon". Also you can insert the URL of your file in the field. For example, PNG-image with transparency.
 
 = Why a can't change color of StretchyIcon? =
 
