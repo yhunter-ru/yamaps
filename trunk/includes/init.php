@@ -33,6 +33,8 @@ $yamaps_defaults_front = array(
     'open_map_option'            => 'off',
     'apikey_map_option'          => '',
     'reset_maps_option'          => 'off',
+    'cluster_map_option'         => 'off',      // Кластеризация по умолчанию
+    'cluster_grid_option'        => '64',       // Размер ячейки кластеризации
 );
 
 $yamaps_defaults_front_bak = $yamaps_defaults_front;

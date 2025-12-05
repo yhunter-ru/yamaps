@@ -78,6 +78,12 @@ function yamap_func($atts, $content) {
     $current_map_index = $maps_count;
     
     $placearr = '';
+    
+    // Кластеризация по умолчанию ВЫКЛЮЧЕНА
+    // Работает только при явном указании cluster="1" в шорткоде
+    // Настройка в options.php влияет только на чекбокс в редакторе при создании карты
+    $cluster_grid = isset($yamaps_defaults_front['cluster_grid_option']) ? $yamaps_defaults_front['cluster_grid_option'] : '64';
+    
     $atts = shortcode_atts( array(
         'center' => esc_js($yamaps_defaults_front['center_map_option']),
         'zoom' => esc_js($yamaps_defaults_front['zoom_map_option']),
@@ -87,11 +93,22 @@ function yamap_func($atts, $content) {
         'scrollzoom' => '1',
         'mobiledrag' => '1',
         'container' => '',
+        'cluster' => '0',           // По умолчанию выключена, работает только при cluster="1"
+        'clustergrid' => $cluster_grid,
     ), $atts );
 
     $yaplacemark_count = 0;
     $yacontrol_count = 0;
     $yamap_onpage = true;
+
+    // Sanitize content: only allow [yaplacemark ...] shortcodes, remove everything else
+    $safe_content = '';
+    if ( ! empty( $content ) ) {
+        // Match only [yaplacemark ...] shortcodes (self-closing or with closing tag)
+        if ( preg_match_all( '/\[yaplacemark\s+[^\]]*\](?:\[\/yaplacemark\])?/i', $content, $matches ) ) {
+            $safe_content = implode( '', $matches[0] );
+        }
+    }
 
     $yamactrl = str_replace(';', '", "', esc_js($atts["controls"]));
     if (trim($yamactrl) != "") $yamactrl = '"'.$yamactrl.'"';
@@ -118,7 +135,7 @@ function yamap_func($atts, $content) {
         $yamap='';
     }
     
-    $placemarkscode=str_replace("&nbsp;", "", strip_tags($content));
+    $placemarkscode = $safe_content;
 
     $atts["container"]=trim($atts["container"]);
     if ($atts["container"]<>"") {
@@ -189,7 +206,30 @@ function yamap_func($atts, $content) {
                             for ($i = 1; $i <= $yaplacemark_count; $i++) {
                                 $placearr.='.add(myMap'.$current_map_index.'placemark'.$i.')';
                             }
-                            $yamap.='myMap'.$current_map_index.'.geoObjects'.$placearr.';';
+                            
+                            // Если кластеризация включена
+                            if ($atts["cluster"]=="1") {
+                                $yamap.='
+                                var yaClusterer'.$current_map_index.' = new ymaps.Clusterer({
+                                    clusterIconLayout: "default#pieChart",
+                                    clusterIconPieChartRadius: 25,
+                                    clusterIconPieChartCoreRadius: 15,
+                                    clusterIconPieChartStrokeWidth: 3,
+                                    hasBalloon: false,
+                                    gridSize: '.intval($atts["clustergrid"]).'
+                                });
+                                yaClusterer'.$current_map_index.'.add([';
+                                for ($i = 1; $i <= $yaplacemark_count; $i++) {
+                                    $yamap.='myMap'.$current_map_index.'placemark'.$i;
+                                    if ($i < $yaplacemark_count) $yamap.=',';
+                                }
+                                $yamap.=']);
+                                myMap'.$current_map_index.'.geoObjects.add(yaClusterer'.$current_map_index.');
+                                ';
+                            } else {
+                                $yamap.='myMap'.$current_map_index.'.geoObjects'.$placearr.';';
+                            }
+                            
                             if ($atts["scrollzoom"]=="0") $yamap.="myMap".$current_map_index.".behaviors.disable('scrollZoom');";
                             // If map has mobiledrag=0, disable map dragging for the following platforms
                             if ($atts["mobiledrag"]=="0") {

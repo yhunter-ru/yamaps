@@ -38,6 +38,10 @@ function yamap_plugin_scripts($plugin_array) {
         'MarkerColor' => __('Marker color', 'yamaps'),
         'MapContainerID' => __('Put in ID', 'yamaps'),
         'MapContainerIDTip' => __('Do not create a block in the content. Use the existing block of the WP theme with the specified ID', 'yamaps'),
+        'ClusterTab' => __('Clustering', 'yamaps'),
+        'ClusterEnable' => __('Enable clustering', 'yamaps'),
+        'ClusterGrid' => __('Cluster grid size (px)', 'yamaps'),
+        'ClusterInfo' => __('Clustering groups nearby markers into clusters.<br>The grid size determines how close markers need to be to form a cluster.', 'yamaps'),
         'Extra' => __('Extra', 'yamaps'),
         'DeveloperInfoTab' => __('Design & Development', 'yamaps'),
         'ExtraHTML' => __( '<div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Want other icon types?</h2>Additional types of icons can be found by the link in the <a href="https://tech.yandex.com/maps/doc/jsapi/2.1/ref/reference/option.presetStorage-docpage/ " style="white-space: normal">Yandex.Map documentation</a>.</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Do you like YaMaps plugin?</h2>You can support its development by donate (<a href="https://yoomoney.ru/to/41001278340150" style="white-space: normal">Yoomoney</a>) or just leave a positive feedback in the <a href="https://wordpress.org/support/plugin/yamaps/reviews/" style="white-space: normal">plugin repository</a>. It\'s very motivating!</div><div style="position: relative; display: block; width: 100%; white-space: normal !important;"><h2 style="color: #444;font-size: 18px;font-weight: 600;line-height: 36px;">Any questions?</h2>Ask in the comments <a href="https://www.yhunter.ru/portfolio/dev/yamaps/" style="white-space: normal">on the plug-in\'s page</a>, <a href="https://wordpress.org/support/plugin/yamaps" style="white-space: normal">WP support forum</a> or <a href="https://github.com/yhunter-ru/yamaps/issues" style="white-space: normal">on GitHub</a>.</div>', 'yamaps' )				
@@ -51,7 +55,7 @@ function yamap_plugin_scripts($plugin_array) {
     wp_localize_script('yamap_plugin', 'yamap_defaults', $yamaps_defaults_front); 
 
     //enqueue TinyMCE plugin script with its ID.
-    $plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "../js/btn.js?v=0.40";
+    $plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "../js/btn.js?v=0.41";
 
     return $plugin_array;
 }

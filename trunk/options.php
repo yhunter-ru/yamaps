@@ -244,6 +244,23 @@ function yamaps_option_settings() {
 	);
 	add_settings_field( 'mobiledrag_map_option', __( 'Mobile drag', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
 
+	// Checkbox for clustering
+	$yamaps_field_params = array(
+		'type'      => 'checkbox',
+		'id'        => 'cluster_map_option',
+		'desc'      => __( 'Enable marker clustering by default', 'yamaps' )
+	);
+	add_settings_field( 'cluster_map_option', __( 'Clustering', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
+
+	// Cluster grid size field
+	$yamaps_field_params = array(
+		'type'      => 'text',
+		'id'        => 'cluster_grid_option',
+		'desc'      => __( 'Cluster grid size in pixels (2, 4, 8 ... 64, 128, 256)', 'yamaps' ),
+		'label_for' => 'cluster_grid_option'
+	);
+	add_settings_field( 'cluster_grid_option', __( 'Cluster grid', 'yamaps' ), 'yamaps_option_display_settings', $yamaps_page, 'map_section', $yamaps_field_params );
+
 	// Checkbox for opening a big map
 	$yamaps_field_params = array(
 		'type'      => 'checkbox',
@@ -327,46 +344,55 @@ function yamaps_option_display_settings($args) {
 	// Need to iterate through the settings and set the default for the missing ones.
 
 	$o = get_option( $option_name );
+	
+	// Ensure $o is an array
+	if ( ! is_array( $o ) ) {
+		$o = array();
+	}
 
 	foreach ($yamaps_defaults_front_bak as $key => $value) {
 		if (!isset($o[$key])) {
-			if (($value=='off')or($value=='on')) {
-				$o[$key]=$yamaps_defaults_front_bak[$key];
-			}
+			// Set default value for missing keys
+			$o[$key] = $yamaps_defaults_front_bak[$key];
 		}
-
 	}
+
+	// Ensure the current field exists in options
+	if ( ! isset( $o[$id] ) ) {
+		$o[$id] = isset( $yamaps_defaults_front_bak[$id] ) ? $yamaps_defaults_front_bak[$id] : '';
+	}
+
 	switch ( $type ) {  
 		case 'text':  
-			$o[$id] = esc_attr( stripslashes($o[$id]) );
-			echo "<input class='regular-text' type='text' id='$id' name='" . $option_name . "[$id]' value='$o[$id]' />";  
-			echo ($desc != '') ? "<br /><span class='description'>$desc</span>" : "";  
+			$o[$id] = esc_attr( stripslashes( (string) $o[$id] ) );
+			echo "<input class='regular-text' type='text' id='" . esc_attr($id) . "' name='" . esc_attr($option_name) . "[" . esc_attr($id) . "]' value='" . esc_attr($o[$id]) . "' />";  
+			echo ($desc != '') ? "<br /><span class='description'>" . wp_kses_post($desc) . "</span>" : "";  
 		break;
 		case 'textarea':  
-			$o[$id] = esc_attr( stripslashes($o[$id]) );
-			echo "<textarea class='code large-text' cols='50' rows='2' type='text' id='$id' name='" . $option_name . "[$id]'>$o[$id]</textarea>";  
-			echo ($desc != '') ? "<br /><span class='description'>$desc</span>" : "";  
+			$o[$id] = esc_attr( stripslashes( (string) $o[$id] ) );
+			echo "<textarea class='code large-text' cols='50' rows='2' type='text' id='" . esc_attr($id) . "' name='" . esc_attr($option_name) . "[" . esc_attr($id) . "]'>" . esc_textarea($o[$id]) . "</textarea>";  
+			echo ($desc != '') ? "<br /><span class='description'>" . wp_kses_post($desc) . "</span>" : "";  
 		break;
 		case 'checkbox':
-			$checked = ($o[$id] == 'on') ? " checked='checked'" :  '';  
-			echo "<label><input type='checkbox' id='$id' name='" . $option_name . "[$id]' $checked /> ";  
-			echo ($desc != '') ? $desc : "";
+			$checked = ( isset($o[$id]) && $o[$id] == 'on' ) ? " checked='checked'" :  '';  
+			echo "<label><input type='checkbox' id='" . esc_attr($id) . "' name='" . esc_attr($option_name) . "[" . esc_attr($id) . "]' $checked /> ";  
+			echo ($desc != '') ? wp_kses_post($desc) : "";
 			echo "</label>";  
 		break;
 		case 'select':
-			echo "<select id='$id' name='" . $option_name . "[$id]'>";
+			echo "<select id='" . esc_attr($id) . "' name='" . esc_attr($option_name) . "[" . esc_attr($id) . "]'>";
 			foreach($vals as $v=>$l){
-				$selected = ($o[$id] == $v) ? "selected='selected'" : '';  
-				echo "<option value='$v' $selected>$l</option>";
+				$selected = ( isset($o[$id]) && $o[$id] == $v ) ? "selected='selected'" : '';  
+				echo "<option value='" . esc_attr($v) . "' $selected>" . esc_html($l) . "</option>";
 			}
-			echo ($desc != '') ? $desc : "";
+			echo ($desc != '') ? wp_kses_post($desc) : "";
 			echo "</select>";  
 		break;
 		case 'radio':
 			echo "<fieldset>";
 			foreach($vals as $v=>$l){
-				$checked = ($o[$id] == $v) ? "checked='checked'" : '';  
-				echo "<label><input type='radio' name='" . $option_name . "[$id]' value='$v' $checked />$l</label><br />";
+				$checked = ( isset($o[$id]) && $o[$id] == $v ) ? "checked='checked'" : '';  
+				echo "<label><input type='radio' name='" . esc_attr($option_name) . "[" . esc_attr($id) . "]' value='" . esc_attr($v) . "' $checked />" . esc_html($l) . "</label><br />";
 			}
 			echo "</fieldset>";  
 		break; 

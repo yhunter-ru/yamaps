@@ -19,15 +19,21 @@ var placemark = [];
 
 if (!editMapAction) { // Moved for correct operation in WP 5.6
                             
-    ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionCheck('wheelzoom_map_option'), mobiledrag: optionCheck('mobiledrag_map_option'), container: '', places: {}}};
+    ym={map0: {center: coordaprox(yamap_defaults['center_map_option']), controls: yamap_defaults['controls_map_option'], height: yamap_defaults['height_map_option'], zoom: yamap_defaults['zoom_map_option'], maptype: yamap_defaults['type_map_option'], scrollzoom: optionCheck('wheelzoom_map_option'), mobiledrag: optionCheck('mobiledrag_map_option'), cluster: (yamap_defaults['cluster_map_option']==='on' ? '1' : '0'), clustergrid: yamap_defaults['cluster_grid_option'] || '64', container: '', places: {}}};
 
 }  
 
 // Determine if scroll zoom is disabled on the edited map
 function checkParam(param) {
     var checker=true;
-    if (ym.map0[param]==="0") { 
-        checker=false;
+    if (param === 'cluster') {
+        // For cluster: '1' means enabled, '0' means disabled
+        checker = (ym.map0[param] === '1');
+    } else {
+        // For scrollzoom, mobiledrag: '0' means disabled, '' means enabled
+        if (ym.map0[param]==="0") { 
+            checker=false;
+        }
     }
     return checker;
 }
@@ -135,6 +141,11 @@ function mapdatechange() {
 
         setTimeout(checkcheckbox, 200, 'scrollzoom');
         setTimeout(checkcheckbox, 200, 'mobiledrag');
+        setTimeout(checkcheckbox, 200, 'cluster');  // Добавлено
+        
+        if(document.getElementById('clustergrid')) {
+            ym[mapselector].clustergrid=jQuery("#clustergrid").val();
+        }
           
         if(document.getElementById('mapcontainer')) {
             if (jQuery("#mapcontainer").val()!="undefined") {
@@ -552,6 +563,11 @@ function iconname(place) {       // change icon name
                         jQuery("#scrollzoom, #mobiledrag, #addcontrol a").click(function() {
                             mapdatechange();
                         });
+                        
+                        // Track cluster checkbox change
+                        jQuery("#cluster").click(function() {
+                            mapdatechange();
+                        });
 
                         // Track the change of icon fields  
                         jQuery("#markername, #markercoord, #markericon-inp, #markerurl").change(function() {
@@ -717,7 +733,7 @@ function iconname(place) {       // change icon name
                                                     name: 'mapheight',
                                                     label: yamap_object.MapHeight,
                                                     id: 'mapheight',
-                                                    value: ym[mapselector].height, //yamap_defaults['height_map_option'],                                 
+                                                    value: ym[mapselector].height,
                                                     maxLength: '10',
                                                     tooltip: 'rem, em, px, %',
                                                     onaction: mapdatechange(),
@@ -728,7 +744,7 @@ function iconname(place) {       // change icon name
                                                     name: 'controls',
                                                     label: yamap_object.MapControls,
                                                     id: 'mapcontrols',
-                                                    value: ym[mapselector].controls, //yamap_defaults['controls_map_option'],   
+                                                    value: ym[mapselector].controls,
                                                     tooltip: yamap_object.MapControlsTip,
                                                     onaction: mapdatechange(),
                                                 },
@@ -768,13 +784,45 @@ function iconname(place) {       // change icon name
                                                 },
                                                 ]
                                         },
-
-
-                                     
-
-
                                     ]
 
+                                },
+                                {
+                                    type: 'panel',
+                                    title: yamap_object.ClusterTab || 'Clustering',
+                                    items: [
+                                        {
+                                            type: 'form',
+                                            name: 'formCluster',
+                                            minWidth : 598,
+                                            items: [
+                                                {
+                                                    type: 'checkbox',
+                                                    checked: checkParam('cluster'),
+                                                    name: 'cluster',
+                                                    label: yamap_object.ClusterEnable || 'Enable clustering',
+                                                    id: 'cluster',
+                                                    onaction: mapdatechange(),
+                                                },
+                                                {
+                                                    type: 'textbox',
+                                                    name: 'clustergrid',
+                                                    label: yamap_object.ClusterGrid || 'Cluster grid size (px)',
+                                                    id: 'clustergrid',
+                                                    value: ym[mapselector].clustergrid || '64',
+                                                    maxLength: '4',
+                                                    tooltip: '2, 4, 8, 16, 32, 64, 128, 256',
+                                                    onaction: mapdatechange(),
+                                                },
+                                                {
+                                                    type   : 'container',
+                                                    name   : 'clusterinfo',
+                                                    minWidth : 598,   
+                                                    html   : '<div style="padding: 10px 0; color: #666;">' + (yamap_object.ClusterInfo || 'Clustering groups nearby markers into clusters.<br>The grid size determines how close markers need to be to form a cluster.') + '</div>'
+                                                },
+                                            ]
+                                        },
+                                    ]
                                 },
                                 {
                                     type: 'panel',
@@ -782,7 +830,7 @@ function iconname(place) {       // change icon name
                                     items: [
                                         {
                                             type: 'form',
-                                            name: 'form2',
+                                            name: 'form3',
                                             minWidth : 598,
 
                                             items: [
@@ -796,43 +844,9 @@ function iconname(place) {       // change icon name
                                                 
                                                 ]
                                         },
-
-
-                                     
-
-
                                     ]
 
-                                }//,
-                                //{
-                                //    type: 'panel',
-                                //    title: '🦉\u00A0' + yamap_object.DeveloperInfoTab,
-                                //    items: [
-                                //        {
-                                //            type: 'form',
-                                //            name: 'form2',
-                                //            minWidth : 598,
-
-                                //            items: [
-                                //                {
-                                //                type   : 'container',
-                                //                name   : 'addcontrol',
-                                                                       
-                                //                minWidth : 598,   
-                                //                html   : yamap_object.DeveloperInfo,
-                                //            },
-                                                
-                                //                ]
-                                //        },
-
-
-                                     
-
-
-                                //    ]
-
-                                //}
-                                
+                                }
 
                             ]
                         },                    
@@ -878,6 +892,8 @@ function iconname(place) {       // change icon name
                             if (ym[mapselector].container!=="") mapArgs.attrs.container=ym[mapselector].container;
                             if (ym[mapselector].scrollzoom==="0") mapArgs.attrs.scrollzoom=ym[mapselector].scrollzoom;
                             if (ym[mapselector].mobiledrag==="0") mapArgs.attrs.mobiledrag=ym[mapselector].mobiledrag;
+                            if (ym[mapselector].cluster==="1") mapArgs.attrs.cluster=ym[mapselector].cluster;
+                            if (ym[mapselector].cluster==="1" && ym[mapselector].clustergrid && ym[mapselector].clustergrid!=="64") mapArgs.attrs.clustergrid=ym[mapselector].clustergrid;
                             if (ym[mapselector].controls!=="") mapArgs.attrs.controls=ym[yamapnumber].controls;
                             ed.insertContent( wp.shortcode.string( mapArgs ) );
 
