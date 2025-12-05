@@ -3,7 +3,7 @@ global $lang_array;
 // Function for scripts and localization array
 function yamap_plugin_scripts($plugin_array) {
     // Plugin localization
-    wp_register_script('yamap_plugin', plugin_dir_url(__FILE__) . '../js/shortcode_parser.js?v=0.2');
+    wp_register_script('yamap_plugin', plugin_dir_url(__FILE__) . '../js/shortcode_parser.js?v=0.3');
     wp_enqueue_script('yamap_plugin');
     
     $lang_array = array(
@@ -55,7 +55,7 @@ function yamap_plugin_scripts($plugin_array) {
     wp_localize_script('yamap_plugin', 'yamap_defaults', $yamaps_defaults_front); 
 
     //enqueue TinyMCE plugin script with its ID.
-    $plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "../js/btn.js?v=0.41";
+    $plugin_array["yamap_plugin"] =  plugin_dir_url(__FILE__) . "../js/btn.js?v=0.5";
 
     return $plugin_array;
 }

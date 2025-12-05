@@ -79,9 +79,9 @@ function yamap_func($atts, $content) {
     
     $placearr = '';
     
-    // Кластеризация по умолчанию ВЫКЛЮЧЕНА
-    // Работает только при явном указании cluster="1" в шорткоде
-    // Настройка в options.php влияет только на чекбокс в редакторе при создании карты
+    // Clustering is disabled by default
+    // Works only when cluster="1" is explicitly specified in the shortcode
+    // The option in options.php only affects the checkbox in the editor when creating a map
     $cluster_grid = isset($yamaps_defaults_front['cluster_grid_option']) ? $yamaps_defaults_front['cluster_grid_option'] : '64';
     
     $atts = shortcode_atts( array(
@@ -93,7 +93,7 @@ function yamap_func($atts, $content) {
         'scrollzoom' => '1',
         'mobiledrag' => '1',
         'container' => '',
-        'cluster' => '0',           // По умолчанию выключена, работает только при cluster="1"
+        'cluster' => '0',           // Disabled by default, works only with cluster="1"
         'clustergrid' => $cluster_grid,
     ), $atts );
 
@@ -207,7 +207,7 @@ function yamap_func($atts, $content) {
                                 $placearr.='.add(myMap'.$current_map_index.'placemark'.$i.')';
                             }
                             
-                            // Если кластеризация включена
+                            // If clustering is enabled
                             if ($atts["cluster"]=="1") {
                                 $yamap.='
                                 var yaClusterer'.$current_map_index.' = new ymaps.Clusterer({

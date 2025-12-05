@@ -1,4 +1,4 @@
-﻿//Парсим шорткод меток внутри карты
+﻿// Parse placemark shortcodes inside the map
 function findPlaceMarks(found) {
     if (typeof found !== 'string') return;
     
@@ -8,17 +8,19 @@ function findPlaceMarks(found) {
             foundplacemark = foundplace[j].match(/([a-zA-Z]+)="([^"]+)+"/gi);     
             ym['map0'].places['placemark'+j] = {};
             for (var k = 0; k < foundplacemark.length; k++) {
-                foundplacemark[k] = foundplacemark[k].split("&amp;").join("&"); //Bugfix: Гутенберг меняет амперсанды на html тэги. Меняем обратно.
+                // Bugfix: Gutenberg changes ampersands to HTML tags. Change back.
+                foundplacemark[k] = foundplacemark[k].split("&amp;").join("&");
 
                 placeparams = foundplacemark[k].split("=");
-                if (placeparams.length > 2) { //Bugfix: Если строка в шорткоде содержит знак равества, не теряем ее продолжение при делении на ключ/значение
+                // Bugfix: If the string in the shortcode contains an equals sign, don't lose its continuation when splitting into key/value
+                if (placeparams.length > 2) {
                     placeparams[1] = foundplacemark[k].replace(placeparams[0]+"=", "");
                 }
                 placeparams[1] = placeparams[1].replace(/\"|\'/g, '');
 
-                // Безопасная обработка URL и координат
+                // Safe handling of URL and coordinates
                 if (placeparams[0] === 'coord') {
-                    // Валидация координат
+                    // Coordinate validation
                     var coords = placeparams[1].split(',');
                     if (coords.length === 2) {
                         var lat = parseFloat(coords[0]);
@@ -26,21 +28,21 @@ function findPlaceMarks(found) {
                         if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
                             ym['map0'].places['placemark'+j][placeparams[0]] = lat + ',' + lng;
                         } else {
-                            ym['map0'].places['placemark'+j][placeparams[0]] = '55.7473,37.6247'; // Дефолтные координаты
+                            ym['map0'].places['placemark'+j][placeparams[0]] = '55.7473,37.6247'; // Default coordinates
                         }
                     } else {
-                        ym['map0'].places['placemark'+j][placeparams[0]] = '55.7473,37.6247'; // Дефолтные координаты
+                        ym['map0'].places['placemark'+j][placeparams[0]] = '55.7473,37.6247'; // Default coordinates
                     }
                 }
                 else if (placeparams[0] === 'url') {
-                    // Безопасная обработка URL
+                    // Safe URL handling
                     try {
                         var url = decodeURI(placeparams[1]);
-                        // Проверяем, является ли значение числом (ID поста)
+                        // Check if value is a number (post ID)
                         if (!isNaN(url)) {
                             ym['map0'].places['placemark'+j][placeparams[0]] = placeparams[1];
                         } else {
-                            // Если это URL, кодируем его
+                            // If it's a URL, encode it
                             ym['map0'].places['placemark'+j][placeparams[0]] = encodeURI(url);
                         }
                     } catch(e) {
@@ -69,7 +71,8 @@ function parseShortcodes(){
             options.text = this.text;
             options.plugin = yamap_object.PluginTitle;
             options.innercontent = this.shortcode.content;
-            if (typeof ElementorConfig === 'undefined') { //код внутри функции блокирует вставку шорткода в Elementor. Нужно разобраться.
+            // Code inside function blocks shortcode insertion in Elementor. Need to investigate.
+            if (typeof ElementorConfig === 'undefined') {
                 return this.template(options);
             }
         },
