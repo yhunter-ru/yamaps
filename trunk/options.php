@@ -64,20 +64,26 @@ function yamaps_option_page(){
                  		// Initialize the map for the settings page
                         function init () {
                         	var testvar=document.getElementById('center_map_option').value;
-                        	var apikeyexist = false, apikey=<?php echo '"'.$apikey.'"' ?>;
+                        	var apikeyexist = false, apikey=<?php echo wp_json_encode( $apikey ); ?>;
                         	if (apikey!=="") apikeyexist=true;
                         	var controlsArr=["zoomControl", "typeSelector"];
                             if (apikeyexist) controlsArr.push("searchControl"); // If the API key is defined, add search to the map. Without a key, it won't work anyway and will throw an error.
 
+                            <?php
+                            // Sanitize center coordinates for admin page
+                            $admin_center = yamaps_sanitize_coords( $yamaps_defaults["center_map_option"] );
+                            $admin_zoom = yamaps_sanitize_zoom( $yamaps_defaults["zoom_map_option"] );
+                            $admin_type = yamaps_sanitize_map_type( $yamaps_defaults["type_map_option"] );
+                            ?>
                             var myMap0 = new ymaps.Map("yamap", {
-                                    center: [<?php echo $yamaps_defaults["center_map_option"]; ?>],
-                                    zoom: <?php echo $yamaps_defaults["zoom_map_option"]; ?>,
-                                    type: '<?php echo $yamaps_defaults["type_map_option"]; ?>',
+                                    center: [<?php echo esc_js( $admin_center ); ?>],
+                                    zoom: <?php echo (int) $admin_zoom; ?>,
+                                    type: <?php echo wp_json_encode( $admin_type ); ?>,
                                     controls: controlsArr 
                                 });   
 
 							// Add a sample placemark
-							placemark1 = new ymaps.Placemark([<?php echo $yamaps_defaults["center_map_option"]; ?>], {
+							placemark1 = new ymaps.Placemark([<?php echo esc_js( $admin_center ); ?>], {
                                 hintContent: "Placemark",
                                 iconContent: "",
 
@@ -85,22 +91,25 @@ function yamaps_option_page(){
                             }, {
                             	<?php 
                             		// Check if the icon field is a URL. If yes, set a custom image as the icon.
-								    $iconurl = strripos($yamaps_defaults["type_icon_option"], 'http');
-								    if (is_int($iconurl)) {
-								    	echo '                        
-								                            	iconLayout: "default#image",
-								        						iconImageHref: "'.$yamaps_defaults["type_icon_option"].'"
-								                              
-										';
+                            		// Sanitize icon option
+                            		$safe_icon = esc_js( $yamaps_defaults["type_icon_option"] );
+                            		$safe_color = esc_js( $yamaps_defaults["color_icon_option"] );
+							    $iconurl = strripos( $yamaps_defaults["type_icon_option"], 'http' );
+							    if ( is_int( $iconurl ) ) {
+							    	echo '                        
+							                            	iconLayout: "default#image",
+							        						iconImageHref: "' . esc_url( $yamaps_defaults["type_icon_option"] ) . '"
+							                              
+									';
 
-								    }
-								    else {
-								    	echo '                        
-								                            	preset: "'.$yamaps_defaults["type_icon_option"].'", 
-								                            	iconColor: "'.$yamaps_defaults["color_icon_option"].'",
-								                             
-										';
-								    }
+							    }
+							    else {
+							    	echo '                        
+							                            	preset: "' . $safe_icon . '", 
+							                            	iconColor: "' . $safe_color . '",
+							                             
+									';
+							    }
 
                             	?>
 
@@ -409,7 +418,111 @@ function yamaps_validate_settings($input) {
         return get_option('yamaps_options');
     }
 
-    return $input;
+    $sanitized = array();
+
+    // Sanitize center coordinates
+    if ( isset( $input['center_map_option'] ) ) {
+        $sanitized['center_map_option'] = yamaps_sanitize_coords( $input['center_map_option'] );
+    }
+
+    // Sanitize zoom level (0-21)
+    if ( isset( $input['zoom_map_option'] ) ) {
+        $sanitized['zoom_map_option'] = (string) yamaps_sanitize_zoom( $input['zoom_map_option'] );
+    }
+
+    // Sanitize map type
+    if ( isset( $input['type_map_option'] ) ) {
+        $sanitized['type_map_option'] = yamaps_sanitize_map_type( $input['type_map_option'] );
+    }
+
+    // Sanitize height (allow only valid CSS units)
+    if ( isset( $input['height_map_option'] ) ) {
+        $height = sanitize_text_field( $input['height_map_option'] );
+        // Validate CSS height format: number + unit (rem, em, px, %, vh)
+        if ( preg_match( '/^\d+(\.\d+)?(rem|em|px|%|vh)$/', $height ) ) {
+            $sanitized['height_map_option'] = $height;
+        } else {
+            $sanitized['height_map_option'] = '22rem'; // Default
+        }
+    }
+
+    // Sanitize controls (semicolon-separated list of allowed controls)
+    if ( isset( $input['controls_map_option'] ) ) {
+        $allowed_controls = array(
+            'fullscreenControl',
+            'geolocationControl',
+            'routeEditor',
+            'rulerControl',
+            'searchControl',
+            'trafficControl',
+            'typeSelector',
+            'zoomControl',
+            'routeButtonControl',
+            'routePanelControl',
+            'smallMapDefaultSet',
+            'mediumMapDefaultSet',
+            'largeMapDefaultSet',
+            'default',
+        );
+        $controls_array = array_map( 'trim', explode( ';', $input['controls_map_option'] ) );
+        $valid_controls = array();
+        foreach ( $controls_array as $control ) {
+            $control = sanitize_text_field( $control );
+            if ( in_array( $control, $allowed_controls, true ) ) {
+                $valid_controls[] = $control;
+            }
+        }
+        $sanitized['controls_map_option'] = implode( ';', $valid_controls );
+    }
+
+    // Sanitize checkboxes (on/off)
+    $checkbox_fields = array(
+        'wheelzoom_map_option',
+        'mobiledrag_map_option',
+        'cluster_map_option',
+        'open_map_option',
+        'authorlink_map_option',
+        'reset_maps_option',
+    );
+    foreach ( $checkbox_fields as $field ) {
+        $sanitized[ $field ] = isset( $input[ $field ] ) && $input[ $field ] === 'on' ? 'on' : 'off';
+    }
+
+    // Sanitize cluster grid size (power of 2 or reasonable integer)
+    if ( isset( $input['cluster_grid_option'] ) ) {
+        $grid = intval( $input['cluster_grid_option'] );
+        $sanitized['cluster_grid_option'] = ( $grid >= 2 && $grid <= 512 ) ? (string) $grid : '64';
+    }
+
+    // Sanitize icon type (alphanumeric, #, URL allowed)
+    if ( isset( $input['type_icon_option'] ) ) {
+        $icon = sanitize_text_field( $input['type_icon_option'] );
+        // Allow Yandex preset names or URLs
+        if ( preg_match( '/^[a-zA-Z0-9#_\-]+$/', $icon ) || filter_var( $icon, FILTER_VALIDATE_URL ) ) {
+            $sanitized['type_icon_option'] = $icon;
+        } else {
+            $sanitized['type_icon_option'] = 'islands#dotIcon';
+        }
+    }
+
+    // Sanitize icon color (hex color)
+    if ( isset( $input['color_icon_option'] ) ) {
+        $color = sanitize_hex_color( $input['color_icon_option'] );
+        $sanitized['color_icon_option'] = $color ? $color : '#1e98ff';
+    }
+
+    // Sanitize API key (alphanumeric, hyphens, underscores)
+    if ( isset( $input['apikey_map_option'] ) ) {
+        $apikey = sanitize_text_field( $input['apikey_map_option'] );
+        // Yandex API keys are typically UUID-like
+        if ( preg_match( '/^[a-zA-Z0-9\-_]*$/', $apikey ) ) {
+            $sanitized['apikey_map_option'] = $apikey;
+        } else {
+            $sanitized['apikey_map_option'] = '';
+        }
+    }
+
+    return $sanitized;
 }
 
 ?>
